@@ -85,7 +85,8 @@ class Form extends React.Component {
   constructor(props, context) {
     super(props, context);
     this.state = {
-      validationResults: {}
+      validationResults: {},
+      serverErrors: {$global: []}
     };
     this.fields = {};
   }
@@ -123,7 +124,11 @@ class Form extends React.Component {
       },
       getFieldClass: name => this.fieldClasses[name],
       getFormChildren: () => this.props.children,
-      getValidationResults: name => this.state.validationResults[name] || []
+      getValidationResults: name => {
+        const clientErrors = this.state.validationResults[name] || [];
+        if (this.state.serverErrors[name]) clientErrors.push(this.state.serverErrors[name]);
+        return clientErrors;
+      }
     }};
   }
 
@@ -149,7 +154,29 @@ class Form extends React.Component {
           },
           {}
         );
-      this.props.onSubmit(values, e);
+      const result = this.props.onSubmit(values, e);
+      if (typeof result.then === "function") {
+        result.then(
+          () => { // success
+            this.setState({serverErrors: {$global: []}});
+          },
+          errors => { // shape of error: {fieldName: error} or "global error message as string"
+            const errorMessages = {$global: []};
+            if (typeof errors === "string") {
+              errorMessages.$global.push(errors);
+            } else {
+              Object.keys(errors).forEach(errorField => {
+                if (this.fields[errorField]) {
+                  errorMessages[errorField] = {isValid: false, errorMessage: errors[errorField], hintMessage: errors[errorField], type: "server"};
+                } else {
+                  errorMessages.$global.push({[errorField]: errors[errorField]});
+                }
+              });
+            }
+            this.setState({serverErrors: errorMessages});
+          }
+        );
+      }
     }
   }
 
@@ -163,7 +190,7 @@ class Form extends React.Component {
 
   render() {
     const {theme} = this.props;
-    return theme(Fields, Button);
+    return theme(Fields, Button, {globalErrors: this.state.serverErrors.$global});
   }
 }
 
@@ -250,7 +277,8 @@ function createType(typeName, comp, defaultProps) {
         return {
           isValid: validator.isValid(value, ctx, ::this.validate),
           errorMessage: validator.errorMessage(value, ctx),
-          hintMessage: validator.hintMessage(value, ctx)
+          hintMessage: validator.hintMessage(value, ctx),
+          type: name
         };
       });
       this.props.themedForms.onValidate(validationResults);

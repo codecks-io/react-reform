@@ -6,7 +6,7 @@ Because your forms are as individual as you are.
 
   - [x] creating a git repo
   - [x] don't submit if there are errors, focus first errorneous form
-  - [ ] deal with submit responses containing promises
+  - [x] deal with submit responses containing promises
   - [ ] api for adding own types
   - [ ] api for adding own validators
   - [ ] adding `Form` argument to theme-callback

@@ -9,15 +9,22 @@ export default class MyComponent extends React.Component {
 
   handleSubmit(values) {
     console.log("compSubmit", values);
+    return new Promise(function(resolve, reject) {
+      setTimeout(reject("not yet implemented"));
+    });
   }
 
   render() {
-    const theme = (Fields, Button) => (// todo (Form, Fields, Button, {validations = {name: validations}})
+    const theme = (Fields, Button, {globalErrors}) => (// todo (Form, Fields, Button, {validations = {name: validations}})
       <form>
         <header>
           <button type="button" onClick={() => React.findDOMNode(this.refs.name).focus()}>focus</button>
         </header>
+        {globalErrors.length ? (
+          globalErrors.map((error, i) => <div key={i}>{error}</div>)
+        ) : null}
         <Fields>
+          {/* validations = [{type: "required", isValid: true|false|"pending", hintMessage: "is required", errorMessage: "..."}] */}
           {(Field, {label, validations}) => {// isTouched, isDirty, isFocused, hasFailedToSubmit
             const hasError = validations.some(({isValid}) => !isValid);
             return (
