@@ -129,16 +129,28 @@ class Form extends React.Component {
 
   handleSubmit(e) {
     if (e) e.preventDefault();
-    const values = Object.keys(this.fields)
-      .map(fieldName => ({fieldName, validationResults: this.fields[fieldName].validate(), value: this.fields[fieldName].extractValue()}))
-      .reduce(
-        (memo, {fieldName, value}) => {
-          memo[fieldName] = value;
-          return memo;
-        },
-        {}
-      );
-    this.props.onSubmit(values, e);
+    let firstErrorField = null;
+    let hasErrors = false;
+    Object.keys(this.fields).forEach(fieldName => {
+      this.fields[fieldName].validate().forEach(validation => {
+        if (validation.isValid !== true) hasErrors = true;
+        if (validation.isValid === false && !firstErrorField) firstErrorField = this.fields[fieldName];
+      });
+    });
+    if (hasErrors) {
+      if (firstErrorField) firstErrorField.focus();
+    } else {
+      const values = Object.keys(this.fields)
+        .map(fieldName => ({fieldName, validationResults: this.fields[fieldName].validate(), value: this.fields[fieldName].extractValue()}))
+        .reduce(
+          (memo, {fieldName, value}) => {
+            memo[fieldName] = value;
+            return memo;
+          },
+          {}
+        );
+      this.props.onSubmit(values, e);
+    }
   }
 
   handleValidationResults(fieldName, results) {

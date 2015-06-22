@@ -12,7 +12,7 @@ export default class MyComponent extends React.Component {
   }
 
   render() {
-    const theme = (Fields, Button) => (// todo (Form, Fields, Button)
+    const theme = (Fields, Button) => (// todo (Form, Fields, Button, {validations = {name: validations}})
       <form>
         <header>
           <button type="button" onClick={() => React.findDOMNode(this.refs.name).focus()}>focus</button>

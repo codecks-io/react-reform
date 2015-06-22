@@ -5,7 +5,7 @@ Because your forms are as individual as you are.
 ## TODOS
 
   - [x] creating a git repo
-  - [ ] don't submit if there are errors, focus first errorneous form
+  - [x] don't submit if there are errors, focus first errorneous form
   - [ ] deal with submit responses containing promises
   - [ ] api for adding own types
   - [ ] api for adding own validators
