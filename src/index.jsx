@@ -12,16 +12,16 @@ class Fields {
   static displayName = "Fields";
 
   static contextTypes = {
-    themableForms: React.PropTypes.object.isRequired
+    themedForms: React.PropTypes.object.isRequired
   };
 
   componentWillMount() {
-    this.context.themableForms.fieldRenderer = this.props.children;
+    this.context.themedForms.fieldRenderer = this.props.children;
   }
 
   render() {
     const {children: fieldChildren, ...fieldsRest} = this.props;
-    const {getFormChildren, getFieldClass, getValidationResults, findChild} = this.context.themableForms;
+    const {getFormChildren, getFieldClass, getValidationResults, findChild} = this.context.themedForms;
     const fieldComps = React.Children.map(getFormChildren(), field => {
       if (field === null) return null;
       const {label, name} = field.props;
@@ -40,11 +40,11 @@ class Button {
   static displayName = "Button";
 
   static contextTypes = {
-    themableForms: React.PropTypes.object.isRequired
+    themedForms: React.PropTypes.object.isRequired
   };
 
   render() {
-    return <button onClick={this.context.themableForms.handleSubmit} {...this.props}/>;
+    return <button onClick={this.context.themedForms.handleSubmit} {...this.props}/>;
   }
 }
 
@@ -53,22 +53,22 @@ function createFieldClass(name) {
     static displayName = `Field[${name}]`;
 
     static contextTypes = {
-      themableForms: React.PropTypes.object.isRequired
+      themedForms: React.PropTypes.object.isRequired
     };
 
     componentWillUnmount() {
-      this.context.themableForms.unregisterField(name);
+      this.context.themedForms.unregisterField(name);
     }
 
     render() {
-      const {themableForms} = this.context;
-      return React.cloneElement(themableForms.findChild(name), {
+      const {themedForms} = this.context;
+      return React.cloneElement(themedForms.findChild(name), {
         ...this.props,
-        themableForms: {
-          registerCallbacks: callbacks => themableForms.registerField(name, callbacks),
-          submitForm: themableForms.handleSubmit,
-          onValidate: results => themableForms.handleValidationResults(name, results),
-          setDirty: isDirty => themableForms.setDirty(name, isDirty)
+        themedForms: {
+          registerCallbacks: callbacks => themedForms.registerField(name, callbacks),
+          submitForm: themedForms.handleSubmit,
+          onValidate: results => themedForms.handleValidationResults(name, results),
+          setDirty: isDirty => themedForms.setDirty(name, isDirty)
         }
       });
     }
@@ -107,11 +107,11 @@ class Form extends React.Component {
   }
 
   static childContextTypes = {
-    themableForms: reduxShape.isRequired
+    themedForms: reduxShape.isRequired
   };
 
   getChildContext() {
-    return {themableForms: {
+    return {themedForms: {
       registerField: (f, callbacks) => {this.fields[f] = callbacks; },
       unregisterField: f => {delete this.fields[f]; },
       handleSubmit: ::this.handleSubmit,
@@ -167,7 +167,7 @@ function createType(typeName, comp, defaultProps) {
     }
 
     componentDidMount() {
-      this.props.themableForms.registerCallbacks({
+      this.props.themedForms.registerCallbacks({
         extractValue: ::this.extractValue,
         setValue: ::this.setValue,
         validate: ::this.validate,
@@ -241,12 +241,12 @@ function createType(typeName, comp, defaultProps) {
           hintMessage: validator.hintMessage(value, ctx)
         };
       });
-      this.props.themableForms.onValidate(validationResults);
+      this.props.themedForms.onValidate(validationResults);
       return validationResults;
     }
 
     render() {
-      const {themableForms, onChange, ...rest} = this.props;
+      const {themedForms, onChange, ...rest} = this.props;
       return factory({...defaultProps, ...rest, onChange: ::this.handleChange});
     }
   };
