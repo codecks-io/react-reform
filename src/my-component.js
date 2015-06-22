@@ -25,12 +25,16 @@ export default class MyComponent extends React.Component {
         ) : null}
         <Fields>
           {/* validations = [{type: "required", isValid: true|false|"pending", hintMessage: "is required", errorMessage: "..."}] */}
-          {(Field, {label, validations}) => {// isTouched, isDirty, isFocused, hasFailedToSubmit
+          {(Field, {label, validations, isDirty, isTouched, isFocused, hasFailedToSubmit}) => {// isTouched, isDirty, isFocused, hasFailedToSubmit
             const hasError = validations.some(({isValid}) => !isValid);
             return (
               <div>
                 <label>{label} {hasError ? "Error" : null}</label>
                 <Field className="unvalidated"/>
+                dirty: {isDirty ? "true" : "false"}
+                {" "}touched: {isTouched ? "true" : "false"}
+                {" "}focused: {isFocused ? "true" : "false"}
+                {" "}failed? {hasFailedToSubmit ? "true" : "false"}
               </div>
             );
           }}

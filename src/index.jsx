@@ -21,14 +21,18 @@ class Fields {
 
   render() {
     const {children: fieldChildren, ...fieldsRest} = this.props;
-    const {getFormProps, getFieldClass, getValidationResults, findChild} = this.context.themedForms;
+    const {getFormProps, getFieldClass, getValidationResults, findChild, isDirty, isTouched, isFocused, hasFailedToSubmit} = this.context.themedForms;
     const fieldComps = React.Children.map(getFormProps().children, field => {
       if (field === null) return null;
       const {label, name} = field.props;
       return fieldChildren(getFieldClass(name), {
         label: label || name,
         validations: getValidationResults(name),
-        type: findChild(name).type.displayName
+        type: findChild(name).type.displayName,
+        isDirty: isDirty(name),
+        isTouched: isTouched(name),
+        isFocused: isFocused(name),
+        hasFailedToSubmit: hasFailedToSubmit()
       });
     });
 
@@ -56,7 +60,9 @@ function createFieldClass(name) {
           registerCallbacks: callbacks => themedForms.registerField(name, callbacks),
           submitForm: themedForms.handleSubmit,
           onValidate: results => themedForms.handleValidationResults(name, results),
-          setDirty: isDirty => themedForms.setDirty(name, isDirty)
+          setDirty: isDirty => themedForms.setDirty(name, isDirty),
+          setTouched: isTouched => themedForms.setTouched(name, isTouched),
+          setFocused: isFocused => themedForms.setFocused(isFocused ? name : null)
         }
       });
     }
@@ -89,7 +95,11 @@ class Form extends React.Component {
     super(props, context);
     this.state = {
       validationResults: {},
-      serverErrors: {$global: []}
+      serverErrors: {$global: []},
+      dirtyFields: {},
+      touchedFields: {},
+      focusedField: null,
+      hasFailedToSubmit: false
     };
     this.fields = {};
   }
@@ -131,7 +141,22 @@ class Form extends React.Component {
         if (this.state.serverErrors[name]) clientErrors.push(this.state.serverErrors[name]);
         return clientErrors;
       },
-      getFormProps: () => this.props
+      getFormProps: () => this.props,
+      setDirty: (name, val) => {
+        const {dirtyFields} = this.state;
+        dirtyFields[name] = val;
+        this.setState({dirtyFields});
+      },
+      isDirty: name => !!this.state.dirtyFields[name],
+      setTouched: (name, val) => {
+        const {touchedFields} = this.state;
+        touchedFields[name] = val;
+        this.setState({touchedFields});
+      },
+      isTouched: name => !!this.state.touchedFields[name],
+      setFocused: name => this.setState({focusedField: name}),
+      isFocused: name => this.state.focusedField === name,
+      hasFailedToSubmit: () => this.state.hasFailedToSubmit
     }};
   }
 
@@ -147,7 +172,9 @@ class Form extends React.Component {
     });
     if (hasErrors) {
       if (firstErrorField) firstErrorField.focus();
+      this.setState({hasFailedToSubmit: true});
     } else {
+      this.setState({hasFailedToSubmit: false});
       const values = Object.keys(this.fields)
         .map(fieldName => ({fieldName, validationResults: this.fields[fieldName].validate(), value: this.fields[fieldName].extractValue()}))
         .reduce(
@@ -161,7 +188,11 @@ class Form extends React.Component {
       if (typeof result.then === "function") {
         result.then(
           () => { // success
-            this.setState({serverErrors: {$global: []}});
+            this.setState({
+              serverErrors: {$global: []},
+              touchedFields: {},
+              dirtyFields: {}
+            });
           },
           errors => { // shape of error: {fieldName: error} or "global error message as string"
             const errorMessages = {$global: []};
@@ -179,6 +210,8 @@ class Form extends React.Component {
             this.setState({serverErrors: errorMessages});
           }
         );
+      } else {
+        this.setState({touchedFields: {}, dirtyFields: {}});
       }
     }
   }
@@ -195,7 +228,9 @@ class Form extends React.Component {
     const {theme} = this.props;
     return theme(FormContainer, Fields, {
       globalErrors: this.state.serverErrors.$global,
-      submitForm: ::this.handleSubmit
+      submitForm: ::this.handleSubmit,
+      hasFailedToSubmit: this.state.hasFailedToSubmit,
+      validations: this.state.validationResults
     });
   }
 }
@@ -208,7 +243,6 @@ function createType(typeName, comp, defaultProps) {
     componentWillMount() {
       this.validators = {};
       this.setupValidators();
-      this.defaultValue = null;
     }
 
     componentDidMount() {
@@ -258,7 +292,6 @@ function createType(typeName, comp, defaultProps) {
 
     setValue(val) {
       React.findDOMNode(this).value = val || null;
-      this.defaultValue = val || null;
       this.validate();
     }
 
@@ -268,7 +301,19 @@ function createType(typeName, comp, defaultProps) {
 
     handleChange(e) {
       this.validate();
+      this.props.themedForms.setDirty(true);
       if (this.props.onChange) this.props.onChange(e);
+    }
+
+    handleBlur(e) {
+      this.props.themedForms.setFocused(false);
+      if (this.props.onFocus) this.props.onBlur(e);
+    }
+
+    handleFocus(e) {
+      this.props.themedForms.setTouched(true);
+      this.props.themedForms.setFocused(true);
+      if (this.props.onFocus) this.props.onFocus(e);
     }
 
     validate() {
@@ -292,8 +337,14 @@ function createType(typeName, comp, defaultProps) {
     }
 
     render() {
-      const {themedForms, onChange, ...rest} = this.props;
-      return factory({...defaultProps, ...rest, onChange: ::this.handleChange});
+      const {themedForms, ...rest} = this.props;
+      return factory({
+        ...defaultProps,
+        ...rest,
+        onChange: ::this.handleChange,
+        onFocus: ::this.handleFocus,
+        onBlur: ::this.handleBlur
+      });
     }
   };
 }

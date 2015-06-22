@@ -8,7 +8,7 @@ Because your forms are as individual as you are.
   - [x] don't submit if there are errors, focus first errorneous form
   - [x] deal with submit responses containing promises
   - [x] adding `Form` argument to theme-callback
-  - [ ] adding `isTouched`, `isDirty`, `isFocused`, `hasFailedToSubmit` options to <Fields> call-back
+  - [x] adding `isTouched`, `isDirty`, `isFocused`, `hasFailedToSubmit` options to <Fields> call-back
   - [ ] api for adding own types
   - [ ] api for adding own validators
   - [ ] split into several parts
