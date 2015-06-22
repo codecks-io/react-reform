@@ -21,8 +21,8 @@ class Fields {
 
   render() {
     const {children: fieldChildren, ...fieldsRest} = this.props;
-    const {getFormChildren, getFieldClass, getValidationResults, findChild} = this.context.themedForms;
-    const fieldComps = React.Children.map(getFormChildren(), field => {
+    const {getFormProps, getFieldClass, getValidationResults, findChild} = this.context.themedForms;
+    const fieldComps = React.Children.map(getFormProps().children, field => {
       if (field === null) return null;
       const {label, name} = field.props;
       return fieldChildren(getFieldClass(name), {
@@ -33,18 +33,6 @@ class Fields {
     });
 
     return <div {...fieldsRest}>{fieldComps}</div>;
-  }
-}
-
-class Button {
-  static displayName = "Button";
-
-  static contextTypes = {
-    themedForms: React.PropTypes.object.isRequired
-  };
-
-  render() {
-    return <button onClick={this.context.themedForms.handleSubmit} {...this.props}/>;
   }
 }
 
@@ -73,6 +61,21 @@ function createFieldClass(name) {
       });
     }
   };
+}
+
+class FormContainer {
+  static displayName = "FormContainer";
+
+  static contextTypes = {
+    themedForms: React.PropTypes.object.isRequired
+  };
+
+  render() {
+    const themeProps = this.props;
+    const {onSubmit, initialData, theme, children, ...formProps} = this.context.themedForms.getFormProps();
+    return <form {...themeProps} {...formProps} onSubmit={this.context.themedForms.handleSubmit}/>;
+  }
+
 }
 
 
@@ -123,17 +126,17 @@ class Form extends React.Component {
         return comp;
       },
       getFieldClass: name => this.fieldClasses[name],
-      getFormChildren: () => this.props.children,
       getValidationResults: name => {
         const clientErrors = this.state.validationResults[name] || [];
         if (this.state.serverErrors[name]) clientErrors.push(this.state.serverErrors[name]);
         return clientErrors;
-      }
+      },
+      getFormProps: () => this.props
     }};
   }
 
-  handleSubmit(e) {
-    if (e) e.preventDefault();
+  handleSubmit(e, ...args) {
+    if (e && typeof e.preventDefault === "function") e.preventDefault();
     let firstErrorField = null;
     let hasErrors = false;
     Object.keys(this.fields).forEach(fieldName => {
@@ -154,7 +157,7 @@ class Form extends React.Component {
           },
           {}
         );
-      const result = this.props.onSubmit(values, e);
+      const result = this.props.onSubmit(values, e, ...args);
       if (typeof result.then === "function") {
         result.then(
           () => { // success
@@ -190,7 +193,10 @@ class Form extends React.Component {
 
   render() {
     const {theme} = this.props;
-    return theme(Fields, Button, {globalErrors: this.state.serverErrors.$global});
+    return theme(FormContainer, Fields, {
+      globalErrors: this.state.serverErrors.$global,
+      submitForm: ::this.handleSubmit
+    });
   }
 }
 

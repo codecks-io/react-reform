@@ -8,15 +8,15 @@ export default class MyComponent extends React.Component {
   state = {visible: true}
 
   handleSubmit(values) {
-    console.log("compSubmit", values);
+    console.log("submit", values);
     return new Promise(function(resolve, reject) {
       setTimeout(reject("not yet implemented"));
     });
   }
 
   render() {
-    const theme = (Fields, Button, {globalErrors}) => (// todo (Form, Fields, Button, {validations = {name: validations}})
-      <form>
+    const theme = (FormContainer, Fields, {globalErrors, submitForm}) => (// todo (Form, Fields, Button, {validations = {name: validations}})
+      <FormContainer className="innerFormClass">
         <header>
           <button type="button" onClick={() => React.findDOMNode(this.refs.name).focus()}>focus</button>
         </header>
@@ -36,10 +36,10 @@ export default class MyComponent extends React.Component {
           }}
         </Fields>
         <footer>
-          <Button>Submit</Button>
-          <Button close>Submit and Close</Button>
+          <button>Submit</button>
+          <button type="button" close onClick={e => submitForm(e, "closing")}>Submit and Close</button>
         </footer>
-      </form>
+      </FormContainer>
     );
     return (
       <div>
