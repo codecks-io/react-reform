@@ -1,5 +1,5 @@
 import React from "react";
-import {Form, Text} from "./index";
+import {Form, Text, DatePicker, Checkbox} from "./index";
 
 export default class MyComponent extends React.Component {
   static displayName = "MyComponent"
@@ -30,7 +30,7 @@ export default class MyComponent extends React.Component {
             return (
               <div>
                 <label>{label} {hasError ? "Error" : null}</label>
-                <Field className="unvalidated"/>
+                <Field/>
                 dirty: {isDirty ? "true" : "false"}
                 {" "}touched: {isTouched ? "true" : "false"}
                 {" "}focused: {isFocused ? "true" : "false"}
@@ -45,13 +45,15 @@ export default class MyComponent extends React.Component {
         </footer>
       </FormContainer>
     );
+
     return (
       <div>
       <button onClick={() => this.setState(({visible}) => ({visible: !visible}))}>toggle</button>
-        <Form onSubmit={::this.handleSubmit} initialData={{name: "Daniel", email: "em@il"}} theme={theme}>
+        <Form onSubmit={::this.handleSubmit} initialData={{name: "Daniel", email: "em@il", date: "2015-06-18"}} theme={theme}>
           <Text name="name" label="Your Name" placeholder="name..." is-required ref="name"/>
           <Text name="email" label="Your Email" placeholder="your email" is-required is-email/>
-          {this.state.visible ? <Text name="foo"/> : null}
+          {this.state.visible ? <Checkbox name="foo" is-required/> : null}
+          <DatePicker name="date" label="date" is-required/>
         </Form>
       </div>
     );

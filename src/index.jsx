@@ -105,7 +105,8 @@ class Form extends React.Component {
   }
 
   componentWillMount() {
-    this.fieldClasses = this.props.children.reduce(
+    const {children} = this.props;
+    this.fieldClasses = (Array.isArray(children) ? children : [children]).reduce(
       (memo, child) => {
         memo[child.props.name] = createFieldClass(child.props.name);
         return memo;
@@ -132,7 +133,8 @@ class Form extends React.Component {
       handleValidationResults: ::this.handleValidationResults,
       findChild: name => {
         let comp = null;
-        this.props.children.some(child => child.props.name === name && (comp = child));
+        const {children} = this.props;
+        (Array.isArray(children) ? children : [children]).some(child => child.props.name === name && (comp = child));
         return comp;
       },
       getFieldClass: name => this.fieldClasses[name],
@@ -235,10 +237,18 @@ class Form extends React.Component {
   }
 }
 
-function createType(typeName, comp, defaultProps) {
-  const factory = (typeof comp) === "string" ? React.DOM[comp] : React.createFactory(comp);
-  return class {
+function createType(typeName, component, {defaultProps = {}, controlled, uncontrolled = {}} = {}) {
+  uncontrolled.extractValue = uncontrolled.extractValue || (comp => React.findDOMNode(comp).value);
+  uncontrolled.setValue = uncontrolled.setValue || ((comp, value) => React.findDOMNode(comp).value = value);
+
+  const factory = (typeof component) === "string" ? React.DOM[component] : React.createFactory(component);
+  return class extends React.Component {
     static displayName = typeName;
+
+    constructor(props, context) {
+      super(props, context);
+      if (controlled) this.state = {value: null};
+    }
 
     componentWillMount() {
       this.validators = {};
@@ -287,22 +297,38 @@ function createType(typeName, comp, defaultProps) {
     }
 
     extractValue() {
-      return React.findDOMNode(this).value;
+      if (controlled) {
+        return this.state.value;
+      } else {
+        return uncontrolled.extractValue(this);
+      }
     }
 
-    setValue(val) {
-      React.findDOMNode(this).value = val || null;
-      this.validate();
+    setValue(value) {
+      value = value || null;
+      if (controlled) {
+        this.setState({value}, this.validate);
+      } else {
+        uncontrolled.setValue(this, value);
+        this.validate();
+      }
     }
 
     focus() {
       React.findDOMNode(this).focus();
     }
 
-    handleChange(e) {
-      this.validate();
-      this.props.themedForms.setDirty(true);
-      if (this.props.onChange) this.props.onChange(e);
+    handleChange(...args) {
+      const changeFn = () => {
+        this.validate();
+        this.props.themedForms.setDirty(true);
+      };
+      if (controlled) {
+        this.setState({value: controlled.onChange(...args)}, changeFn);
+      } else {
+        changeFn();
+      }
+      if (this.props.onChange) this.props.onChange(...args);
     }
 
     handleBlur(e) {
@@ -322,8 +348,7 @@ function createType(typeName, comp, defaultProps) {
         const value = this.extractValue();
         const ctx = {
           opts: this.props[propName],
-          name,
-          value
+          name
         };
         return {
           isValid: validator.isValid(value, ctx, ::this.validate),
@@ -338,9 +363,11 @@ function createType(typeName, comp, defaultProps) {
 
     render() {
       const {themedForms, ...rest} = this.props;
+      const controlledProp = controlled ? {[controlled.prop]: this.state.value} : {};
       return factory({
         ...defaultProps,
         ...rest,
+        ...controlledProp,
         onChange: ::this.handleChange,
         onFocus: ::this.handleFocus,
         onBlur: ::this.handleBlur
@@ -349,10 +376,29 @@ function createType(typeName, comp, defaultProps) {
   };
 }
 
-const Text = createType("Text", "input", {type: "text"});
+const Text = createType("Text", "input", {defaultProps: {type: "text"}});
+const Checkbox = createType("Checkbox", "input", {
+  defaultProps: {type: "checkbox"},
+  uncontrolled: {
+    extractValue: comp => React.findDOMNode(comp).checked,
+    setValue: (comp, value) => React.findDOMNode(comp).checked = !!value
+  }
+});
+
+require("react-date-picker/index.css");
+const DatePicker = createType(
+  "DatePicker",
+  require("react-date-picker"),
+  {
+    controlled: {
+      prop: "date",
+      onChange: date => date
+    }
+  }
+);
 
 Validators.required = {
-  isValid: val => !!val && val.trim().length > 0,
+  isValid: val => !!val,
   errorMessage: () => "is required",
   hintMessage: () => "is required"
 };
@@ -371,4 +417,4 @@ Validators.unique = function() {
   };
 };
 
-export default {Text, Form};
+export default {Text, Form, DatePicker, Checkbox};

@@ -9,7 +9,7 @@ Because your forms are as individual as you are.
   - [x] deal with submit responses containing promises
   - [x] adding `Form` argument to theme-callback
   - [x] adding `isTouched`, `isDirty`, `isFocused`, `hasFailedToSubmit` options to <Fields> call-back
-  - [ ] api for adding own types
+  - [x] api for adding own types
   - [ ] api for adding own validators
   - [ ] split into several parts
   - [ ] test cases
