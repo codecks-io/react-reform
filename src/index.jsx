@@ -32,7 +32,8 @@ class Fields {
         isDirty: isDirty(name),
         isTouched: isTouched(name),
         isFocused: isFocused(name),
-        hasFailedToSubmit: hasFailedToSubmit()
+        hasFailedToSubmit: hasFailedToSubmit(),
+        fieldProps: field.props
       });
     });
 

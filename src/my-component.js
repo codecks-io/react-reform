@@ -25,7 +25,7 @@ export default class MyComponent extends React.Component {
         ) : null}
         <Fields>
           {/* validations = [{type: "required", isValid: true|false|"pending", hintMessage: "is required", errorMessage: "..."}] */}
-          {(Field, {label, validations, isDirty, isTouched, isFocused, hasFailedToSubmit}) => {// isTouched, isDirty, isFocused, hasFailedToSubmit
+          {(Field, {label, validations, isDirty, isTouched, isFocused, hasFailedToSubmit, fieldProps}) => {// isTouched, isDirty, isFocused, hasFailedToSubmit
             const hasError = validations.some(({isValid}) => isValid !== true);
             return (
               <div>
@@ -35,6 +35,7 @@ export default class MyComponent extends React.Component {
                 {" "}touched: {isTouched ? "true" : "false"}
                 {" "}focused: {isFocused ? "true" : "false"}
                 {" "}failed? {hasFailedToSubmit ? "true" : "false"}
+                <small>{fieldProps["custom-hint"]}</small>
               </div>
             );
           }}
@@ -50,7 +51,7 @@ export default class MyComponent extends React.Component {
       <div>
       <button onClick={() => this.setState(({visible}) => ({visible: !visible}))}>toggle</button>
         <Form onSubmit={::this.handleSubmit} initialData={{name: "Daniel", email: "em@il", date: "2015-06-18"}} theme={theme}>
-          <Text name="name" label="Your Name" placeholder="name..." is-required is-unique ref="name"/>
+          <Text name="name" label="Your Name" placeholder="name..." is-required is-unique ref="name" custom-hint="use no unique"/>
           <Text name="email" label="Your Email" placeholder="your email" is-required is-email/>
           {this.state.visible ? <Checkbox name="foo" is-required/> : null}
           <DatePicker name="date" label="date" is-required/>
