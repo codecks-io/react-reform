@@ -353,7 +353,7 @@ function createType(typeName, component, {defaultProps = {}, controlled, uncontr
         return {
           isValid: validator.isValid(value, ctx, ::this.validate),
           errorMessage: validator.errorMessage(value, ctx),
-          hintMessage: validator.hintMessage(value, ctx),
+          hintMessage: validator.hintMessage ? validator.hintMessage(value, ctx) : validator.errorMessage(value, ctx),
           type: name
         };
       });
@@ -412,8 +412,18 @@ Validators.email = function() {
 };
 
 Validators.unique = function() {
+  const data = {};
   return {
-    isValid: (val, ctx, done) => {setTimeout(done, 1000); return "processing"; }
+    isValid: (val, ctx, askAgain) => {
+      if (data[val] === undefined) {
+        data[val] = true;
+        setTimeout(askAgain, 1000);
+        return "pending";
+      }
+      return data[val];
+    },
+    errorMessage: val => `'${val}' is not unique`,
+    hintMessage: () => "needs to be unique"
   };
 };
 

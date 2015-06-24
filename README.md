@@ -10,7 +10,7 @@ Because your forms are as individual as you are.
   - [x] adding `Form` argument to theme-callback
   - [x] adding `isTouched`, `isDirty`, `isFocused`, `hasFailedToSubmit` options to <Fields> call-back
   - [x] api for adding own types
-  - [ ] api for adding own validators
+  - [x] api for adding own validators
   - [ ] split into several parts
   - [ ] test cases
   - [ ] documentation ...
