@@ -1,5 +1,9 @@
 import React from "react";
-import {Form, Text, DatePicker, Checkbox} from "./index";
+import Form from "./index";
+
+import DatePicker from "./examples/custom-inputs/date-picker";
+import {Text, Checkbox} from "./lib/inputs";
+import "./lib/validators";
 
 export default class MyComponent extends React.Component {
   static displayName = "MyComponent"
@@ -49,7 +53,7 @@ export default class MyComponent extends React.Component {
 
     return (
       <div>
-      <button onClick={() => this.setState(({visible}) => ({visible: !visible}))}>toggle</button>
+        <button onClick={() => this.setState(({visible}) => ({visible: !visible}))}>toggle</button>
         <Form onSubmit={::this.handleSubmit} initialData={{name: "Daniel", email: "em@il", date: "2015-06-18"}} theme={theme}>
           <Text name="name" label="Your Name" placeholder="name..." is-required is-unique ref="name" custom-hint="use no unique"/>
           <Text name="email" label="Your Email" placeholder="your email" is-required is-email/>
