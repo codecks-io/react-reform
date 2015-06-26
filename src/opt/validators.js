@@ -19,8 +19,8 @@ registerValidator("email", {
 
 // <Text has-minlength={5}/>
 registerValidator("minlength", {
-  isValid: (val, opts) => (val || "").toString().length >= opts,
-  errorMessage: (val, opts) => {
+  isValid: (val, {opts}) => (val || "").toString().length >= opts,
+  errorMessage: (val, {opts}) => {
     const currLength = (val || "").toString().length;
     return `minimal length: ${currLength}/${opts}`;
   }
@@ -28,8 +28,8 @@ registerValidator("minlength", {
 
 // <Text has-maxlength={5}/>
 registerValidator("maxlength", {
-  isValid: (val, opts) => (val || "").toString().length <= opts,
-  errorMessage: (val, opts) => {
+  isValid: (val, {opts}) => (val || "").toString().length <= opts,
+  errorMessage: (val, {opts}) => {
     const currLength = (val || "").toString().length;
     return `maximal length: ${currLength}/${opts}`;
   }
@@ -38,9 +38,9 @@ registerValidator("maxlength", {
 
 // <Text has-pattern={/^\d+(\.\d+)?$/}/>
 registerValidator("pattern", {
-  isValid: (val, opts) => (typeof opts === "string" ? new RegExp(opts) : opts).test(val),
+  isValid: (val, {opts}) => (typeof opts === "string" ? new RegExp(opts) : opts).test(val),
   errorMessage: val => `'${val}' is not valid`,
-  hintMessage: (val, opts) => `needs to correspond to this pattern: ${opts}`
+  hintMessage: (val, {opts}) => `needs to correspond to this pattern: ${opts}`
 });
 
 registerValidator("dummy-unique", () => { // to be moved to example section

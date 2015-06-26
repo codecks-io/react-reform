@@ -32,7 +32,8 @@ module.exports = {
     ],
     loaders: [
       {test: /\.js$/, loader: "babel?cacheDirectory", include: srcDirs},
-      {test: /\.css$/, loader: "style!css!postcss", include: srcDirs}
+      {test: /\.css$/, loader: "style!css!postcss"},
+      {test: /\.(svg|eot|ttf|woff2?)(\?.*)?$/, loader: "file"}
     ]
   },
   devtool: "eval",

@@ -7,7 +7,7 @@ import {getValidator} from "../validator-store";
 describe("Default Validators", function() {
 
   function checkValidator(validator, target, input, opts) {
-    expect(validator.isValid(input, opts)).toBe(target, `(${input}${opts!==undefined ? `, ${opts}` : ''}) should be ${target}`);
+    expect(validator.isValid(input, {opts})).toBe(target, `(${input}${opts !== undefined ? `, ${opts}` : ""}) should be ${target}`);
   }
 
   it("should work for required", function() {

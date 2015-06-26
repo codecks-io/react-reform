@@ -111,8 +111,7 @@ export default function wrapInput(typeName, comp, {defaultProps = {}, controlled
         const {propName, validator} = this.validators[name];
         const value = this.extractValue();
         const ctx = {
-          opts: this.props[propName],
-          name
+          opts: this.props[propName]
         };
         return {
           isValid: validator.isValid(value, ctx, ::this.validate),

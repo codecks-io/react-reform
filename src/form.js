@@ -185,7 +185,8 @@ export default class Form extends React.Component {
       globalErrors: this.state.serverErrors.$global,
       submitForm: ::this.handleSubmit,
       hasFailedToSubmit: this.state.hasFailedToSubmit,
-      validations: this.state.validationResults
+      validations: this.state.validationResults,
+      formProps: this.props
     });
   }
 }
