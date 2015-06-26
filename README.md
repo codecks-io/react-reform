@@ -12,7 +12,7 @@ Because your forms are as individual as you are.
   - [x] api for adding own types
   - [x] api for adding own validators
   - [x] split into several parts
-  - [ ] examples infrastructure
+  - [x] examples infrastructure
   - [ ] standard lib of default inputs:
     - [x] text
     - [x] checkbox
@@ -30,3 +30,12 @@ Because your forms are as individual as you are.
     - [ ] refs within inputs (focus)
 
   - maybe all fields should be stateful, providing a onChange callback to the form? how about contenteditable though (can't see how to possibly make this controlled without *a lot* of effort)?
+
+## Contribute
+
+  please do(n't quite yet)!
+  _(TODO: state the philosophy of what this package is about somewhere)_
+
+  - clone the repo
+  - `npm install`
+  - for running examples: `npm run examples` and open `http://localhost:8080/`

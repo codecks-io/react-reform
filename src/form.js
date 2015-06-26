@@ -135,7 +135,7 @@ export default class Form extends React.Component {
           {}
         );
       const result = this.props.onSubmit(values, e, ...args);
-      if (typeof result.then === "function") {
+      if (result && typeof result.then === "function") {
         result.then(
           () => { // success
             this.setState({

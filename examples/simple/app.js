@@ -1,29 +1,22 @@
 import React from "react";
-import Form from "./index";
+import Form from "react-themed-forms";
 
-import DatePicker from "./examples/custom-inputs/date-picker";
-import {Text, Checkbox} from "./lib/inputs";
-import "./lib/validators";
+import {Text, Checkbox} from "react-themed-forms/lib/inputs";
+import "react-themed-forms/lib/validators";
 
-export default class MyComponent extends React.Component {
-  static displayName = "MyComponent"
-  static defaultProps = {initialCount: 0}
+// require("normalize.css/normalize.css");
+require("./style.css");
 
-  state = {visible: true}
+export default class SimpleExample extends React.Component {
+  static displayName = "SimpleExample"
 
   handleSubmit(values) {
-    console.log("submit", values);
-    return new Promise(function(resolve, reject) {
-      setTimeout(reject("not yet implemented"));
-    });
+    console.log("submitted", values);
   }
 
   render() {
     const theme = (FormContainer, Fields, {globalErrors, submitForm}) => (// todo (Form, Fields, Button, {validations = {name: validations}})
       <FormContainer className="innerFormClass">
-        <header>
-          <button type="button" onClick={() => React.findDOMNode(this.refs.name).focus()}>focus</button>
-        </header>
         {globalErrors.length ? (
           globalErrors.map((error, i) => <div key={i}>{error}</div>)
         ) : null}
@@ -52,15 +45,16 @@ export default class MyComponent extends React.Component {
     );
 
     return (
-      <div>
-        <button onClick={() => this.setState(({visible}) => ({visible: !visible}))}>toggle</button>
-        <Form onSubmit={::this.handleSubmit} initialData={{name: "Daniel", email: "em@il", date: "2015-06-18"}} theme={theme}>
-          <Text name="name" label="Your Name" placeholder="name..." is-required is-unique ref="name" custom-hint="use no unique"/>
-          <Text name="email" label="Your Email" placeholder="your email" is-required is-email/>
-          {this.state.visible ? <Checkbox name="foo" is-required/> : null}
-          <DatePicker name="date" label="date" is-required/>
-        </Form>
-      </div>
+      <Form onSubmit={::this.handleSubmit} initialData={{name: "Daniel", email: "em@il", date: "2015-06-18"}} theme={theme}>
+        <Text name="name" label="Your Name" placeholder="name..." is-required/>
+        <Text name="email" label="Your Email" placeholder="your email" is-required is-email/>
+        <Checkbox name="foo" is-required/>
+      </Form>
     );
   }
 }
+
+window.document.addEventListener("DOMContentLoaded", () => {
+  const appEl = window.document.getElementById("app");
+  React.render(<SimpleExample/>, appEl);
+});
