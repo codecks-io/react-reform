@@ -1,9 +1,10 @@
-# React-Themable-Forms
+# React-Themed-Forms
 
 Because your forms are as individual as you are.
 
 ## TODOS
 
+  - [ ] finding a nicer name for this
   - [x] creating a git repo
   - [x] don't submit if there are errors, focus first errorneous form
   - [x] deal with submit responses containing promises
@@ -20,7 +21,14 @@ Because your forms are as individual as you are.
     - [x] password
     - [x] select
     - [ ] ~~radio~~ wont be done, makes only sense as a _radio group_. But there's no unopinionated way to go ahead.
+  - [ ] setting up test infrastructure
   - [ ] test cases
+  - [ ] standard lib of validators
+    - [ ] required
+    - [ ] email
+    - [ ] minlength
+    - [ ] maxlength
+    - [ ] pattern
   - [ ] sample bootstrap theme
   - [ ] documentation and examples of
     - [ ] how to add custom inputs
@@ -28,8 +36,10 @@ Because your forms are as individual as you are.
     - [ ] how to add custom theme
     - [ ] multiple submit buttons
     - [ ] refs within inputs (focus)
+  - [ ] Use cases made simple using this library
+    - [ ] how do I put a `*` behind the label of each required field?
 
-  - maybe all fields should be stateful, providing a onChange callback to the form? how about contenteditable though (can't see how to possibly make this controlled without *a lot* of effort)?
+  maybe all fields should be stateful, providing a onChange callback to the form? how about contenteditable though (can't see how to possibly make this controlled without *a lot* of effort)?
 
 ## Contribute
 
