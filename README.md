@@ -12,15 +12,21 @@ Because your forms are as individual as you are.
   - [x] api for adding own types
   - [x] api for adding own validators
   - [x] split into several parts
+  - [ ] examples infrastructure
+  - [ ] standard lib of default inputs:
+    - [x] text
+    - [x] checkbox
+    - [ ] textarea
+    - [ ] password
+    - [ ] select
+    - [ ] radio
   - [ ] test cases
-  - [ ] documentation ...
-    - [ ] sample bootstrap theme
-    - [ ] examples
+  - [ ] sample bootstrap theme
+  - [ ] documentation and examples of
+    - [ ] how to add custom inputs
+    - [ ] how to add custom validators
+    - [ ] how to add custom theme
+    - [ ] multiple submit buttons
+    - [ ] refs within inputs (focus)
 
-## Setup
-
-```
-npm install && npm start
-```
-
-Done! Now hit `http://localhost:8080/` and you're ready to start hacking.
+  - maybe all fields should be stateful, providing a onChange callback to the form? how about contenteditable though (can't see how to possibly make this controlled without *a lot* of effort)?
