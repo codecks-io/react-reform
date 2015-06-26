@@ -23,12 +23,12 @@ Because your forms are as individual as you are.
     - [ ] ~~radio~~ wont be done, makes only sense as a _radio group_. But there's no unopinionated way to go ahead.
   - [x] setting up test infrastructure
   - [ ] test cases
-  - [ ] standard lib of validators
-    - [ ] required
-    - [ ] email
-    - [ ] minlength
-    - [ ] maxlength
-    - [ ] pattern
+  - [x] standard lib of validators
+    - [x] required
+    - [x] email
+    - [x] minlength
+    - [x] maxlength
+    - [x] pattern
   - [ ] sample bootstrap theme
   - [ ] documentation and examples of
     - [ ] how to add custom inputs
@@ -38,6 +38,7 @@ Because your forms are as individual as you are.
     - [ ] refs within inputs (focus)
   - [ ] Use cases made simple using this library
     - [ ] how do I put a `*` behind the label of each required field?
+    - [ ] check if two password fields contain the same value
 
   maybe all fields should be stateful, providing a onChange callback to the form? how about contenteditable though (can't see how to possibly make this controlled without *a lot* of effort)?
 
