@@ -21,7 +21,7 @@ Because your forms are as individual as you are.
     - [x] password
     - [x] select
     - [ ] ~~radio~~ wont be done, makes only sense as a _radio group_. But there's no unopinionated way to go ahead.
-  - [ ] setting up test infrastructure
+  - [x] setting up test infrastructure
   - [ ] test cases
   - [ ] standard lib of validators
     - [ ] required
