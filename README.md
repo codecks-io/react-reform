@@ -13,13 +13,13 @@ Because your forms are as individual as you are.
   - [x] api for adding own validators
   - [x] split into several parts
   - [x] examples infrastructure
-  - [ ] standard lib of default inputs:
+  - [x] standard lib of default inputs:
     - [x] text
     - [x] checkbox
-    - [ ] textarea
-    - [ ] password
-    - [ ] select
-    - [ ] radio
+    - [x] textarea
+    - [x] password
+    - [x] select
+    - [ ] ~~radio~~ wont be done, makes only sense as a _radio group_. But there's no unopinionated way to go ahead.
   - [ ] test cases
   - [ ] sample bootstrap theme
   - [ ] documentation and examples of

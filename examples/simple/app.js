@@ -1,7 +1,7 @@
 import React from "react";
 import Form from "react-themed-forms";
 
-import {Text, Checkbox} from "react-themed-forms/lib/inputs";
+import {Text, Checkbox, Password, Textarea, Select} from "react-themed-forms/lib/inputs";
 import "react-themed-forms/lib/validators";
 
 // require("normalize.css/normalize.css");
@@ -45,9 +45,14 @@ export default class SimpleExample extends React.Component {
     );
 
     return (
-      <Form onSubmit={::this.handleSubmit} initialData={{name: "Daniel", email: "em@il", date: "2015-06-18"}} theme={theme}>
+      <Form onSubmit={::this.handleSubmit} initialData={{name: "Daniel", email: "em@il", date: "2015-06-18", fruit: "apple"}} theme={theme}>
         <Text name="name" label="Your Name" placeholder="name..." is-required/>
         <Text name="email" label="Your Email" placeholder="your email" is-required is-email/>
+        <Password name="password" placeholder="your password" is-required/>
+        <Textarea name="content" placeholder="Enter your Text here" is-required/>
+        <Select name="fruit">
+          {["apple", "banana", "pear"].map(fruit => <option key={fruit}>{fruit}</option>)}
+        </Select>
         <Checkbox name="foo" is-required/>
       </Form>
     );
