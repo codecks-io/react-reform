@@ -1,8 +1,8 @@
 import React from "react";
 import Form from "react-themed-forms";
 
-import {Text, Checkbox, Password, Textarea, Select} from "react-themed-forms/lib/inputs";
-import "react-themed-forms/lib/validators";
+import {Text, Checkbox, Password, Textarea, Select} from "react-themed-forms/opt/inputs";
+import "react-themed-forms/opt/validators";
 
 // require("normalize.css/normalize.css");
 require("./style.css");
