@@ -8,6 +8,9 @@ export default function wrapInput(typeName, comp, {defaultProps = {}, controlled
   const factory = (typeof comp) === "string" ? React.DOM[comp] : React.createFactory(comp);
   return class extends React.Component {
     static displayName = typeName;
+    static defaultProps = {
+      themedFormsOptions: {}
+    }
 
     constructor(props, context) {
       super(props, context);
@@ -79,7 +82,9 @@ export default function wrapInput(typeName, comp, {defaultProps = {}, controlled
     }
 
     focus() {
-      React.findDOMNode(this).focus();
+      if (this.props.themedFormsOptions.focusAfterFail !== false) {
+        React.findDOMNode(this).focus();
+      }
     }
 
     handleChange(...args) {
@@ -97,7 +102,7 @@ export default function wrapInput(typeName, comp, {defaultProps = {}, controlled
 
     handleBlur(e) {
       this.props.themedForms.setFocused(false);
-      if (this.props.onFocus) this.props.onBlur(e);
+      if (this.props.onBlur) this.props.onBlur(e);
     }
 
     handleFocus(e) {

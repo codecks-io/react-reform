@@ -3,6 +3,7 @@ import deepEqual from "deep-equal";
 
 import FormContainer from "./form-container";
 import Fields from "./fields";
+import {getTheme} from "./theme-store";
 
 function createFieldClass(name) {
   return class Field {
@@ -36,7 +37,8 @@ function createFieldClass(name) {
 export default class Form extends React.Component {
   static displayName = "Form";
   static defaultProps = {
-    initialData: {}
+    initialData: {},
+    theme: "default"
   }
 
   constructor(props, context) {
@@ -181,7 +183,21 @@ export default class Form extends React.Component {
 
   render() {
     const {theme} = this.props;
-    return theme(FormContainer, Fields, {
+    let themeFn;
+    if (typeof theme === "string") {
+      themeFn = getTheme(theme);
+      if (!themeFn && theme !== "default") {
+        console.warn(`no theme named "${theme}" falling back to "default"`);
+        themeFn = getTheme("default");
+      }
+      if (!themeFn) {
+        console.error(`found no theme for "default"`);
+        return <div style={{backgroundColor: "red", color: "white"}}>No Theme for this Form</div>;
+      }
+    } else {
+      themeFn = theme;
+    }
+    return themeFn(FormContainer, Fields, {
       globalErrors: this.state.serverErrors.$global,
       submitForm: ::this.handleSubmit,
       hasFailedToSubmit: this.state.hasFailedToSubmit,

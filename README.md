@@ -30,7 +30,7 @@ Because your forms are as individual as you are.
     - [x] maxlength
     - [x] pattern
   - [x] sample bootstrap theme
-  - [ ] themes can be registered
+  - [x] themes can be registered
   - [ ] uuids for htmlFor and input ids
   - [ ] a11y: e.g. aria-describedby in bootstrap theme
   - [ ] documentation and examples of
