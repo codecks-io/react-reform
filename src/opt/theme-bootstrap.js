@@ -5,7 +5,7 @@ export default (FormContainer, Fields, {globalErrors, submitForm}) => (
   <FormContainer>
     <Fields>
       {/* validations = [{type: "required", isValid: true|false|"pending", hintMessage: "is required", errorMessage: "..."}] */}
-      {(Field, {label, type, validations, isTouched, isFocused, hasFailedToSubmit, fieldProps}) => {
+      {(Field, {label, type, validations, isTouched, isFocused, hasFailedToSubmit, fieldProps, id}) => {
         const hasError = validations.some(({isValid}) => isValid === false);
         const showError = (isTouched || hasFailedToSubmit) && !isFocused && hasError;
         const showWarning = isFocused && hasError;
@@ -22,8 +22,8 @@ export default (FormContainer, Fields, {globalErrors, submitForm}) => (
         if (type === "Checkbox") {
           return (
             <div className={classNames("checkbox", {"has-error": showError, "has-warning": showWarning})}>
-              <label>
-                <Field/> {label}
+              <label htmlFor={id}>
+                <Field id={id}/> {label}
               </label>
               {validationList}
             </div>
@@ -31,8 +31,8 @@ export default (FormContainer, Fields, {globalErrors, submitForm}) => (
         } else {
           return (
             <div className={classNames("form-group", {"has-error": showError, "has-warning": showWarning})}>
-              <label className="control-label">{label}</label>
-              <Field className="form-control"/>
+              <label className="control-label" htmlFor={id}>{label}</label>
+              <Field className="form-control" id={id}/>
               {validationList}
             </div>
           );

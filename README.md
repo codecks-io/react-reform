@@ -31,7 +31,8 @@ Because your forms are as individual as you are.
     - [x] pattern
   - [x] sample bootstrap theme
   - [x] themes can be registered
-  - [ ] uuids for htmlFor and input ids
+  - [x] uuids for htmlFor and input ids
+  - [ ] naming: field vs input
   - [ ] a11y: e.g. aria-describedby in bootstrap theme
   - [ ] documentation and examples of
     - [ ] how to add custom inputs

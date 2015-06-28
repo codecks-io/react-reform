@@ -5,6 +5,8 @@ import FormContainer from "./form-container";
 import Fields from "./fields";
 import {getTheme} from "./theme-store";
 
+let nextId = 1;
+
 function createFieldClass(name) {
   return class Field {
     static displayName = `Field[${name}]`;
@@ -52,6 +54,7 @@ export default class Form extends React.Component {
       hasFailedToSubmit: false
     };
     this.fields = {};
+    this.fieldIds = {};
   }
 
   componentWillMount() {
@@ -78,7 +81,7 @@ export default class Form extends React.Component {
   getChildContext() {
     return {themedForms: {
       registerField: (f, callbacks) => {this.fields[f] = callbacks; },
-      unregisterField: f => {delete this.fields[f]; },
+      unregisterField: f => {delete this.fields[f]; delete this.fieldIds[f]; },
       handleSubmit: ::this.handleSubmit,
       handleValidationResults: ::this.handleValidationResults,
       findChild: name => {
@@ -108,7 +111,8 @@ export default class Form extends React.Component {
       isTouched: name => !!this.state.touchedFields[name],
       setFocused: name => this.setState({focusedField: name}),
       isFocused: name => this.state.focusedField === name,
-      hasFailedToSubmit: () => this.state.hasFailedToSubmit
+      hasFailedToSubmit: () => this.state.hasFailedToSubmit,
+      getId: name => this.fieldIds[name] = this.fieldIds[name] || `${name}_${nextId++}`
     }};
   }
 

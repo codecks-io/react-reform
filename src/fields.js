@@ -13,7 +13,17 @@ export default class Fields {
 
   render() {
     const {children: fieldChildren, ...fieldsRest} = this.props;
-    const {getFormProps, getFieldClass, getValidationResults, findChild, isDirty, isTouched, isFocused, hasFailedToSubmit} = this.context.themedForms;
+    const {
+      getFormProps,
+      getFieldClass,
+      getValidationResults,
+      findChild,
+      isDirty,
+      isTouched,
+      isFocused,
+      hasFailedToSubmit,
+      getId
+    } = this.context.themedForms;
     const fieldComps = React.Children.map(getFormProps().children, field => {
       if (field === null) return null;
       const {label, name} = field.props;
@@ -25,7 +35,8 @@ export default class Fields {
         isTouched: isTouched(name),
         isFocused: isFocused(name),
         hasFailedToSubmit: hasFailedToSubmit(),
-        fieldProps: field.props
+        fieldProps: field.props,
+        id: getId(name)
       });
     });
 
