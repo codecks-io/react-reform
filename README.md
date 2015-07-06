@@ -2,6 +2,66 @@
 
 Because your forms are as individual as you are.
 
+## Goals
+
+#### very strict separation of logic and representation
+
+Designing forms is hard and there is no one way to approach this. This is why this library makes no assumptions of what your forms should look like. This library only deals with the annoying parts (aka validation logic) – you deal with how it's rendered to the DOM.
+
+#### making it easy to expand
+
+It shouldn't take much more than three lines of code to wrap your own (or third-party) form input components. Controlled or Uncontrolled.
+
+Same for validators. Async validators are also supported.
+
+#### pleasant DX (developer experience)
+
+Writing your forms, defining your themes, adding your custom inputs and validators: all of this should require as few key strokes as possible while staying expressive.
+
+#### keeping it small
+
+Some batteries are included in the optional `/opt/` folder (a bootstrap theme, default inputs and validators). However the core idea of this library is to give you a toolset which makes it very easy to assemble the components you need for powerful forms.
+
+
+### Time for some code
+
+you can define a theme like this:
+
+```
+const myTheme = (FormContainer, Fields, {globalErrors}) => (
+  <FormContainer className="my-form-class">
+    {globalErrors.length ? globalErrors.map((error, i) => <div key={i}>{error}</div> : null}
+    <Fields>
+      {(Field, {label, validations, fieldProps, isFocused}) => {
+        const hasError = validations.some(({isValid}) => isValid !== true);
+        return (
+          <div>
+            <label>{label} {hasError && isFocused ? <span style={{color: "red"}}>Error</span> : null}</label>
+            <Field className="my-form-control"/>
+          </div>
+        );
+      }}
+    </Fields>
+    <button>Submit</button>
+  </FormContainer>
+
+  ```
+
+(for a more complete example take a look at the [bootstrap-theme](src/opt/theme-bootstrap.js))
+
+and then apply it to a form like this:
+
+```
+<Form onSubmit={this.handleSubmit} theme={myTheme}>
+  <Text name="name" label="Your Name" placeholder="name..." is-required/>
+  <Textarea name="comment" label="Your Comment please" placeholder="you can use markdown here" is-required has-minlength={20}/>
+  <Select name="fruit" label="Your favourite fruit" is-required>
+    {["apple", "banana", "pear"].map(fruit => <option key={fruit}>{fruit}</option>)}
+  </Select>
+  <Checkbox name="tosNotRead" label={<span>I have <i>not</i> read the ToS</span>}/>
+</Form>
+```
+
 ## TODOS
 
   - [ ] finding a nicer name for this
@@ -43,6 +103,7 @@ Because your forms are as individual as you are.
   - [ ] Use cases made simple using this library
     - [ ] how do I put a `*` behind the label of each required field?
     - [ ] check if two password fields contain the same value
+    - [ ] theme with custom button text
 
   maybe all fields should be stateful, providing a onChange callback to the form? how about contenteditable though (can't see how to possibly make this controlled without *a lot* of effort)?
 
