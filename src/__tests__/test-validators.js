@@ -1,8 +1,8 @@
 /*eslint-env mocha*/
 
 import expect from "expect";
-import "../opt/validators";
-import {getValidator} from "../validator-store";
+import "react-themed-forms/opt/validators";
+import {getValidator} from "react-themed-forms/validator-store";
 
 describe("Default Validators", function() {
 

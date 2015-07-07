@@ -82,7 +82,7 @@ and then apply it to a form like this:
     - [x] select
     - [ ] ~~radio~~ wont be done, makes only sense as a _radio group_. But there's no unopinionated way to go ahead.
   - [x] setting up test infrastructure
-  - [ ] test cases
+  - [x] setting up test cases
   - [x] standard lib of validators
     - [x] required
     - [x] email

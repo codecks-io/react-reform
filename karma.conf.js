@@ -1,3 +1,5 @@
+var path = require("path");
+
 module.exports = function(config) {
   config.set({
     browsers: ["Chrome"],
@@ -16,6 +18,11 @@ module.exports = function(config) {
         loaders: [
           {test: /\.js$/, loader: "babel-loader"}
         ]
+      },
+      resolve: {
+        alias: {
+          "react-themed-forms": path.join(__dirname, "./src")
+        }
       }
     },
     webpackMiddleware: {
