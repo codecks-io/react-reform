@@ -18,8 +18,9 @@ Same for validators. Async validators are also supported.
 
 Writing your forms, defining your themes, adding your custom inputs and validators: all of this should require as few key strokes as possible while staying expressive.
 
-#### keeping it small
+#### Small Footprint
 
+Komplex Web Apps are allready big enough. This is why this library tries to move all the optional stuff away from the core.
 Some batteries are included in the optional `/opt/` folder (a bootstrap theme, default inputs and validators). However the core idea of this library is to give you a toolset which makes it very easy to assemble the components you need for powerful forms.
 
 
@@ -30,9 +31,9 @@ you can define a theme like this:
 ```
 const myTheme = (FormContainer, Fields, {globalErrors}) => (
   <FormContainer className="my-form-class">
-    {globalErrors.length ? globalErrors.map((error, i) => <div key={i}>{error}</div> : null}
+    {globalErrors.length ? globalErrors.map((error, i) => <div key={i}>{error}</div>) : null}
     <Fields>
-      {(Field, {label, validations, fieldProps, isFocused}) => {
+      {(Field, {label, validations, isFocused}) => {
         const hasError = validations.some(({isValid}) => isValid !== true);
         return (
           <div>
@@ -92,6 +93,7 @@ and then apply it to a form like this:
   - [x] sample bootstrap theme
   - [x] themes can be registered
   - [x] uuids for htmlFor and input ids
+  - [ ] building: core -> /modules, opt -> /opt
   - [ ] naming: field vs input
   - [ ] a11y: e.g. aria-describedby in bootstrap theme
   - [ ] documentation and examples of
