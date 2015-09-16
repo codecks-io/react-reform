@@ -69,9 +69,7 @@ export default class Form extends React.Component {
   }
 
   componentDidMount() {
-    Object.keys(this.fields).forEach(fieldName => {
-      this.fields[fieldName].setValue(this.props.initialData[fieldName] || null);
-    });
+    this.reset();
   }
 
   static childContextTypes = {
@@ -116,6 +114,12 @@ export default class Form extends React.Component {
     }};
   }
 
+  reset() {
+    Object.keys(this.fields).forEach(fieldName => {
+      this.fields[fieldName].setValue(this.props.initialData[fieldName] || null);
+    });
+  }
+
   handleSubmit(e, ...args) {
     if (e && typeof e.preventDefault === "function") e.preventDefault();
     let firstErrorField = null;
@@ -149,6 +153,7 @@ export default class Form extends React.Component {
               touchedFields: {},
               dirtyFields: {}
             });
+            this.reset();
           },
           errors => { // shape of error: {fieldName: error} or "global error message as string"
             const errorMessages = {$global: []};
@@ -173,6 +178,7 @@ export default class Form extends React.Component {
         );
       } else {
         this.setState({touchedFields: {}, dirtyFields: {}});
+        this.reset();
       }
     }
   }
