@@ -7,8 +7,6 @@ export const Select = wrapInput("Select", "select");
 
 export const Checkbox = wrapInput("Checkbox", "input", {
   defaultProps: {type: "checkbox"},
-  uncontrolled: {
-    extractValue: node => node.checked,
-    setValue: (node, value) => node.checked = !!value
-  }
+  extractValueFromOnChange: e => e.target.checked,
+  propNameForValue: "checked"
 });

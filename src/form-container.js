@@ -1,16 +1,13 @@
 import React from "react";
+import withFormCtx from "./form-context";
 
+@withFormCtx
 export default class FormContainer {
-  static displayName = "FormContainer";
-
-  static contextTypes = {
-    themedForms: React.PropTypes.object.isRequired
-  };
 
   render() {
-    const themeProps = this.props;
-    const {onSubmit, initialData, theme, children, ...formProps} = this.context.themedForms.getFormProps();
-    return <form {...themeProps} {...formProps} onSubmit={this.context.themedForms.handleSubmit}/>;
+    const {...themeFormProps, formCtx} = this.props;
+    const {model, initialModel, theme, children, ...userFormProps} = formCtx.getUserFormProps();
+    return <form {...themeFormProps} {...userFormProps} onSubmit={formCtx.getHandleSubmit()}/>;
   }
 
 }

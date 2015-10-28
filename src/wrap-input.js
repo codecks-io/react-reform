@@ -1,38 +1,73 @@
 import React from "react";
 import {getValidator} from "./validator-store";
+import withFormCtx from "./form-context";
 
-export default function wrapInput(typeName, comp, {defaultProps = {}, controlled, uncontrolled = {}} = {}) {
-  uncontrolled.extractValue = uncontrolled.extractValue || (node => node.value);
-  uncontrolled.setValue = uncontrolled.setValue || ((node, value) => node.value = value);
+@withFormCtx
+export default function wrapInput(typeName, comp, {defaultProps = {}, extractValueFromOnChange = e => e.target.value, propNameForValue = "value", propNameForOnChange = "onChange"} = {}) {
 
   const factory = (typeof comp) === "string" ? React.DOM[comp] : React.createFactory(comp);
   return class extends React.Component {
     static displayName = typeName;
-    static defaultProps = {
-      themedFormsOptions: {}
+
+    validators = {}
+
+    constructor(props) {
+      super(props);
+      const getUserFieldProps = () => this.props;
+      const getHandleChange = () => this.handleChange;
+      const getHandleFocus = () => this.handleFocus;
+      const getHandleBlur = () => this.handleBlur;
+      const getRegisterInfo = () => this.registerInfo;
+      const setInputNode = el => this.node = React.findDOMNode(el);
+      this.classPassedToTheme = class {
+
+        handleBlur = (e) => {
+          getHandleBlur()(e);
+          if (this.props.onBlur) this.props.onBlur(e);
+        }
+
+        handleFocus = (e) => {
+          getHandleFocus()(e);
+          if (this.props.onFocus) this.props.onFocus(e);
+        }
+
+        handleChange = (e) => {
+          getHandleChange()(e);
+          if (this.props[propNameForOnChange]) this.props[propNameForOnChange](e);
+        }
+
+        render() {
+          const {formCtx, ...userFieldProps} = getUserFieldProps();
+          return factory({
+            ...this.props, // themeProps
+            ...defaultProps,
+            ...userFieldProps,
+            [propNameForOnChange]: this.handleChange,
+            onFocus: this.handleFocus,
+            onBlur: this.handleBlur,
+            ref: setInputNode,
+            [propNameForValue]: getRegisterInfo().getValue() || null
+          });
+        }
+      };
     }
 
-    constructor(props, context) {
-      super(props, context);
-      if (controlled) this.state = {value: null};
-    }
 
     componentWillMount() {
-      this.validators = {};
       this.setupValidators();
-    }
-
-    componentDidMount() {
-      this.props.themedForms.registerCallbacks({
-        extractValue: ::this.extractValue,
-        setValue: ::this.setValue,
-        validate: ::this.validate,
-        focus: ::this.focus
+      this.registerInfo = this.props.formCtx.registerField(this.props.name, {
+        validate: this.validate,
+        focus: this.focus,
+        reRender: () => this.forceUpdate()
       });
     }
 
     componentWillReceiveProps(nextProps) {
       this.setupValidators(nextProps);
+    }
+
+    componentWillUnmount() {
+      this.registerInfo.unsubscribe();
     }
 
     setupValidators(props = this.props) {
@@ -63,83 +98,45 @@ export default function wrapInput(typeName, comp, {defaultProps = {}, controlled
       });
     }
 
-    extractValue() {
-      if (controlled) {
-        return this.state.value;
-      } else {
-        return uncontrolled.extractValue(React.findDOMNode(this));
-      }
+    focus = () => {
+      if (!this.props.dontFocusAfterFail) this.node.focus();
     }
 
-    setValue(value) {
-      value = value || null;
-      if (controlled) {
-        this.setState({value}, this.validate);
-      } else {
-        uncontrolled.setValue(React.findDOMNode(this), value);
-        this.validate();
-      }
-    }
-
-    focus() {
-      if (this.props.themedFormsOptions.focusAfterFail !== false) {
-        React.findDOMNode(this).focus();
-      }
-    }
-
-    handleChange(...args) {
-      const changeFn = () => {
-        this.validate();
-        this.props.themedForms.setDirty(true);
-      };
-      if (controlled) {
-        this.setState({value: controlled.onChange(...args)}, changeFn);
-      } else {
-        changeFn();
-      }
+    handleChange = (...args) => {
+      this.registerInfo.onChange(extractValueFromOnChange(...args));
       if (this.props.onChange) this.props.onChange(...args);
     }
 
-    handleBlur(e) {
-      this.props.themedForms.setFocused(false);
+    handleBlur = (e) => {
+      this.registerInfo.onBlur();
       if (this.props.onBlur) this.props.onBlur(e);
     }
 
-    handleFocus(e) {
-      this.props.themedForms.setTouched(true);
-      this.props.themedForms.setFocused(true);
+    handleFocus = (e) => {
+      this.registerInfo.onFocus();
       if (this.props.onFocus) this.props.onFocus(e);
     }
 
-    validate() {
+    validate = () => {
       const validationResults = Object.keys(this.validators).map(name => {
         const {propName, validator} = this.validators[name];
-        const value = this.extractValue();
+        const value = this.registerInfo.getValue();
         const ctx = {
           opts: this.props[propName]
         };
         return {
-          isValid: validator.isValid(value, ctx, ::this.validate),
+          isValid: validator.isValid(value, ctx, this.validate),
           errorMessage: validator.errorMessage(value, ctx),
           hintMessage: validator.hintMessage ? validator.hintMessage(value, ctx) : validator.errorMessage(value, ctx),
           type: name
         };
       });
-      this.props.themedForms.onValidate(validationResults);
       return validationResults;
     }
 
     render() {
-      const {themedForms, ...rest} = this.props;
-      const controlledProp = controlled ? {[controlled.prop]: this.state.value} : {};
-      return factory({
-        ...defaultProps,
-        ...rest,
-        ...controlledProp,
-        onChange: ::this.handleChange,
-        onFocus: ::this.handleFocus,
-        onBlur: ::this.handleBlur
-      });
+      const {formCtx, formFieldRendererCtx, ...rest} = this.props;
+      return formFieldRendererCtx(this.classPassedToTheme, ...rest, this.registerInfo, this.validate, typeName);
     }
   };
 }

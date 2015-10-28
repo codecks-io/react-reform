@@ -1,45 +1,34 @@
 import React from "react";
+import withFormCtx from "./form-context";
 
+@withFormCtx
 export default class Fields {
-  static displayName = "Fields";
 
-  static contextTypes = {
-    themedForms: React.PropTypes.object.isRequired
+  static childContextTypes = {
+    formFieldRenderer: React.PropTypes.func.isRequired
   };
 
-  componentWillMount() {
-    this.context.themedForms.fieldRenderer = this.props.children;
+  getChildContext() {
+    const {children: renderFieldByTheme, formCtx, ...fieldsRest} = this.props;
+    return {
+      formFieldRenderer: (Comp, userFieldProps, registerInfo, validateFn, typeName) => {
+        return renderFieldByTheme(Comp, {
+          label: userFieldProps.label || userFieldProps.name,
+          validations: validateFn(),
+          type: typeName,
+          id: `form-${typeName}-${registerInfo.id}`,
+          fieldProps: userFieldProps,
+          isDirty: registerInfo.isDirty(),
+          isFocused: registerInfo.isFocused(),
+          isTouched: registerInfo.isTouched(),
+          hasFailedToSubmit: formCtx.getHasFailedToSubmit()
+        });
+      }
+    };
   }
 
   render() {
-    const {children: fieldChildren, ...fieldsRest} = this.props;
-    const {
-      getFormProps,
-      getFieldClass,
-      getValidationResults,
-      findChild,
-      isDirty,
-      isTouched,
-      isFocused,
-      hasFailedToSubmit,
-      getId
-    } = this.context.themedForms;
-    const fieldComps = React.Children.map(getFormProps().children, field => {
-      if (field === null) return null;
-      const {label, name} = field.props;
-      return fieldChildren(getFieldClass(name), {
-        label: label || name,
-        validations: getValidationResults(name),
-        type: findChild(name).type.displayName,
-        isDirty: isDirty(name),
-        isTouched: isTouched(name),
-        isFocused: isFocused(name),
-        hasFailedToSubmit: hasFailedToSubmit(),
-        fieldProps: field.props,
-        id: getId(name)
-      });
-    });
-
-    return <div {...fieldsRest}>{fieldComps}</div>;
+    const {children, formCtx, ...themeFieldsProps} = this.props;
+    return <div {...themeFieldsProps}>{formCtx.getUserFormProps().children}</div>;
   }
 }

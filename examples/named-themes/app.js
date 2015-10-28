@@ -75,7 +75,7 @@ export default class SimpleExample extends React.Component {
         <h2>Custom theme</h2>
         <p>(enabling submit on blur)</p>
         <Form onSubmit={::this.handleSubmit} theme={customTheme}>
-          <Text name="name" label="Your Name" placeholder="name..." is-required submitOnBlur themedFormsOptions={{focusAfterFail: false}}/>
+          <Text name="name" label="Your Name" placeholder="name..." is-required submitOnBlur dontFocusAfterFail/>
         </Form>
       </div>
     );

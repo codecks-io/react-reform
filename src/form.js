@@ -1,145 +1,110 @@
 import React from "react";
-import deepEqual from "deep-equal";
 
 import FormContainer from "./form-container";
 import Fields from "./fields";
 import {getTheme} from "./theme-store";
 
-let nextId = 1;
-
-function createFieldClass(name) {
-  return class Field {
-    static displayName = `Field[${name}]`;
-
-    static contextTypes = {
-      themedForms: React.PropTypes.object.isRequired
-    };
-
-    componentWillUnmount() {
-      this.context.themedForms.unregisterField(name);
-    }
-
-    render() {
-      const {themedForms} = this.context;
-      return React.cloneElement(themedForms.findChild(name), {
-        ...this.props,
-        themedForms: {
-          registerCallbacks: callbacks => themedForms.registerField(name, callbacks),
-          submitForm: themedForms.handleSubmit,
-          onValidate: results => themedForms.handleValidationResults(name, results),
-          setDirty: isDirty => themedForms.setDirty(name, isDirty),
-          setTouched: isTouched => themedForms.setTouched(name, isTouched),
-          setFocused: isFocused => themedForms.setFocused(isFocused ? name : null)
-        }
-      });
-    }
-  };
-}
+let idCounter = 0;
 
 export default class Form extends React.Component {
-  static displayName = "Form";
+
   static defaultProps = {
-    initialData: {},
-    theme: "default"
+    model: null,
+    initialModel: {},
+    theme: "default",
+    onFieldChange: () => {}
   }
 
   constructor(props, context) {
     super(props, context);
     this.state = {
-      validationResults: {},
       serverErrors: {$global: []},
-      dirtyFields: {},
-      touchedFields: {},
-      focusedField: null,
-      hasFailedToSubmit: false
+      hasFailedToSubmit: false,
+      fields: {}
     };
-    this.fields = {};
-    this.fieldIds = {};
-  }
-
-  componentWillMount() {
-    const {children} = this.props;
-    this.fieldClasses = (Array.isArray(children) ? children : [children]).reduce(
-      (memo, child) => {
-        memo[child.props.name] = createFieldClass(child.props.name);
-        return memo;
-      },
-      {}
-    );
-  }
-
-  componentDidMount() {
-    this.reset();
   }
 
   static childContextTypes = {
-    themedForms: React.PropTypes.object.isRequired
+    form: React.PropTypes.object.isRequired
   };
 
   getChildContext() {
-    return {themedForms: {
-      registerField: (f, callbacks) => {this.fields[f] = callbacks; },
-      unregisterField: f => {delete this.fields[f]; delete this.fieldIds[f]; },
-      handleSubmit: ::this.handleSubmit,
-      handleValidationResults: ::this.handleValidationResults,
-      findChild: name => {
-        let comp = null;
-        const {children} = this.props;
-        (Array.isArray(children) ? children : [children]).some(child => child.props.name === name && (comp = child));
-        return comp;
+    return {form: {
+      registerField: (name, {focus, validate, reRender}) => {
+        const {fields} = this.state;
+        fields[name] = {
+          focus, validate, reRender,
+          value: this.props.model ? undefined : this.props.initialModel[name],
+          touched: false,
+          focused: false,
+          dirty: false
+        };
+        this.setState({fields});
+        return {
+          id: idCounter += 1,
+          unregister: () => {delete this.state.fields[name]; this.setState({fields: this.state.fields}); },
+          getValue: () => this.props.model ? this.props.model[name] : this.state.fields[name].value,
+          isDirty: () => this.state.fields[name].dirty,
+          isFocused: () => this.state.fields[name].focused,
+          isTouched: () => this.state.fields[name].touched,
+          onFocus: () => {
+            const field = this.state.fields[name];
+            field.toched = true;
+            field.focused = true;
+            this.setState({fields: this.state.fields}, reRender);
+          },
+          onBlur: () => {
+            const field = this.state.fields[name];
+            field.focused = false;
+            this.setState({fields: this.state.fields}, reRender);
+          },
+          onChange: (val) => {
+            const field = this.state.fields[name];
+            if (this.props.onFieldChange(name, val) !== false) {
+              if (!this.props.model) field.value = val;
+              field.touched = true;
+              field.dirty = true;
+              this.setState({fields: this.state.fields}, reRender);
+            }
+          }
+        };
       },
-      getFieldClass: name => this.fieldClasses[name],
-      getValidationResults: name => {
-        const clientErrors = this.state.validationResults[name] || [];
-        if (this.state.serverErrors[name]) clientErrors.push(this.state.serverErrors[name]);
-        return clientErrors;
-      },
-      getFormProps: () => this.props,
-      setDirty: (name, val) => {
-        const {dirtyFields} = this.state;
-        dirtyFields[name] = val;
-        this.setState({dirtyFields});
-      },
-      isDirty: name => !!this.state.dirtyFields[name],
-      setTouched: (name, val) => {
-        const {touchedFields} = this.state;
-        touchedFields[name] = val;
-        this.setState({touchedFields});
-      },
-      isTouched: name => !!this.state.touchedFields[name],
-      setFocused: name => this.setState({focusedField: name}),
-      isFocused: name => this.state.focusedField === name,
-      hasFailedToSubmit: () => this.state.hasFailedToSubmit,
-      getId: name => this.fieldIds[name] = this.fieldIds[name] || `${name}_${nextId++}`
+      getUserFormProps: () => this.props,
+      getHandleSubmit: () => this.handleSubmit,
+      getHasFailedToSubmit: () => this.state.hasFailedToSubmit
     }};
   }
 
   reset() {
-    Object.keys(this.fields).forEach(fieldName => {
-      this.fields[fieldName].setValue(this.props.initialData[fieldName] || null);
+    const {fields} = this.state;
+    Object.keys(fields).forEach(name => {
+      const field = fields[name];
+      field.touched = false;
+      field.dirty = false;
+      field.value = this.props.model ? undefined : this.props.initialModel[name];
     });
+    this.setState({fields: fields}, Object.keys(fields).forEach(name => fields[name].reRender()));
   }
 
-  handleSubmit(e, ...args) {
+  handleSubmit = (e, ...args) => {
+    const {fields} = this.state;
     if (e && typeof e.preventDefault === "function") e.preventDefault();
     let firstErrorField = null;
     let hasErrors = false;
-    Object.keys(this.fields).forEach(fieldName => {
-      this.fields[fieldName].validate().forEach(validation => {
+    Object.keys(fields).forEach(name => {
+      fields[name].validate().forEach(validation => {
         if (validation.isValid !== true) hasErrors = true;
-        if (validation.isValid === false && !firstErrorField) firstErrorField = this.fields[fieldName];
+        if (validation.isValid === false && !firstErrorField) firstErrorField = fields[name];
       });
     });
     if (hasErrors) {
       if (firstErrorField) firstErrorField.focus();
-      this.setState({hasFailedToSubmit: true});
+      this.setState({hasFailedToSubmit: true}, Object.keys(fields).forEach(name => fields[name].reRender()));
     } else {
       this.setState({hasFailedToSubmit: false});
-      const values = Object.keys(this.fields)
-        .map(fieldName => ({fieldName, validationResults: this.fields[fieldName].validate(), value: this.fields[fieldName].extractValue()}))
-        .reduce(
-          (memo, {fieldName, value}) => {
-            memo[fieldName] = value;
+      const values = Object.keys(fields).reduce(
+          (memo, name) => {
+            memo[name] = this.props.model ? this.props.mode[name] : fields[name].value;
             return memo;
           },
           {}
@@ -149,9 +114,7 @@ export default class Form extends React.Component {
         result.then(
           () => { // success
             this.setState({
-              serverErrors: {$global: []},
-              touchedFields: {},
-              dirtyFields: {}
+              serverErrors: {$global: []}
             });
             this.reset();
           },
@@ -177,17 +140,8 @@ export default class Form extends React.Component {
           }
         );
       } else {
-        this.setState({touchedFields: {}, dirtyFields: {}});
         this.reset();
       }
-    }
-  }
-
-  handleValidationResults(fieldName, results) {
-    const {validationResults} = this.state;
-    if (!deepEqual(validationResults[fieldName], results)) {
-      validationResults[fieldName] = results;
-      this.setState(validationResults);
     }
   }
 
@@ -209,9 +163,8 @@ export default class Form extends React.Component {
     }
     return themeFn(FormContainer, Fields, {
       globalErrors: this.state.serverErrors.$global,
-      submitForm: ::this.handleSubmit,
+      submitForm: this.handleSubmit,
       hasFailedToSubmit: this.state.hasFailedToSubmit,
-      validations: this.state.validationResults,
       formProps: this.props
     });
   }

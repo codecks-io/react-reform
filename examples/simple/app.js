@@ -17,7 +17,7 @@ export default class SimpleExample extends React.Component {
 
   render() {
     return (
-      <Form onSubmit={::this.handleSubmit} initialData={{name: "Daniel", email: "em@il", date: "2015-06-18", fruit: "apple"}} theme={bootstrapTheme}>
+      <Form onSubmit={::this.handleSubmit} initialModel={{name: "Daniel", email: "em@il", fruit: "apple", foo: false}} theme={bootstrapTheme}>
         <Text name="name" label="Your Name" placeholder="name..." is-required/>
         <Text name="email" label="Your Email" placeholder="your email" is-required is-email/>
         <Password name="password" placeholder="your password" is-required/>
@@ -25,6 +25,7 @@ export default class SimpleExample extends React.Component {
         <Select name="fruit">
           {["apple", "banana", "pear"].map(fruit => <option key={fruit}>{fruit}</option>)}
         </Select>
+        <hr/>
         <Checkbox name="foo" is-required/>
       </Form>
     );
