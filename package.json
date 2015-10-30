@@ -1,7 +1,7 @@
 {
   "name": "react-reform",
   "version": "0.1.0",
-  "description": "Because your forms are as individual as you are.",
+  "description": "A React Form Framework",
   "scripts": {
     "test": "karma start",
     "examples": "webpack-dev-server --config examples/webpack.config.js",
