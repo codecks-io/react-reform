@@ -93,7 +93,7 @@ and then apply it to a form like this:
   - [x] sample bootstrap theme
   - [x] themes can be registered
   - [x] uuids for htmlFor and input ids
-  - [ ] building: core -> /modules, opt -> /opt
+  - [x] building: core -> /modules, opt -> /opt
   - [ ] naming: field vs input
   - [ ] a11y: e.g. aria-describedby in bootstrap theme
   - [ ] documentation and examples of

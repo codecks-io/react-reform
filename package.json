@@ -5,7 +5,7 @@
   "scripts": {
     "test": "karma start",
     "examples": "webpack-dev-server --config examples/webpack.config.js",
-    "build": "eslint src examples && babel src --out-dir modules",
+    "build": "eslint src examples && babel src --ignore src/opt --out-dir modules && babel src/opt src/opt --out-dir opt",
     "prepublish": "npm run build"
   },
   "keywords": [
