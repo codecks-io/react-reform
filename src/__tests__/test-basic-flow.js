@@ -29,7 +29,7 @@ describe("Basic Flow", function() {
     const inputNode = rootNode.querySelector("input[name='name']");
     const buttonNode = rootNode.querySelector("button");
 
-    inputNode.value = "Daniel";
+    TestUtils.Simulate.change(inputNode, {target: {value: "Daniel"}});
     buttonNode.click();
   });
 
