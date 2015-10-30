@@ -67,7 +67,7 @@ export default function wrapInput(typeName, comp, {defaultProps = {}, extractVal
     }
 
     componentWillUnmount() {
-      this.registerInfo.unsubscribe();
+      this.registerInfo.unregister();
     }
 
     setupValidators(props = this.props) {
