@@ -4,7 +4,7 @@ to use them simply import them like this:
 
 ```
 // ES6 Style
-import {Text, Checkbox, Password, Textarea, Select} from "react-themed-forms/opt/inputs";
+import {Text, Checkbox, Password, Textarea, Select} from "react-reform/opt/inputs";
 ```
 
 or
@@ -12,5 +12,5 @@ or
 
 ```
 // classic
-var Text = require("react-themed-forms/opt/inputs").Text;
+var Text = require("react-reform/opt/inputs").Text;
 ```

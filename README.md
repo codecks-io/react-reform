@@ -1,4 +1,4 @@
-# React-Themed-Forms
+# react-<i>re</i>form
 
 Because your forms are as individual as you are.
 
@@ -65,7 +65,7 @@ and then apply it to a form like this:
 
 ## TODOS
 
-  - [ ] finding a nicer name for this
+  - [x] finding a nicer name for this
   - [x] creating a git repo
   - [x] don't submit if there are errors, focus first errorneous form
   - [x] deal with submit responses containing promises

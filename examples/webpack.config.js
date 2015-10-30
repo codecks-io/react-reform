@@ -41,7 +41,7 @@ module.exports = {
   resolve: {
     extensions: ["", ".js", ".jsx"],
     alias: {
-      "react-themed-forms": "../../src"
+      "react-reform": "../../src"
     }
   },
   devServer: {

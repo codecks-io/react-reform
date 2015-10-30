@@ -1,9 +1,9 @@
 /*eslint-env mocha*/
 
 import expect from "expect";
-import Form from "react-themed-forms";
-import {Text} from "react-themed-forms/opt/inputs";
-import bootstrapTheme from "react-themed-forms/opt/theme-bootstrap";
+import Form from "react-reform";
+import {Text} from "react-reform/opt/inputs";
+import bootstrapTheme from "react-reform/opt/theme-bootstrap";
 import {addons} from "react/addons";
 import React from "react";
 

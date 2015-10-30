@@ -21,7 +21,7 @@ module.exports = function(config) {
       },
       resolve: {
         alias: {
-          "react-themed-forms": path.join(__dirname, "./src")
+          "react-reform": path.join(__dirname, "./src")
         }
       }
     },

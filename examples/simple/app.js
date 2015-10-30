@@ -1,9 +1,9 @@
 import React from "react";
-import Form from "react-themed-forms";
+import Form from "react-reform";
 
-import {Text, Checkbox, Password, Textarea, Select} from "react-themed-forms/opt/inputs";
-import bootstrapTheme from "react-themed-forms/opt/theme-bootstrap";
-import "react-themed-forms/opt/validators";
+import {Text, Checkbox, Password, Textarea, Select} from "react-reform/opt/inputs";
+import bootstrapTheme from "react-reform/opt/theme-bootstrap";
+import "react-reform/opt/validators";
 
 require("./style.css");
 require("bootstrap/dist/css/bootstrap.css");

@@ -1,9 +1,9 @@
 import React from "react";
-import {Form, registerTheme} from "react-themed-forms";
+import {Form, registerTheme} from "react-reform";
 
-import {Text} from "react-themed-forms/opt/inputs";
-import bootstrapTheme from "react-themed-forms/opt/theme-bootstrap";
-import "react-themed-forms/opt/validators";
+import {Text} from "react-reform/opt/inputs";
+import bootstrapTheme from "react-reform/opt/theme-bootstrap";
+import "react-reform/opt/validators";
 
 require("bootstrap/dist/css/bootstrap.css");
 
