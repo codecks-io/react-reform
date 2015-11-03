@@ -7,14 +7,14 @@ A React Form Framework
 - [Motivation](#motivation)
 - [Features](#features)
 - [Api Reference](#api-reference)
-  - [<Form>](#form)
+  - [`<Form>`](#form)
   - [Create a Theme](#create-a-theme)
-    - [<FormContainer>](#formcontainer)
-    - [<Fields>](#fields)
+    - [`<FormContainer>`](#formcontainer)
+    - [`<Fields>`](#fields)
   - [Custom Inputs](#custom-inputs)
   - [Validators](#validators)
 - [Recipes](#recipes)
-  - [Add a * to all required Fields](#add-a-to-all-required-fields)
+  - [Add a * to all required Fields](#add-a--to-all-required-fields)
   - [Theme with Custom Button Text](#theme-with-custom-button-text)
   - [Multiple Submit Buttons](#multiple-submit-buttons)
   - [Submit on Blur](#submit-on-blur)
@@ -38,7 +38,8 @@ All this while trying to maintain a small, yet powerful API.
 
 ## Features
 
-- *Pleasant DX (Developer Experience)*
+- **Pleasant DX (Developer Experience)**
+
   Once you've set up your Themes and Validators, and you get to actually apply them, it should be a straight forward experience as simple as:
 
   ```javascript
@@ -55,10 +56,12 @@ All this while trying to maintain a small, yet powerful API.
     }
   ```
 
-- *Small Footprint*
+- **Small Footprint**
+
   react-reform aims to keep all optional dependencies out of the core. For example validations: If you start off just `import "react-reform/opt/validators"` for a basic set of validations (like `is-required` `has-maxlength="140"`, but most bigger projects probably will come up with their own set of validations and don't need this particular code in their bundle.
 
-- *Easy to expand*
+- **Easy to expand**
+
   It should be pretty simple adding your own input-types and validators.
 
 ## Quick Start
@@ -69,7 +72,7 @@ It is recommended to create a _setup-file_ which acts as interface between your 
 
 A setup file can look like this:
 
-*lib/form.js*
+**lib/form.js**
 ```javascript
 
 import React from "react";
@@ -119,7 +122,7 @@ export default {
 
 This way you're ready to start using react-reform like this:
 
-*quick-start-form.js*
+**quick-start-form.js**
 ```javascript
   import {Form, Text, DatePicker} from "lib/form";
 
@@ -143,13 +146,13 @@ This way you're ready to start using react-reform like this:
 
 ## Api-Reference
 
-### <Form>
+### `<Form>`
 
 ### Create a Theme
 
-#### <FormContainer>
+#### `<FormContainer>`
 
-#### <Fields>
+#### `<Fields>`
 
 ### Custom Inputs
 
