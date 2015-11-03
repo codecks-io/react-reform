@@ -10,10 +10,13 @@
   },
   "keywords": [
     "react",
-    "forms"
+    "forms",
+    "form",
+    "validation"
   ],
   "author": "Daniel Berndt",
   "license": "ISC",
+  "repository": "danielberndt/react-reform",
   "main": "modules",
   "devDependencies": {
     "autoprefixer-core": "^5.2.1",

@@ -1,119 +1,179 @@
 # react-<i>re</i>form
 
-Because your forms are as individual as you are.
+A React Form Framework
 
-## Goals
+## Table of Contents
 
-#### very strict separation of logic and representation
+- [Motivation](#motivation)
+- [Features](#features)
+- [Api Reference](#api-reference)
+  - [<Form>](#form)
+  - [Create a Theme](#create-a-theme)
+    - [<FormContainer>](#formcontainer)
+    - [<Fields>](#fields)
+  - [Custom Inputs](#custom-inputs)
+  - [Validators](#validators)
+- [Recipes](#recipes)
+  - [Add a * to all required Fields](#add-a-to-all-required-fields)
+  - [Theme with Custom Button Text](#theme-with-custom-button-text)
+  - [Multiple Submit Buttons](#multiple-submit-buttons)
+  - [Submit on Blur](#submit-on-blur)
+  - [Dynamic Form based on Content](#dynamic-form-based-on-content)
+- [Contribute](#contribute)
+- [License](#license)
 
-Designing forms is hard and there is no one way to approach this. This is why this library makes no assumptions of what your forms should look like. This library only deals with the annoying parts (aka validation logic) – you deal with how it's rendered to the DOM.
+## Motivation
 
-#### making it easy to expand
+Forms are hard. There are so many ways to approach them and too few libraries out there offering enough flexibility.
 
-It shouldn't take much more than three lines of code to wrap your own (or third-party) form input components. Controlled or Uncontrolled.
+My main struggle with other libraries was the lack of separation of logic and representation. This is why this library was created.
 
-Same for validators. Async validators are also supported.
+The goal is to put you in full control of:
 
-#### pleasant DX (developer experience)
+ - What DOM-Structure to use for displaying your fields
+ - What DOM-Structure to use for displaying your form
+ - How and when you see what validation message
 
-Writing your forms, defining your themes, adding your custom inputs and validators: all of this should require as few key strokes as possible while staying expressive.
+All this while trying to maintain a small, yet powerful API.
 
-#### Small Footprint
+## Features
 
-Komplex Web Apps are allready big enough. This is why this library tries to move all the optional stuff away from the core.
-Some batteries are included in the optional `/opt/` folder (a bootstrap theme, default inputs and validators). However the core idea of this library is to give you a toolset which makes it very easy to assemble the components you need for powerful forms.
+- *Pleasant DX (Developer Experience)*
+  Once you've set up your Themes and Validators, and you get to actually apply them, it should be a straight forward experience as simple as:
+
+  ```javascript
+    import {Form, Text} from "lib/form"; // <- your setup-file
+
+    [...]
+
+    render() {
+      return (
+        <Form onSubmit={this.handleSubmit} theme="my-theme-name">
+          <Text name="comment" is-required has-maxlength={140}/>
+        </Form>
+      )
+    }
+  ```
+
+- *Small Footprint*
+  react-reform aims to keep all optional dependencies out of the core. For example validations: If you start off just `import "react-reform/opt/validators"` for a basic set of validations (like `is-required` `has-maxlength="140"`, but most bigger projects probably will come up with their own set of validations and don't need this particular code in their bundle.
+
+- *Easy to expand*
+  It should be pretty simple adding your own input-types and validators.
+
+## Quick Start
+
+`npm install --save react-reform` (or for people with less time on their hands: `npm i -S react-reform`)
+
+It is recommended to create a _setup-file_ which acts as interface between your application code and react-reform.
+
+A setup file can look like this:
+
+*lib/form.js*
+```javascript
+
+import React from "react";
+
+import {Form, registerTheme, wrapInput} from "react-reform";
+
+// import default inputs <Text>, <Password>, <Textarea>, <Checkbox>, <Select>
+import defaultInputs from "react-reform/opt/inputs";
+
+// globally register default set of validators
+import "react-reform/opt/validators";
+
+// import DatePicker to wrap it below
+import DatePicker from "react-date-picker";
+import("react-date-picker/index.css");
 
 
-### Time for some code
-
-you can define a theme like this:
-
-```
-const myTheme = (FormContainer, Fields, {globalErrors}) => (
+registerTheme("my-theme-name", (FormContainer, Fields, {globalErrors}) => (
   <FormContainer className="my-form-class">
-    {globalErrors.length ? globalErrors.map((error, i) => <div key={i}>{error}</div>) : null}
+    {globalErrors.length ? (
+      globalErrors.map((error, i) => <div key={i}>{error}</div>)
+    ) : null}
     <Fields>
-      {(Field, {label, validations, isFocused}) => {
+      {(Field, {label, validations, fieldProps}) => {
         const hasError = validations.some(({isValid}) => isValid !== true);
         return (
           <div>
-            <label>{label} {hasError && isFocused ? <span style={{color: "red"}}>Error</span> : null}</label>
-            <Field className="my-form-control"/>
+            <label>{label} {hasError ? <span style={{color: "red"}}>Error</span> : null}</label>
+            <Field/>
           </div>
         );
       }}
     </Fields>
-    <button>Submit</button>
+    <footer>
+      <button>Submit</button>
+    </footer>
   </FormContainer>
+));
 
-  ```
-
-(for a more complete example take a look at the [bootstrap-theme](src/opt/theme-bootstrap.js))
-
-and then apply it to a form like this:
+export default {
+  Form,
+  ...defaultInputs,
+  DatePicker: wrapInput("DatePicker", DatePicker, {extractValueFromOnChange: date => date, propNameForValue: "date"})
+}
 
 ```
-<Form onSubmit={this.handleSubmit} theme={myTheme}>
-  <Text name="name" label="Your Name" placeholder="name..." is-required/>
-  <Textarea name="comment" label="Your Comment please" placeholder="you can use markdown here" is-required has-minlength={20}/>
-  <Select name="fruit" label="Your favourite fruit" is-required>
-    {["apple", "banana", "pear"].map(fruit => <option key={fruit}>{fruit}</option>)}
-  </Select>
-  <Checkbox name="tosNotRead" label={<span>I have <i>not</i> read the ToS</span>}/>
-</Form>
+
+This way you're ready to start using react-reform like this:
+
+*quick-start-form.js*
+```javascript
+  import {Form, Text, DatePicker} from "lib/form";
+
+  export default class {
+
+    handleSubmit = ({firstName, lastName, birthday}) => {
+      console.log(firstName, lastName, birthday);
+    }
+
+    render() {
+      <Form onSubmit={this.handleSubmit} theme="my-theme-name">
+        <Text name="fistName" label="first name" is-required has-minlength={2}/>
+        <Text name="lastName" label="last name"/>
+        <DatePicker name="birthday" label="your birthday" is-required/>
+      </Form>
+    }
+
+  }
+
 ```
 
-## TODOS
+## Api-Reference
 
-  - [x] finding a nicer name for this
-  - [x] creating a git repo
-  - [x] don't submit if there are errors, focus first errorneous form
-  - [x] deal with submit responses containing promises
-  - [x] adding `Form` argument to theme-callback
-  - [x] adding `isTouched`, `isDirty`, `isFocused`, `hasFailedToSubmit` options to <Fields> callback
-  - [x] api for adding own types
-  - [x] api for adding own validators
-  - [x] split into several parts
-  - [x] examples infrastructure
-  - [x] standard lib of default inputs:
-    - [x] text
-    - [x] checkbox
-    - [x] textarea
-    - [x] password
-    - [x] select
-    - [ ] ~~radio~~ wont be done, makes only sense as a _radio group_. But there's no unopinionated way to go ahead.
-  - [x] setting up test infrastructure
-  - [x] setting up test cases
-  - [x] standard lib of validators
-    - [x] required
-    - [x] email
-    - [x] minlength
-    - [x] maxlength
-    - [x] pattern
-  - [x] sample bootstrap theme
-  - [x] themes can be registered
-  - [x] uuids for htmlFor and input ids
-  - [x] building: core -> /modules, opt -> /opt
-  - [ ] naming: field vs input
-  - [ ] a11y: e.g. aria-describedby in bootstrap theme
-  - [ ] documentation and examples of
-    - [ ] how to add custom inputs
-    - [ ] how to add custom validators
-    - [ ] how to add custom theme
-    - [ ] multiple submit buttons
-    - [ ] refs within inputs (focus)
-  - [ ] Use cases made simple using this library
-    - [ ] how do I put a `*` behind the label of each required field?
-    - [ ] check if two password fields contain the same value
-    - [ ] theme with custom button text
+### <Form>
 
-  maybe all fields should be stateful, providing a onChange callback to the form? how about contenteditable though (can't see how to possibly make this controlled without *a lot* of effort)?
+### Create a Theme
+
+#### <FormContainer>
+
+#### <Fields>
+
+### Custom Inputs
+
+### Validators
+
+## Recipes
+
+### Add a * to all required Fields
+
+### Theme with Custom Button Text
+
+### Multiple Submit Buttons
+
+### Submit on Blur
+
+### Dynamic Form based on Content
+
 
 ## Contribute
 
-  please do(n't quite yet)!
-  _(TODO: state the philosophy of what this package is about somewhere)_
+- clone the repo
+- `npm install`
+- for running examples: `npm run examples` and open `http://localhost:8080/`
 
-  - clone the repo
-  - `npm install`
-  - for running examples: `npm run examples` and open `http://localhost:8080/`
+## License
+
+ISC
