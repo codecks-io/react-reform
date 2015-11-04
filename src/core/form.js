@@ -62,7 +62,6 @@ export default class Form extends React.Component {
             const field = this.state.fields[name];
             if (this.props.onFieldChange(name, val) !== false) {
               if (!this.props.model) field.value = val;
-              field.touched = true;
               field.dirty = true;
               this.setState({fields: this.state.fields}, reRender);
             }
