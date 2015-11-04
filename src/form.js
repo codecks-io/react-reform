@@ -104,7 +104,7 @@ export default class Form extends React.Component {
       this.setState({hasFailedToSubmit: false});
       const values = Object.keys(fields).reduce(
           (memo, name) => {
-            memo[name] = this.props.model ? this.props.mode[name] : fields[name].value;
+            memo[name] = this.props.model ? this.props.model[name] : fields[name].value;
             return memo;
           },
           {}
