@@ -1,5 +1,5 @@
 !.gitignore
 node_modules/
 *.sublime-*
-modules/
+core/
 opt/
