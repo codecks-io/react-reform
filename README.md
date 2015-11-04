@@ -6,6 +6,7 @@ A React Form Framework
 
 - [Motivation](#motivation)
 - [Features](#features)
+- [Quick Start](#quick-start)
 - [Api Reference](#api-reference)
   - [`<Form>`](#form)
   - [Create a Theme](#create-a-theme)
@@ -271,6 +272,8 @@ As you can see you need to position two components: `<FormContainer>` and `<Fiel
 
 The `<Fields>` component defines how each field (like e.g. `<Text>` or `<Select>`) is being rendered.
 
+A more complete example can be found [here](./src/opt/theme-bootstrap.js).
+
 #### formContainerOpts
 
 ##### `globalErrors`
@@ -307,9 +310,9 @@ Let's have a look at the child-function again:
 
 The first argument represents the actual field (which was defined within `<Form>`)
 
-the fieldOpts contain a lot of important values for displaying e.g. labels and validation messages:
+the `fieldOpts` contain a lot of important values for displaying e.g. labels and validation messages:
 
-##### `label`: userFieldProps.label || userFieldProps.name,
+##### `label`
 
 contains the value passed in the input's `label`. If there is no `label`-prop present the `name` will be used.
 
@@ -365,7 +368,7 @@ is `true` when the field was focused once
 
 This value is `true` when an attempt to submit failed. Will be `false` once validation was successful.
 
-###### `fieldProps`
+##### `fieldProps`
 
 contains the props passed to the `<Form>`'s input
 
