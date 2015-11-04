@@ -5,7 +5,7 @@
   "scripts": {
     "test": "karma start",
     "examples": "webpack-dev-server --config examples/webpack.config.js",
-    "build": "eslint src examples && babel src --ignore src/opt --out-dir modules && babel src/opt src/opt --out-dir opt",
+    "build": "eslint src examples && babel src/core --out-dir core && babel src/opt --out-dir opt",
     "prepublish": "npm run build"
   },
   "keywords": [
@@ -17,7 +17,7 @@
   "author": "Daniel Berndt",
   "license": "ISC",
   "repository": "danielberndt/react-reform",
-  "main": "modules",
+  "main": "core",
   "devDependencies": {
     "autoprefixer-core": "^5.2.1",
     "babel": "^5.6.11",

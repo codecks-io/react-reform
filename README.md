@@ -239,11 +239,28 @@ required form values for your controlled form.
 
 called whenever a field's content are changed. You may return `false` to avoid any effect of this change (i.e. the corresponding field won't be marked as `dirty`)
 
-##### `theme` _default value_: `"default"`
+##### `theme` _default value: "default"_
 
 you can either pass a string with the registered name of the theme, or a theme definition itself. If you omit this prop, the form will look for a theme registered as "default".
 
 ### Create a Theme
+
+This is where the fun begins! Here you have full control over how you want to display which state of your form to the user. Let's start with a minimal example:
+
+```javascript
+const myMinimalTheme = (FormContainer, Fields) => (
+  <FormContainer className="my-form-class">
+    <Fields>
+      {(Field, {label}) => {
+        return (
+          <Field className="my-form-field-class"/>
+        );
+      }}
+    </Fields>
+    <button>Submit</button>
+  </FormContainer>
+)
+```
 
 #### `<FormContainer>`
 

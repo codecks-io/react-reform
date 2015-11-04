@@ -41,7 +41,8 @@ module.exports = {
   resolve: {
     extensions: ["", ".js", ".jsx"],
     alias: {
-      "react-reform": "../../src"
+      "react-reform/opt": "../../src/opt",
+      "react-reform": "../../src/core"
     }
   },
   devServer: {

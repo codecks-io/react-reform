@@ -1,4 +1,4 @@
-import wrapInput from "../modules/wrap-input";
+import wrapInput from "../core/wrap-input";
 
 export const Text = wrapInput("Text", "input", {defaultProps: {type: "text"}});
 export const Textarea = wrapInput("Textarea", "textarea");

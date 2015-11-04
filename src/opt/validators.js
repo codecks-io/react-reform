@@ -1,4 +1,4 @@
-import {registerValidator} from "../modules/validator-store";
+import {registerValidator} from "../core/validator-store";
 
 // <Text is-required/>
 registerValidator("required", {

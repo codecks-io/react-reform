@@ -21,7 +21,8 @@ module.exports = function(config) {
       },
       resolve: {
         alias: {
-          "react-reform": path.join(__dirname, "./src")
+          "react-reform/opt": path.join(__dirname, "src", "opt"),
+          "react-reform": path.join(__dirname, "src", "core")
         }
       }
     },
