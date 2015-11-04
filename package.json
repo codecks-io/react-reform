@@ -49,7 +49,6 @@
   },
   "dependencies": {
     "classnames": "^2.1.2",
-    "deep-equal": "^1.0.0",
     "react": "^0.13.3"
   }
 }
