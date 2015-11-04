@@ -248,12 +248,15 @@ you can either pass a string with the registered name of the theme, or a theme d
 This is where the fun begins! Here you have full control over how you want to display which state of your form to the user. Let's start with a minimal example:
 
 ```javascript
-const myMinimalTheme = (FormContainer, Fields) => (
+const myMinimalTheme = (FormContainer, Fields, formContainerOpts) => (
   <FormContainer className="my-form-class">
     <Fields>
-      {(Field, {label}) => {
+      {(Field, fieldOpts) => {
         return (
-          <Field className="my-form-field-class"/>
+          <div>
+            <label htmlFor={fieldOpts.id}>{fieldOpts.label}</label>
+            <Field className="my-form-field-class" id={fieldOpts.id}/>
+          </div>
         );
       }}
     </Fields>
@@ -262,9 +265,109 @@ const myMinimalTheme = (FormContainer, Fields) => (
 )
 ```
 
+As you can see you need to position two components: `<FormContainer>` and `<Fields>`.
+
+`<FormContainer>` will render the actual `<form>` DOM Node. Within this Container you need to define the position of the fields supplied by the user and probably also a submit button.
+
+The `<Fields>` component defines how each field (like e.g. `<Text>` or `<Select>`) is being rendered.
+
+#### formContainerOpts
+
+##### `globalErrors`
+
+if the `<Form>`'s `onSubmit` handler returns a promise that will be rejected, the non-field-specific error messages will be listed here. Note that `globalErrors` is an Array.
+
+##### `submitForm`
+
+useful if you have several ways of submitting a form (either via multiple submit buttons, or for example when leaving focus of a field.) Have a look at the [Recipes](#recipes) for some exampled.
+
+##### `hasFailedToSubmit`
+
+This value is `true` when an attempt to submit failed. (In that case you want to probablt show all validation errors, even for fields that have not been touched yet.)
+
+##### `formProps`
+
+this key contains all props that were passed to the user's `<Form>` component. This could be used to allow your theme users to define a custom submit button label as shown in this [Recipe](#theme-with-custom-button-text).
+
 #### `<FormContainer>`
 
+This component is used to describe the overall structure of your form. All props defined on this component are passed directly to the underlying `<form>`.
+
 #### `<Fields>`
+
+This component determines the location of the contents of a theme user's `<Form>`. All props passed to this component will be passed to an underlying `<div>`.
+
+The child-function passed to the `<Field>` component plays a crucial role however. It describes how each field should be wrapped.
+
+Let's have a look at the child-function again:
+
+```javascript
+<Fields>{(Field, fieldOpts) => ...}
+```
+
+The first argument represents the actual field (which was defined within `<Form>`)
+
+the fieldOpts contain a lot of important values for displaying e.g. labels and validation messages:
+
+##### `label`: userFieldProps.label || userFieldProps.name,
+
+contains the value passed in the input's `label`. If there is no `label`-prop present the `name` will be used.
+
+##### `validations`
+
+contains an object with the current validation state of all validators. It has a shape like this:
+
+```javascript
+[
+  {
+    type: "email",
+    isValid: false,
+    errorMessage: "is not a valid email address",
+    hintMessage: "needs to be an email"
+  },
+  {
+    type: "required",
+    isValid: true,
+    errorMessage: "is required",
+    hintMessage: "is required"
+  },
+  {
+    type: "myAsyncValidator"
+    isValid: "isLoading", // <- validators can return non-boolean values
+    errorMessage: "is already taken",
+    hintMessage: "needs to be unique",
+  },
+  ...
+]
+```
+
+##### `type`
+
+contains the type of input. It's the first argument of the `wrapInput` function and can be used to treat e.g. `Checkboxes` differently within your theme
+
+##### `id`
+
+a computed unique id which can be used to establish a connection between a label and the input via `htmlFor` and `id`.
+
+##### `isDirty`
+
+is `true` when the field was changed
+
+##### `isFocused`
+
+is `true` when the field currently is focused
+
+##### `isTouched`
+
+is `true` when the field was focused once
+
+##### `hasFailedToSubmit`
+
+This value is `true` when an attempt to submit failed. Will be `false` once validation was successful.
+
+###### `fieldProps`
+
+contains the props passed to the `<Form>`'s input
 
 ### Custom Inputs
 
