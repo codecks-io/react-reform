@@ -4,10 +4,9 @@ import expect from "expect";
 import Form from "react-reform";
 import {Text} from "react-reform/opt/inputs";
 import bootstrapTheme from "react-reform/opt/theme-bootstrap";
-import {addons} from "react/addons";
+import TestUtils from "react-addons-test-utils";
 import React from "react";
-
-const {TestUtils} = addons;
+import ReactDOM from "react-dom";
 
 describe("Basic Flow", function() {
 
@@ -25,7 +24,7 @@ describe("Basic Flow", function() {
       done();
     }
     const root = TestUtils.renderIntoDocument(formComp(handleSubmit));
-    const rootNode = React.findDOMNode(root);
+    const rootNode = ReactDOM.findDOMNode(root);
     const inputNode = rootNode.querySelector("input[name='name']");
     const buttonNode = rootNode.querySelector("button");
 

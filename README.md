@@ -27,12 +27,12 @@ A React Form Framework
 
 Forms are hard. There are so many ways to approach them and too few libraries out there offering enough flexibility.
 
-My main struggle with other libraries was the lack of separation of logic and representation. This is why this library was created.
+My main struggle with other libraries was the lack of separation between logic and representation. This is why this library was created.
 
 The goal is to put you in full control of:
 
- - What DOM-Structure to use for displaying your fields
- - What DOM-Structure to use for displaying your form
+ - What DOM-Structure and style to use for displaying your fields
+ - What DOM-Structure and style to use for displaying your form
  - How and when you see what validation message
 
 All this while trying to maintain a small, yet powerful API.
@@ -128,7 +128,7 @@ This way you're ready to start using react-reform like this:
 import React from "react";
 import {Form, Text, DatePicker} from "./form";
 
-export default class {
+export default class extends React.Component {
 
   handleSubmit = ({firstName, lastName, birthday}) => {
     console.log(firstName, lastName, birthday);

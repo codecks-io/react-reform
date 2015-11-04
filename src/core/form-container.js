@@ -2,7 +2,7 @@ import React from "react";
 import withFormCtx from "./form-context";
 
 @withFormCtx
-export default class FormContainer {
+export default class FormContainer extends React.Component {
 
   render() {
     const {...themeFormProps, formCtx} = this.props;

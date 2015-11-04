@@ -1,4 +1,5 @@
 import React from "react";
+import ReactDOM from "react-dom";
 import {Form, registerTheme} from "react-reform";
 
 import {Text} from "react-reform/opt/inputs";
@@ -84,5 +85,5 @@ export default class SimpleExample extends React.Component {
 
 window.document.addEventListener("DOMContentLoaded", () => {
   const appEl = window.document.getElementById("app");
-  React.render(<SimpleExample/>, appEl);
+  ReactDOM.render(<SimpleExample/>, appEl);
 });

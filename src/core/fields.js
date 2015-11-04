@@ -2,7 +2,7 @@ import React from "react";
 import withFormCtx from "./form-context";
 
 @withFormCtx
-export default class Fields {
+export default class Fields extends React.Component {
 
   static childContextTypes = {
     formFieldRenderer: React.PropTypes.func.isRequired

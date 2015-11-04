@@ -1,4 +1,5 @@
 import React from "react";
+import ReactDOM from "react-dom";
 import {getValidator} from "./validator-store";
 import withFormCtx from "./form-context";
 
@@ -18,8 +19,8 @@ export default function wrapInput(typeName, comp, {defaultProps = {}, extractVal
       const getHandleFocus = () => this.handleFocus;
       const getHandleBlur = () => this.handleBlur;
       const getRegisterInfo = () => this.registerInfo;
-      const setInputNode = el => this.node = React.findDOMNode(el);
-      this.classPassedToTheme = class {
+      const setInputNode = el => this.node = ReactDOM.findDOMNode(el);
+      this.classPassedToTheme = class extends React.Component {
 
         handleBlur = (e) => {
           getHandleBlur()(e);

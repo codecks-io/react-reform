@@ -1,7 +1,7 @@
 import React from "react";
 
 export default function(Comp) {
-  return class {
+  return class extends React.Component {
     static displayName = `WithFormContext[${Comp.displayName}]`;
 
     render() {
