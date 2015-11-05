@@ -372,7 +372,88 @@ This value is `true` when an attempt to submit failed. Will be `false` once vali
 
 contains the props passed to the `<Form>`'s input
 
-### Custom Inputs
+### Custom Inputs via `wrapInput`
+
+react-reform only allows the use of _controlled_ inputs. I.e. it requires that the input defines a prop pair like `onChange` and `value`.
+
+Given this preqrequisite, wrapping custom form inputs is fairly straight forward using the `wrapInput` method.
+
+`wrapInput` accepts the follwing parameters: `wrapInput(name, Component, opts)`
+
+#### `name`
+
+This parameter serves for setting a proper display name for the wrapper class and, more importantly, is passed as `type` to a theme's `<Field>` definition. This way you could treat certain inputs differntly within your theme.
+
+#### `Component`
+
+This can be either a string for wrapping a DOM node (like e.g. `select` or `input`), or a react component like e.g. a DatePicker Component.
+
+#### `opts`
+
+Is an optional object to account for non-default behaviour of the component.
+
+##### `defaultProps`
+
+props that should always be passed to the component. This makes sense for the various `<input>` variants:
+```
+wrapInput("Password", "input", {defaultProps: {type: "password"}});
+```
+
+##### `extractValueFromOnChange` _default: `e => e.target.value`_
+
+This option defines how the value is extracted from the `onChange` event of the component.
+
+##### `propNameForValue` _default: `value`_
+
+Defines the prop name for passing the value to the component.
+
+##### `propNameForOnChange` _default: `onChange`
+
+Defines the prop name for listening to change events.
+
+#### Examples:
+
+Let's have a look at various date pickers
+
+##### [react-datepicker](https://github.com/Hacker0x01/react-datepicker)
+
+```javascript
+const DatePicker1 = wrapInput("DatePicker1", require("react-datepicker"), {
+  extractValueFromOnChange: date => date,
+  propNameForValue: "selected"
+});
+```
+
+##### [react-date-picker](https://github.com/zippyui/react-date-picker)
+
+```javascript
+const DatePicker2 = wrapInput("DatePicker2", require("react-date-picker"), {
+  extractValueFromOnChange: date => date,
+  propNameForValue: "date"
+});
+```
+
+##### [Belle's DatePicker](http://nikgraf.github.io/belle/#/component/date-picker?_k=9lwpee)
+
+```javascript
+const DatePicker3 = wrapInput("DatePicker3", require('belle').DatePicker, {
+  extractValueFromOnChange: date => date,
+  propNameForValue: "date",
+  propNameForOnChange: "onUpdate"
+});
+```
+
+##### Using those examples:
+
+The DatePickers can then be embedded like this:
+
+```javascript
+<Form onSubmit={this.handleSubmit} theme="my-theme-name">
+  <DatePicker1 name="firstDate" is-required/>
+  <DatePicker2 name="firstDate" minDate='2015-11-06' maxDate='2016-01-31'/> // props defined here get passed straight to the underlying Component
+  <DatePicker3 name="firstDate" defaultYear={new Date().getFullYear()}/>
+</Form>
+```
 
 ### Validators
 
