@@ -22,19 +22,19 @@ export default function wrapInput(typeName, comp, {defaultProps = {}, extractVal
       const setInputNode = el => this.node = ReactDOM.findDOMNode(el);
       this.classPassedToTheme = class extends React.Component {
 
-        handleBlur = (e) => {
-          getHandleBlur()(e);
-          if (this.props.onBlur) this.props.onBlur(e);
+        handleBlur = (...args) => {
+          getHandleBlur()(...args);
+          if (this.props.onBlur) this.props.onBlur(...args);
         }
 
-        handleFocus = (e) => {
-          getHandleFocus()(e);
-          if (this.props.onFocus) this.props.onFocus(e);
+        handleFocus = (...args) => {
+          getHandleFocus()(...args);
+          if (this.props.onFocus) this.props.onFocus(...args);
         }
 
-        handleChange = (e) => {
-          getHandleChange()(e);
-          if (this.props[propNameForOnChange]) this.props[propNameForOnChange](e);
+        handleChange = (...args) => {
+          getHandleChange()(...args);
+          if (this.props[propNameForOnChange]) this.props[propNameForOnChange](...args);
         }
 
         render() {
