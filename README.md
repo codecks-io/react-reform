@@ -12,8 +12,8 @@ A React Form Framework
   - [Create a Theme](#create-a-theme)
     - [`<FormContainer>`](#formcontainer)
     - [`<Fields>`](#fields)
-  - [Custom Inputs](#custom-inputs)
-  - [Validators](#validators)
+  - [Custom Inputs via `wrapInput`](#custom-inputs-via-wrapinput)
+  - [Validators via `registerValidator`](#validators-via-registervalidator)
 - [Recipes](#recipes)
   - [Add a * to all required Fields](#add-a--to-all-required-fields)
   - [Theme with Custom Button Text](#theme-with-custom-button-text)
@@ -450,12 +450,84 @@ The DatePickers can then be embedded like this:
 ```javascript
 <Form onSubmit={this.handleSubmit} theme="my-theme-name">
   <DatePicker1 name="firstDate" is-required/>
-  <DatePicker2 name="firstDate" minDate='2015-11-06' maxDate='2016-01-31'/> // props defined here get passed straight to the underlying Component
-  <DatePicker3 name="firstDate" defaultYear={new Date().getFullYear()}/>
+  <DatePicker2 name="secondDate" minDate='2015-11-06' maxDate='2016-01-31'/> // props defined here get passed straight to the underlying Component
+  <DatePicker3 name="thirdDate" defaultYear={new Date().getFullYear()}/>
 </Form>
 ```
 
-### Validators
+### Validators via `registerValidator`
+
+Validators need to be registered globally via the `registerValidator(name, opts)` methods.
+
+Here's an example validator for ensuring a maximum length requirement:
+
+```javascript
+registerValidator("maxlength", {
+  isValid: (val, ctx) => (val || "").toString().length <= ctx.opts,
+  hintMessage: (val, ctx) => `needs to have ${ctx.opts} characters or less`,
+  errorMessage: (val, ctx) => {
+    const currLength = (val || "").toString().length;
+    return `maximal length: ${currLength}/${ctx.opts}`;
+  }
+});
+```
+
+#### `name`
+
+The name is used for assigning this validator to an input. _A validator name has to be prefixed with either `is-` or `has-` when applied to an input._ If you name your validator `required` or `maxlength`, you need to apply them like `<Text name="..." is-required has-maxlength={5}/>` (or `<Text name="..." has-required is-maxlength={5}/>` if you really feel like it)
+
+#### `opts`
+
+The `opts` is either an object of the shape `{isValid: ..., hintMessage: ..., errorMessage: ...}` or a function which returns an object of this shape.
+If it is a function this function will be invoked when mounting an input. This will be useful for caching validation results – especially for async validators (See below).
+
+ `isValid`, `hintMessage` and `errorMessage` all are functions with the same two first parameters:
+
+- `value` represents the input's current value.
+- `ctx` has this shape: `{opts: ...}`
+  - `opts` represent the value passed to the `is-[validatorname]` or `has-[validatorname]` prop. Be careful that e.g. `has-maxlength={5}` is different from `has-maxlength="5"`!
+
+##### `isValid(value, ctx, validateAgainCb)`
+
+This function should usually return `true` or `false`. But you can return whatever you want, which is useful to represent a _pending_ state for async validations. The returned value is accessible through the theme's `<Field>` [children-function](#validations).
+
+A form won't submit unless all validators return `true`.
+
+The meaning of `value` and `ctx` is explained above. The third parameter `validateAgainCb` is useful for async validations. Once you've received an answer from your server, you can store the result and call `validateAgainCb()` to re-run the validation on this input. Here's some example code:
+
+```javascript
+registerValidator("unique-name", () => {
+  // this variable is scoped to a field, and gets created when the field is mounted
+  const cachedData = {};
+
+  return {
+    isValid: (value, ctx, validateAgainCb) => {
+      // if we haven't seen this value before, fetch information from the server
+      if (cachedData[value] === undefined) {
+        // while we don't know the answer just set the value to "pending"
+        cachedData[value] = "pending";
+
+        getDataFromServer(SERVERURL, {name: value}).then(result => {
+          // now that we now the answer for this value, save it, and ask react-reform to validate the input again.
+          cachedData[value] = result;
+          validateAgainCb();
+        })
+      }
+      return data[value];
+    },
+    errorMessage: val => `'${val}' is not unique`,
+    hintMessage: () => "needs to be a unique name"
+  };
+});
+```
+
+##### `hintMessage(value, ctx)` _optional_
+
+the return value of this function is accessible through the theme's `<Field>` [children-function](#validations). If no `hintMessage` function is provided the output of the `errorMessage` will be used.
+
+##### `errorMessage(value, ctx)`
+
+the return value of this function is accessible through the theme's `<Field>` [children-function](#validations).
 
 ## Recipes
 
