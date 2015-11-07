@@ -6,7 +6,7 @@ import {Text} from "react-reform/opt/inputs";
 import bootstrapTheme from "react-reform/opt/theme-bootstrap";
 import "react-reform/opt/validators";
 
-require("bootstrap/dist/css/bootstrap.css");
+import "bootstrap/dist/css/bootstrap.css";
 
 registerTheme("default", bootstrapTheme);
 registerTheme("myTheme", (FormContainer, Fields, {globalErrors}) => (

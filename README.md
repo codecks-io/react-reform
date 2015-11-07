@@ -405,9 +405,9 @@ This option defines how the value is extracted from the `onChange` event of the 
 
 For DOM-based inputs the value looks like `{extractValueFromOnChange: e => e.target.value}`
 
-##### `propNameForValue` _default: `value`_
+##### `valueToProps` _default: `value => ({value: value})`_
 
-Defines the prop name for passing the value to the component.
+Defines how the value is being passed to the underlying components via its props.
 
 ##### `propNameForOnChange` _default: `onChange`
 
@@ -421,7 +421,7 @@ Let's have a look at various date pickers
 
 ```javascript
 const DatePicker1 = wrapInput("DatePicker1", require("react-datepicker"), {
-  propNameForValue: "selected"
+  valueToProps: value => ({selected: value})
 });
 ```
 
@@ -429,20 +429,30 @@ const DatePicker1 = wrapInput("DatePicker1", require("react-datepicker"), {
 
 ```javascript
 const DatePicker2 = wrapInput("DatePicker2", require("react-date-picker"), {
-  propNameForValue: "date"
+  valueToProps: value => ({date: value})
 });
 ```
 
 ##### [Belle's DatePicker](http://nikgraf.github.io/belle/#/component/date-picker?_k=9lwpee)
 
 ```javascript
-const DatePicker3 = wrapInput("DatePicker3", require('belle').DatePicker, {
-  propNameForValue: "date",
+const DatePicker3 = wrapInput("DatePicker3", require("belle").DatePicker, {
+  valueToProps: value => ({date: value})
   propNameForOnChange: "onUpdate"
 });
 ```
 
-##### Using those examples:
+##### [react-bootstrap-daterangepicker](https://github.com/skratchdot/react-bootstrap-daterangepicker)
+
+```javascript
+const DateRangePicker = wrapInput("DateRangePicker", require("react-bootstrap-daterangepicker"), {
+  valueToProps: value => value ? ({startDate: value.startDate, endDate: value.endDate}) : {},
+  propNameForOnChange: "onApply",
+  extractValueFromOnChange: (e, picker) => ({startDate: picker.startDate, endDate: picker.endDate})
+});
+```
+
+##### Using these examples:
 
 The DatePickers can then be embedded like this:
 
@@ -451,6 +461,9 @@ The DatePickers can then be embedded like this:
   <DatePicker1 name="firstDate" is-required/>
   <DatePicker2 name="secondDate" minDate='2015-11-06' maxDate='2016-01-31'/> // props defined here get passed straight to the underlying Component
   <DatePicker3 name="thirdDate" defaultYear={new Date().getFullYear()}/>
+  <DateRangePicker name="range">
+    <button type="button">Open Picker</button>
+  </DateRangePicker>
 </Form>
 ```
 
