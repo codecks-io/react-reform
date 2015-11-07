@@ -116,7 +116,7 @@ registerTheme("my-theme-name", (FormContainer, Fields, {globalErrors}) => (
 export default {
   Form,
   ...defaultInputs,
-  DatePicker: wrapInput("DatePicker", DatePicker, {extractValueFromOnChange: date => date, propNameForValue: "date"})
+  DatePicker: wrapInput("DatePicker", DatePicker, {valueToProps: value => ({date: value})})
 };
 
 ```
@@ -399,9 +399,11 @@ props that should always be passed to the component. This makes sense for the va
 wrapInput("Password", "input", {defaultProps: {type: "password"}});
 ```
 
-##### `extractValueFromOnChange` _default: `e => e.target.value`_
+##### `extractValueFromOnChange` _default: `value => value`_
 
 This option defines how the value is extracted from the `onChange` event of the component.
+
+For DOM-based inputs the value looks like `{extractValueFromOnChange: e => e.target.value}`
 
 ##### `propNameForValue` _default: `value`_
 
@@ -419,7 +421,6 @@ Let's have a look at various date pickers
 
 ```javascript
 const DatePicker1 = wrapInput("DatePicker1", require("react-datepicker"), {
-  extractValueFromOnChange: date => date,
   propNameForValue: "selected"
 });
 ```
@@ -428,7 +429,6 @@ const DatePicker1 = wrapInput("DatePicker1", require("react-datepicker"), {
 
 ```javascript
 const DatePicker2 = wrapInput("DatePicker2", require("react-date-picker"), {
-  extractValueFromOnChange: date => date,
   propNameForValue: "date"
 });
 ```
@@ -437,7 +437,6 @@ const DatePicker2 = wrapInput("DatePicker2", require("react-date-picker"), {
 
 ```javascript
 const DatePicker3 = wrapInput("DatePicker3", require('belle').DatePicker, {
-  extractValueFromOnChange: date => date,
   propNameForValue: "date",
   propNameForOnChange: "onUpdate"
 });
@@ -462,6 +461,8 @@ Validators need to be registered globally via the `registerValidator(name, opts)
 Here's an example validator for ensuring a maximum length requirement:
 
 ```javascript
+import {registerValidator} from "react-reform";
+
 registerValidator("maxlength", {
   isValid: (val, ctx) => (val || "").toString().length <= ctx.opts,
   hintMessage: (val, ctx) => `needs to have ${ctx.opts} characters or less`,
@@ -496,6 +497,8 @@ A form won't submit unless all validators return `true`.
 The meaning of `value` and `ctx` is explained above. The third parameter `validateAgainCb` is useful for async validations. Once you've received an answer from your server, you can store the result and call `validateAgainCb()` to re-run the validation on this input. Here's some example code:
 
 ```javascript
+import {registerValidator} from "react-reform";
+
 registerValidator("unique-name", () => {
   // this variable is scoped to a field, and gets created when the field is mounted
   const cachedData = {};

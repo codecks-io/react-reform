@@ -1,12 +1,25 @@
 import wrapInput from "../core/wrap-input";
 
-export const Text = wrapInput("Text", "input", {defaultProps: {type: "text"}});
-export const Textarea = wrapInput("Textarea", "textarea");
-export const Password = wrapInput("Password", "input", {defaultProps: {type: "password"}});
-export const Select = wrapInput("Select", "select");
+export const Text = wrapInput("Text", "input", {
+  defaultProps: {type: "text"},
+  extractValueFromOnChange: e => e.target.value
+});
+
+export const Textarea = wrapInput("Textarea", "textarea", {
+  extractValueFromOnChange: e => e.target.value
+});
+
+export const Password = wrapInput("Password", "input", {
+  defaultProps: {type: "password"},
+  extractValueFromOnChange: e => e.target.value
+});
+
+export const Select = wrapInput("Select", "select", {
+  extractValueFromOnChange: e => e.target.value
+});
 
 export const Checkbox = wrapInput("Checkbox", "input", {
   defaultProps: {type: "checkbox"},
   extractValueFromOnChange: e => e.target.checked,
-  propNameForValue: "checked"
+  valueToProps: value => ({checked: value})
 });

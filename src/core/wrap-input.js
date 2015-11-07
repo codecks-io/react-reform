@@ -4,7 +4,7 @@ import {getValidator} from "./validator-store";
 import withFormCtx from "./form-context";
 
 @withFormCtx
-export default function wrapInput(typeName, comp, {defaultProps = {}, extractValueFromOnChange = e => e.target.value, propNameForValue = "value", propNameForOnChange = "onChange"} = {}) {
+export default function wrapInput(typeName, comp, {defaultProps = {}, extractValueFromOnChange = value => value, valueToProps = value => ({value}), propNameForOnChange = "onChange"} = {}) {
 
   const factory = (typeof comp) === "string" ? React.DOM[comp] : React.createFactory(comp);
   return class extends React.Component {
@@ -47,7 +47,7 @@ export default function wrapInput(typeName, comp, {defaultProps = {}, extractVal
             onFocus: this.handleFocus,
             onBlur: this.handleBlur,
             ref: setInputNode,
-            [propNameForValue]: getRegisterInfo().getValue() || null
+            ...valueToProps(getRegisterInfo().getValue() || null)
           });
         }
       };
