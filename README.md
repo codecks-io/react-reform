@@ -20,28 +20,19 @@ A React Form Framework
   - [Multiple Submit Buttons](#multiple-submit-buttons)
   - [Submit on Blur](#submit-on-blur)
   - [Dynamic Form based on Content](#dynamic-form-based-on-content)
+- [FAQ](#faq)
 - [Contribute](#contribute)
 - [License](#license)
 
 ## Motivation
 
-Forms are hard. There are so many ways to approach them and too few libraries out there offering enough flexibility.
-
-My main struggle with other libraries was the lack of separation between logic and representation. This is why this library was created.
-
-The goal is to put you in full control of:
-
- - What DOM-Structure and style to use for displaying your fields
- - What DOM-Structure and style to use for displaying your form
- - How and when you see what validation message
-
-All this while trying to maintain a small, yet powerful API.
+The goal of this project is to enable you to easily create your own form primitives that allow for a powerful API.
 
 ## Features
 
 - **Pleasant DX (Developer Experience)**
 
-  Once you've set up your Themes and Validators, and you get to actually apply them, it should be a straight forward experience as simple as:
+  Once you've set up your inputs, themes and validators, and you get to actually apply them, it should be a straight forward experience as simple as:
 
   ```javascript
     import {Form, Text} from "./lib/form"; // <- your config file
@@ -59,11 +50,11 @@ All this while trying to maintain a small, yet powerful API.
 
 - **Small Footprint**
 
-  react-reform aims to keep all optional dependencies out of the core. For example validations: If you start off just `import "react-reform/opt/validators"` for a basic set of validations (like `is-required` `has-maxlength="140"`, but most bigger projects probably will come up with their own set of validations and therefore don't need this particular code in their bundle later on.
+  react-reform aims to keep all optional dependencies out of the core. For example validations: If you start off, simply `import "react-reform/opt/validators"` for a basic set of validations (like `is-required` `has-maxlength="140"`. Most bigger projects however, probably will come up with their own set of validations. And if you don't import any `opt` modules, they won't be added in your bundle.
 
-- **Easy to expand**
+- **Strict Separation of Logic and Representation**
 
-  It should be pretty simple adding your own input-types and validators.
+  The concept of _[themes](#create-a-theme)_ allows you to define all the divs and classes and inline-styles that you need for your form. react-reform makes no assumptions about the DOM-Elements you are using, but adds enough context to let you easily define that, for example, validations should only be shown when the value of the respective field has been changed, but it is not currently focused.
 
 ## Quick Start
 
@@ -72,7 +63,7 @@ All this while trying to maintain a small, yet powerful API.
 
 It is recommended to create a _config file_ which acts as interface between your application code and react-reform.
 
-A config file can look like this:
+A config file could look like this:
 
 **lib/form.js**
 ```javascript
@@ -177,9 +168,9 @@ or even
 
 #### Uncontrolled vs Controlled `<Form>`
 
-There are two flavours of how forms can be used. They can either be controlled (i.e the parent owns the state, or uncontrolled, i.e the form owns the state)
+There are two flavours of how `<Form>`s can be used. They can either be controlled (i.e a `<Form>`'s parent owns the state), or uncontrolled (i.e the `<Form>` owns the state).
 
-An _uncontrolled_ Form looks like this:
+An _uncontrolled_ `<Form>` looks like this:
 
 ```javascript
 <Form onSubmit={this.handleSubmit} initialModel={{first: "val1", second: "val2"}}>
@@ -188,7 +179,7 @@ An _uncontrolled_ Form looks like this:
 </Form>
 ```
 
-For displaying a _controlled_ Form we needs a bit more context:
+For displaying a _controlled_ `<Form>` we needs a bit more context:
 
 ```javascript
 class extends React.Component {
@@ -222,9 +213,9 @@ class extends React.Component {
 
 ##### `onSubmit(data)` _required_
 
-is called when form is submitted _and_ all the validations pass.
+is called when the form is submitted _and_ all the validations pass.
 
-You may return a Promise. If this promise resolves successfully, then the form will be reset. This means the values will be set to the initalModel (if the form is uncontrolled), and field attributes like `touched` and `dirty` will be set to `false`.
+You may return a Promise. If this promise resolves successfully, then the form will be reset. This means the values will be set to the `initalModel` (if the form is uncontrolled), and field attributes like `touched` and `dirty` will be set to `false`.
 
 If the promise is rejected, react-reform will try and evaluate the contents of the rejection. If it is an object, then it will look wether the keys correspond to fieldnames and create a validation error for this field. In all other cases the error object will be added to the `globalErrors` attribute that can be accessed in the theme's `<FormContainer>`
 
@@ -549,14 +540,159 @@ the return value of this function is accessible through the theme's `<Field>` [c
 
 ### Add a * to all required Fields
 
+```javascript
+registerTheme("starTheme", (FormContainer, Fields) => (
+  <FormContainer className="star-form-class">
+    <Fields>
+      {(Field, {label, validations}) => {
+        const isRequired = validations.some(({type}) => type === "required");
+        return (
+          <div>
+            <label>{label}{isRequired ? "*" : ""}</label>
+            <Field/>
+          </div>
+        );
+      }}
+    </Fields>
+    <button>Submit</button>
+  </FormContainer>
+));
+```
+
 ### Theme with Custom Button Text
+
+```javascript
+registerTheme("customButtonTextTheme", (FormContainer, Fields, {formProps}) => (
+  <FormContainer style={{display: "flex", flexDirection: "column"}}>
+    <Fields>
+      {(Field, {label, validations}) => {
+        return (
+          <div>
+            <label>{label}</label>
+            <Field/>
+          </div>
+        );
+      }}
+    </Fields>
+    <button>{formProps.buttonText || "Submit"}</button>
+  </FormContainer>
+));
+```
+
+This can then be used like
+
+```javascript
+<Form theme="customButtonTextTheme" buttonText="Click me now!" onSubmit={...}>
+  <Text name="username"/>
+</Form>
+```
 
 ### Multiple Submit Buttons
 
+
+Imagine a form like github's issue comments with two buttons: "comment" and "comment and close"
+
+```javascript
+registerTheme("comment-theme", (FormContainer, Fields, {submitForm}) => (
+  <FormContainer>
+    <Fields>
+      {(Field, {label, validations}) => {
+        return (
+          <div>
+            <label>{label}</label>
+            <Field/>
+          </div>
+        );
+      }}
+    </Fields>
+    <button onClick={event => submitForm(event, {close: false})}>Comment</button>
+    <button onClick={event => submitForm(event, {close: true})}>Comment & Close</button>
+  </FormContainer>
+));
+```
+
+this can be used like this:
+
+```javascript
+handleSubmit = ({comment}, event, {close}) => {
+  console.log(comment, close);
+}
+
+render() {
+  return (
+    <Form onSubmit={this.handleSubmit} theme="comment-theme">
+      <Textarea name="comment" is-required has-minlength={2}/>
+    </Form>
+  );
+}
+```
+
 ### Submit on Blur
 
-### Dynamic Form based on Content
+```javascript
+registerTheme("submit-on-blur", (FormContainer, Fields, {submitForm}) => (
+  <FormContainer>
+    <Fields>
+      {(Field, {label, fieldProps}) => {
+      return (
+        <div>
+          <label>{label}</label>
+          <Field onBlur={fieldProps.submitOnBlur ? submitForm : undefined}/>
+        </div>
+      );
+    }}
+    </Fields>
+    <button>Submit</button>
+  </FormContainer>
+));
+```
 
+This can then be used like
+
+```javascript
+<Form theme="submit-on-blur" buttonText="Click me now!" onSubmit={...}>
+  <Text name="name" label="Your Name" is-required submitOnBlur dontFocusAfterFail/>
+</Form>
+```
+
+Hint: `dontFocusAfterFail` prevents the default behaviour of focussing this field after validation failed while attempting to submit.
+
+### Dynamic Form Inputs based on Form Value
+
+TODO...
+
+## FAQ
+
+### Why are themes and validators registered globally?
+
+Ease of use. Rather then explicitely importing or requiring each single validator or theme each time a form is used, just relying on globals seems nicer. For themes you can if course create a theme collection like this:
+
+```javascript
+const themes = {
+  theme1: (FormContainer, Fields, formContainerOpts) => ...
+  theme2: (FormContainer, Fields, formContainerOpts) => ...
+}
+```
+
+and in your form code apply it like this:
+
+```javascript
+import {Form, themes, Text} from "./forms";
+
+...
+
+return (
+  <Form theme={themes.theme2} onSubmit={...}>
+    <Text name="username"/>
+  </Form>
+)
+```
+
+If you feel this sort of API would also benefit validations, let me know in the issues!
+
+### _more questions?_
+
+File an issue, and if the question seems generic enough, it will be added to the FAQ section here.
 
 ## Contribute
 
