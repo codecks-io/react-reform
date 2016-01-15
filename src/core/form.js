@@ -22,6 +22,7 @@ export default class Form extends React.Component {
       hasFailedToSubmit: false,
       fields: {}
     };
+    this.isUnmounted = false;
   }
 
   static childContextTypes = {
@@ -74,6 +75,10 @@ export default class Form extends React.Component {
     }};
   }
 
+  componentWillUnmount() {
+    this.isUnmounted = true;
+  }
+
   reset() {
     const {fields} = this.state;
     Object.keys(fields).forEach(name => {
@@ -111,11 +116,13 @@ export default class Form extends React.Component {
       const result = this.props.onSubmit(values, e, ...args);
       if (result && typeof result.then === "function") {
         result.then(() => { // success
+          if (this.isUnmounted) return;
           this.setState({
             serverErrors: {$global: []}
           });
           this.reset();
         }).catch(errors => { // shape of error: {fieldName: error} or "global error message as string"
+          if (this.isUnmounted) return;
           const errorMessages = {$global: []};
           if (typeof errors === "string") {
             errorMessages.$global.push(errors);
