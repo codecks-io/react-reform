@@ -110,34 +110,31 @@ export default class Form extends React.Component {
         );
       const result = this.props.onSubmit(values, e, ...args);
       if (result && typeof result.then === "function") {
-        result.then(
-          () => { // success
-            this.setState({
-              serverErrors: {$global: []}
+        result.then(() => { // success
+          this.setState({
+            serverErrors: {$global: []}
+          });
+          this.reset();
+        }).catch(errors => { // shape of error: {fieldName: error} or "global error message as string"
+          const errorMessages = {$global: []};
+          if (typeof errors === "string") {
+            errorMessages.$global.push(errors);
+          } else {
+            Object.keys(errors).forEach(errorField => {
+              if (this.fields[errorField]) {
+                errorMessages[errorField] = {
+                  isValid: false,
+                  errorMessage: errors[errorField],
+                  hintMessage: errors[errorField],
+                  type: "server"
+                };
+              } else {
+                errorMessages.$global.push({[errorField]: errors[errorField]});
+              }
             });
-            this.reset();
-          },
-          errors => { // shape of error: {fieldName: error} or "global error message as string"
-            const errorMessages = {$global: []};
-            if (typeof errors === "string") {
-              errorMessages.$global.push(errors);
-            } else {
-              Object.keys(errors).forEach(errorField => {
-                if (this.fields[errorField]) {
-                  errorMessages[errorField] = {
-                    isValid: false,
-                    errorMessage: errors[errorField],
-                    hintMessage: errors[errorField],
-                    type: "server"
-                  };
-                } else {
-                  errorMessages.$global.push({[errorField]: errors[errorField]});
-                }
-              });
-            }
-            this.setState({serverErrors: errorMessages});
           }
-        );
+          this.setState({serverErrors: errorMessages});
+        });
       } else {
         this.reset();
       }
