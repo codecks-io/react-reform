@@ -71,7 +71,8 @@ export default class Form extends React.Component {
       },
       getUserFormProps: () => this.props,
       getHandleSubmit: () => this.handleSubmit,
-      getHasFailedToSubmit: () => this.state.hasFailedToSubmit
+      getHasFailedToSubmit: () => this.state.hasFailedToSubmit,
+      serverErrors: () => this.state.serverErrors
     }};
   }
 
@@ -128,7 +129,7 @@ export default class Form extends React.Component {
             errorMessages.$global.push(errors);
           } else {
             Object.keys(errors).forEach(errorField => {
-              if (this.fields[errorField]) {
+              if (fields[errorField]) {
                 errorMessages[errorField] = {
                   isValid: false,
                   errorMessage: errors[errorField],

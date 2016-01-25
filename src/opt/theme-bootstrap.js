@@ -11,7 +11,7 @@ export default (FormContainer, Fields, {globalErrors, submitForm}) => (
         const showWarning = isFocused && hasError;
 
         const validationList = validations
-          .filter(({isValid}) => fieldProps.showHints || ((isTouched || hasFailedToSubmit) && isValid !== true))
+          .filter(({isValid, type: errorType}) => fieldProps.showHints || ((isTouched || hasFailedToSubmit || errorType === "server") && isValid !== true))
           .map(({isValid, errorMessage, hintMessage, type: valType}) => {
             if (isValid === false) return {message: errorMessage, valType};
             if (isValid === true) return {message: hintMessage, valType};

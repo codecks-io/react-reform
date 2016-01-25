@@ -12,9 +12,13 @@ export default class Fields extends React.Component {
     const {children: renderFieldByTheme, formCtx, ...fieldsRest} = this.props;
     return {
       formFieldRenderer: (Comp, userFieldProps, registerInfo, validateFn, typeName) => {
+        const validations = validateFn();
+        const serverError = formCtx.serverErrors()[userFieldProps.name];
+        if (serverError) validations.push(serverError);
+
         return renderFieldByTheme(Comp, {
           label: userFieldProps.label || userFieldProps.name,
-          validations: validateFn(),
+          validations,
           type: typeName,
           id: `form-${typeName}-${registerInfo.id}`,
           fieldProps: userFieldProps,
