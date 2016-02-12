@@ -520,7 +520,7 @@ registerValidator("unique-name", () => {
           validateAgainCb();
         })
       }
-      return data[value];
+      return cachedData[value];
     },
     errorMessage: val => `'${val}' is not unique`,
     hintMessage: () => "needs to be a unique name"
