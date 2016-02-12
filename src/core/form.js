@@ -31,11 +31,11 @@ export default class Form extends React.Component {
 
   getChildContext() {
     return {form: {
-      registerField: (name, {focus, validate, reRender}) => {
+      registerField: (name, {focus, validate, reRender, defaultValue}) => {
         const {fields} = this.state;
         fields[name] = {
           focus, validate, reRender,
-          value: this.props.model ? undefined : this.props.initialModel[name],
+          value: this.props.model ? undefined : defaultValue || this.props.initialModel[name],
           touched: false,
           focused: false,
           dirty: false

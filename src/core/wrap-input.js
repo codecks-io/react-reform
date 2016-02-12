@@ -59,7 +59,8 @@ export default function wrapInput(typeName, comp, {defaultProps = {}, extractVal
       this.registerInfo = this.props.formCtx.registerField(this.props.name, {
         validate: this.validate,
         focus: this.focus,
-        reRender: () => this.forceUpdate()
+        reRender: () => this.forceUpdate(),
+        defaultValue: this.props.defaultValue
       });
     }
 
