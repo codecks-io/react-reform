@@ -126,7 +126,7 @@ export default function wrapInput(typeName, comp, {defaultProps = {}, extractVal
           opts: this.props[propName]
         };
         return {
-          isValid: validator.isValid(value, ctx, this.validate),
+          isValid: validator.isValid(value, ctx, () => {this.validate(); this.forceUpdate(); }),
           errorMessage: validator.errorMessage(value, ctx),
           hintMessage: validator.hintMessage ? validator.hintMessage(value, ctx) : validator.errorMessage(value, ctx),
           type: name
