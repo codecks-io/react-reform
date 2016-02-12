@@ -38,7 +38,7 @@ export default function wrapInput(typeName, comp, {defaultProps = {}, extractVal
         }
 
         render() {
-          const {formCtx, ...userFieldProps} = getUserFieldProps();
+          const {formCtx, defaultValue, ...userFieldProps} = getUserFieldProps();
           return factory({
             ...this.props, // themeProps
             ...defaultProps,
