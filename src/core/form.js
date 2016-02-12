@@ -50,7 +50,7 @@ export default class Form extends React.Component {
           isTouched: () => this.state.fields[name].touched,
           onFocus: () => {
             const field = this.state.fields[name];
-            field.toched = true;
+            field.touched = true;
             field.focused = true;
             this.setState({fields: this.state.fields}, reRender);
           },
