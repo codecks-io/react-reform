@@ -1,5 +1,4 @@
 import React from "react";
-import ReactDOM from "react-dom";
 import {getValidator} from "./validator-store";
 import withFormCtx from "./form-context";
 
