@@ -19,7 +19,7 @@ export default function wrapInput(typeName, comp, {defaultProps = {}, extractVal
       const getHandleFocus = () => this.handleFocus;
       const getHandleBlur = () => this.handleBlur;
       const getRegisterInfo = () => this.registerInfo;
-      const setInputNode = el => this.node = ReactDOM.findDOMNode(el);
+      const setInputNode = el => this.node = el;
       this.classPassedToTheme = class extends React.Component {
 
         handleBlur = (...args) => {
@@ -101,7 +101,13 @@ export default function wrapInput(typeName, comp, {defaultProps = {}, extractVal
     }
 
     focus = () => {
-      if (!this.props.dontFocusAfterFail) this.node.focus();
+      if (!this.props.dontFocusAfterFail) {
+        if (!this.node.focus) {
+          console.warn("node doesn't support focus(): ", this.node);
+        } else {
+          this.node.focus();
+        }
+      }
     }
 
     handleChange = (...args) => {
