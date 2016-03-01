@@ -39,9 +39,9 @@ export default function wrapInput(typeName, comp, {defaultProps = {}, extractVal
         render() {
           const {formCtx, defaultValue, ...userFieldProps} = getUserFieldProps();
           return factory({
-            ...this.props, // themeProps
             ...defaultProps,
             ...userFieldProps,
+            ...this.props, // themeProps
             [propNameForOnChange]: this.handleChange,
             onFocus: this.handleFocus,
             onBlur: this.handleBlur,
