@@ -19,9 +19,8 @@ export default class Form extends React.Component {
     super(props, context);
     this.state = {
       serverErrors: {$global: []},
-      hasFailedToSubmit: false,
       fields: {},
-      isPending: false
+      status: "unsubmitted"
     };
     this.isUnmounted = false;
   }
@@ -72,7 +71,6 @@ export default class Form extends React.Component {
       },
       getUserFormProps: () => this.props,
       getHandleSubmit: () => this.handleSubmit,
-      getHasFailedToSubmit: () => this.state.hasFailedToSubmit,
       serverErrors: () => this.state.serverErrors
     }};
   }
@@ -81,7 +79,7 @@ export default class Form extends React.Component {
     this.isUnmounted = true;
   }
 
-  reset() {
+  reset({status = "UNCERTAIN STATUS"} = {}) {
     const {fields} = this.state;
     Object.keys(fields).forEach(name => {
       const field = fields[name];
@@ -89,7 +87,9 @@ export default class Form extends React.Component {
       field.dirty = false;
       field.value = this.props.model ? undefined : this.props.initialModel[name];
     });
-    this.setState({fields: fields}, Object.keys(fields).forEach(name => fields[name].reRender()));
+    const newState = {fields: fields};
+    if (status !== undefined) newState.status = status;
+    this.setState(newState, Object.keys(fields).forEach(name => fields[name].reRender()));
   }
 
   handleSubmit = (e, ...args) => {
@@ -105,9 +105,8 @@ export default class Form extends React.Component {
     });
     if (hasErrors) {
       if (firstErrorField) firstErrorField.focus();
-      this.setState({hasFailedToSubmit: true}, Object.keys(fields).forEach(name => fields[name].reRender()));
+      this.setState({status: "preSubmitFail"}, Object.keys(fields).forEach(name => fields[name].reRender()));
     } else {
-      this.setState({hasFailedToSubmit: false});
       this.setState({serverErrors: {$global: []}});
       const values = Object.keys(fields).reduce(
           (memo, name) => {
@@ -118,14 +117,14 @@ export default class Form extends React.Component {
         );
       const result = this.props.onSubmit(values, e, ...args);
       if (result && typeof result.then === "function") {
-        this.setState({isPending: true});
+        this.setState({status: "pending"}, Object.keys(fields).forEach(name => fields[name].reRender()));
         result.then(() => { // success
           if (this.isUnmounted) return;
+          this.reset({status: undefined});
           this.setState({
             serverErrors: {$global: []},
-            isPending: false
+            status: "success"
           });
-          this.reset();
         }).catch(errors => { // shape of error: {fieldName: error} or "global error message as string"
           if (this.isUnmounted) return;
           const errorMessages = {$global: []};
@@ -151,8 +150,8 @@ export default class Form extends React.Component {
           }
           this.setState({
             serverErrors: errorMessages,
-            isPending: false
-          });
+            status: "postSubmitFail"
+          }, Object.keys(fields).forEach(name => fields[name].reRender()));
         });
       } else {
         this.reset();
@@ -179,9 +178,8 @@ export default class Form extends React.Component {
     return themeFn(FormContainer, Fields, {
       globalErrors: this.state.serverErrors.$global,
       submitForm: this.handleSubmit,
-      hasFailedToSubmit: this.state.hasFailedToSubmit,
       formProps: this.props,
-      isPending: this.state.isPending
+      status: this.state.status
     });
   }
 }

@@ -8,9 +8,9 @@ export default (FormContainer, Fields, {globalErrors, submitForm}) => (
       ))
     ) : null}
     <Fields>
-      {(Field, {label, validations, isTouched, hasFailedToSubmit, fieldProps, id}) => {
+      {(Field, {label, validations, isTouched, status, fieldProps, id}) => {
         const validationList = validations
-          .filter(({isValid}) => fieldProps.showHints || ((isTouched || hasFailedToSubmit) && isValid !== true))
+          .filter(({isValid}) => fieldProps.showHints || ((isTouched || status === "preSubmitFail") && isValid !== true))
           .map(({isValid, errorMessage, hintMessage, type}) => {
             if (isValid === false) return {message: errorMessage, type};
             if (isValid === true) return {message: hintMessage, type};

@@ -275,17 +275,22 @@ if the `<Form>`'s `onSubmit` handler returns a promise that will be rejected, th
 
 useful if you have several ways of submitting a form (either via multiple submit buttons, or for example when leaving focus of a field.) Have a look at the [Recipes](#recipes) for some exampled.
 
-##### `hasFailedToSubmit`
+##### `status`
 
-This value is `true` when an attempt to submit failed. (In that case you want to probablt show all validation errors, even for fields that have not been touched yet.)
+can be one of these values:
+
+- `unsubmitted` initial value
+- `preSubmitFail` if form submit failed because validation rules returned non-`true` values
+- `pending` if `onSubmit` returns a promise which hasn't beend resolved or rejected yet
+- `postSubmitFail` if `onSubmit` promise was rejected
+- `success` if `onSubmit` was resolved
+
+the value of `status` if `onSubmit` did not return a promise should currently be considered as undefined. If you have an idea for a good generic behaviour here let me know!
 
 ##### `formProps`
 
 this key contains all props that were passed to the user's `<Form>` component. This could be used to allow your theme users to define a custom submit button label as shown in this [Recipe](#theme-with-custom-button-text).
 
-##### `isPending`
-
-if your `onSubmit` handler returns a promise, `isPending` is set to `true` while this promise is still unresolved or unrejected. It's `false` otherwise.
 
 #### `<FormContainer>`
 

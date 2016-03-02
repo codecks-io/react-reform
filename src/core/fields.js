@@ -24,8 +24,7 @@ export default class Fields extends React.Component {
           fieldProps: userFieldProps,
           isDirty: registerInfo.isDirty(),
           isFocused: registerInfo.isFocused(),
-          isTouched: registerInfo.isTouched(),
-          hasFailedToSubmit: formCtx.getHasFailedToSubmit()
+          isTouched: registerInfo.isTouched()
         });
       }
     };
