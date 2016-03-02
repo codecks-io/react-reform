@@ -140,6 +140,10 @@ export default class Form extends React.Component {
                   hintMessage: errors[errorField],
                   type: "server"
                 };
+                if (!firstErrorField) {
+                  firstErrorField = fields[errorField];
+                  firstErrorField.focus();
+                }
               } else {
                 errorMessages.$global.push({[errorField]: errors[errorField]});
               }
