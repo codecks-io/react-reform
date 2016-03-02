@@ -1,6 +1,6 @@
 {
   "name": "react-reform",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "description": "A React Form Framework",
   "scripts": {
     "test": "karma start",
