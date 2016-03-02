@@ -283,6 +283,10 @@ This value is `true` when an attempt to submit failed. (In that case you want to
 
 this key contains all props that were passed to the user's `<Form>` component. This could be used to allow your theme users to define a custom submit button label as shown in this [Recipe](#theme-with-custom-button-text).
 
+##### `isPending`
+
+if your `onSubmit` handler returns a promise, `isPending` is set to `true` while this promise is still unresolved or unrejected. It's `false` otherwise.
+
 #### `<FormContainer>`
 
 This component is used to describe the overall structure of your form. All props defined on this component are passed directly to the underlying `<form>`.

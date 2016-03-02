@@ -20,7 +20,8 @@ export default class Form extends React.Component {
     this.state = {
       serverErrors: {$global: []},
       hasFailedToSubmit: false,
-      fields: {}
+      fields: {},
+      isPending: false
     };
     this.isUnmounted = false;
   }
@@ -107,6 +108,7 @@ export default class Form extends React.Component {
       this.setState({hasFailedToSubmit: true}, Object.keys(fields).forEach(name => fields[name].reRender()));
     } else {
       this.setState({hasFailedToSubmit: false});
+      this.setState({serverErrors: {$global: []}});
       const values = Object.keys(fields).reduce(
           (memo, name) => {
             memo[name] = this.props.model ? this.props.model[name] : fields[name].value;
@@ -116,10 +118,12 @@ export default class Form extends React.Component {
         );
       const result = this.props.onSubmit(values, e, ...args);
       if (result && typeof result.then === "function") {
+        this.setState({isPending: true});
         result.then(() => { // success
           if (this.isUnmounted) return;
           this.setState({
-            serverErrors: {$global: []}
+            serverErrors: {$global: []},
+            isPending: false
           });
           this.reset();
         }).catch(errors => { // shape of error: {fieldName: error} or "global error message as string"
@@ -141,7 +145,10 @@ export default class Form extends React.Component {
               }
             });
           }
-          this.setState({serverErrors: errorMessages});
+          this.setState({
+            serverErrors: errorMessages,
+            isPending: false
+          });
         });
       } else {
         this.reset();
@@ -169,7 +176,8 @@ export default class Form extends React.Component {
       globalErrors: this.state.serverErrors.$global,
       submitForm: this.handleSubmit,
       hasFailedToSubmit: this.state.hasFailedToSubmit,
-      formProps: this.props
+      formProps: this.props,
+      isPending: this.state.isPending
     });
   }
 }
