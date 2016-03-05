@@ -3,7 +3,7 @@ import {getValidator} from "./validator-store";
 import withFormCtx from "./form-context";
 
 @withFormCtx
-export default function wrapInput(typeName, comp, {defaultProps = {}, extractValueFromOnChange = value => value, valueToProps = value => ({value}), propNameForOnChange = "onChange"} = {}) {
+export default function wrapInput(typeName, comp, {defaultProps = {}, extractValueFromOnChange = event => event.target.value, valueToProps = value => ({value}), propNameForOnChange = "onChange"} = {}) {
 
   const factory = (typeof comp) === "string" ? React.DOM[comp] : React.createFactory(comp);
   return class extends React.Component {
