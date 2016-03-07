@@ -1,4 +1,4 @@
-# react-<i>re</i>form
+# react-reform
 
 A React Form Framework
 
@@ -26,13 +26,14 @@ A React Form Framework
 
 ## Motivation
 
-The goal of this project is to enable you to easily create your own form primitives that allow for a powerful API.
+Forms tend to be a fairly individual affair. Different projects have different requirements. And even within one project there are likely different types of forms.
+Rather than desparately trying to attempt to cover all use cases with one library, react-reform aims to empower you to create your own form primitives for your specific use cases. Once you've set up your themes and wrapped your custom inputs, your forms will be a lot more pleasant to write.
 
 ## Features
 
 - **Pleasant DX (Developer Experience)**
 
-  Once you've set up your inputs, themes and validators, and you get to actually apply them, it should be a straight forward experience as simple as:
+  As soon as you've set up your inputs, themes and validators, they should be as straight forward to use as this:
 
   ```javascript
     import {Form, Text} from "./lib/form"; // <- your config file
@@ -50,11 +51,13 @@ The goal of this project is to enable you to easily create your own form primiti
 
 - **Small Footprint**
 
-  react-reform aims to keep all optional dependencies out of the core. For example validations: If you start off, simply `import "react-reform/opt/validators"` for a basic set of validations (like `is-required` `has-maxlength="140"`. Most bigger projects however, probably will come up with their own set of validations. And if you don't import any `opt` modules, they won't be added in your bundle.
+  react-reform aims to keep all optional dependencies out of the core. For example validations: If you start off, simply `import "react-reform/opt/validators"` for a basic set of validations (like `is-required` `has-maxlength={140}`. Most bigger projects, however, most likely will come up with their own set of validations. Here's the good news: if you don't import any `opt` modules, they won't be added into your bundle.
 
 - **Strict Separation of Logic and Representation**
 
-  The concept of _[themes](#create-a-theme)_ allows you to define all the divs and classes and inline-styles that you need for your form. react-reform makes no assumptions about the DOM-Elements you are using, but adds enough context to let you easily define that, for example, validations should only be shown when the value of the respective field has been changed, but it is not currently focused.
+  The concept of _[themes](#create-a-theme)_ allows you to define all the `div`s and `className`s and/or `style`s that you need for your form. react-reform makes no assumptions about which DOM-Elements to use.
+
+  This is also true for validations, it's up to you to define the logic which defines when you want to show error messages. (e.g. `isDirty && !isFocused` or maybe you prefer `isDirty`, it's up to you!)
 
 ## Quick Start
 
@@ -112,7 +115,7 @@ export default {
 
 ```
 
-This way you're ready to start using react-reform like this:
+Now you can use the code above like this:
 
 **quick-start-form.js**
 ```javascript
@@ -142,7 +145,7 @@ export default class extends React.Component {
 
 ### `<Form>`
 
-The `<Form>` component is the container for your Inputs. You can use non-input component and input component in here:
+The `<Form>` component describes an individual form. It is the container for your inputs. You can use both, wrapped compents as inputs and normal components in here:
 
 ```javascript
 <Form onSubmit={this.handleSubmit}>
@@ -179,30 +182,30 @@ An _uncontrolled_ `<Form>` looks like this:
 </Form>
 ```
 
-For displaying a _controlled_ `<Form>` we needs a bit more context:
+For writing a _controlled_ `<Form>` we need a bit more context:
 
 ```javascript
 class extends React.Component {
 
   state = {
-    model: {first: "val1", second: "val2"}
+    model: {firstField: "val1", otherField: "val2"}
   }
 
-  handleSubmit = ({first, second}) => {
-    console.log(first, second);
+  handleSubmit = ({firstField, otherField}) => {
+    console.log(firstField, otherField);
   }
 
   handleFieldChange = (name, val) => {
     const {model} = this.state;
-    model[name] = val;
-    this.setState({model});
+    this.setState({model: {...model, [name]: val}});
   }
 
   render() {
+    const {model} = this.state;
     return (
-      <Form onSubmit={this.handleSubmit} onFieldChange={this.handleFieldChange} model={this.state.model}>
-        <Text name="first"/>
-        <Text name="second"/>
+      <Form onSubmit={this.handleSubmit} onFieldChange={this.handleFieldChange} model={model}>
+        <Text name="firstField"/>
+        <Text name="otherField" disabled={model.firstField === "foo"}/>
       </Form>
     );
   }
@@ -217,7 +220,7 @@ is called when the form is submitted _and_ all the validations pass.
 
 You may return a Promise. If this promise resolves successfully, then the form will be reset. This means the values will be set to the `initalModel` (if the form is uncontrolled), and field attributes like `touched` and `dirty` will be set to `false`.
 
-If the promise is rejected, react-reform will try and evaluate the contents of the rejection. If it is an object, then it will look wether the keys correspond to fieldnames and create a validation error for this field. In all other cases the error object will be added to the `globalErrors` attribute that can be accessed in the theme's `<FormContainer>`
+If the promise is rejected, react-reform will evaluate the contents of the rejection. If it is an object, then it will look wether the keys correspond to fieldnames and create a validation error for this field. In all other cases the error object will be added to the `globalErrors` attribute that can be accessed in the theme's `<FormContainer>`
 
 ##### `initialModel`
 
@@ -225,7 +228,7 @@ Optional default values for your uncontrolled form.
 
 ##### `model`
 
-required form values for your controlled form.
+required form values for your controlled form. Needs to be an object. Each input of your form has a `name` prop. Its value needs to be present as a key in the model.
 
 ##### `onFieldChange(fieldName, value)`
 
@@ -259,7 +262,7 @@ const myMinimalTheme = (FormContainer, Fields, formContainerOpts) => (
 
 As you can see you need to position two components: `<FormContainer>` and `<Fields>`.
 
-`<FormContainer>` will render the actual `<form>` DOM Node. Within this Container you need to define the position of the fields supplied by the user and probably also a submit button.
+`<FormContainer>` will render the actual `<form>` DOM node. Within this Container you need to define the position of the fields supplied by the user and probably also a submit button.
 
 The `<Fields>` component defines how each field (like e.g. `<Text>` or `<Select>`) is being rendered.
 
@@ -273,7 +276,7 @@ if the `<Form>`'s `onSubmit` handler returns a promise that will be rejected, th
 
 ##### `submitForm`
 
-useful if you have several ways of submitting a form (either via multiple submit buttons, or for example when leaving focus of a field.) Have a look at the [Recipes](#recipes) for some exampled.
+useful if you have several ways of submitting a form (either via multiple submit buttons, or for example when leaving focus of a field.) Have a look at the [Recipes](#recipes) for some examples.
 
 ##### `status`
 
@@ -285,7 +288,7 @@ can be one of these values:
 - `postSubmitFail` if `onSubmit` promise was rejected
 - `success` if `onSubmit` was resolved
 
-the value of `status` if `onSubmit` did not return a promise should currently be considered as undefined. If you have an idea for a good generic behaviour here let me know!
+the value of `status` if `onSubmit` did not return a promise should currently be considered as undefined. If you have an idea for a good generic behaviour here please let me know!
 
 ##### `formProps`
 
@@ -308,7 +311,7 @@ Let's have a look at the child-function again:
 <Fields>{(Field, fieldOpts) => ...}
 ```
 
-The first argument represents the actual field (which was defined within `<Form>`)
+The first argument represents the actual field (which was defined within the theme user's `<Form>`)
 
 the `fieldOpts` contain a lot of important values for displaying e.g. labels and validation messages:
 
@@ -318,7 +321,7 @@ contains the value passed in the input's `label`. If there is no `label`-prop pr
 
 ##### `validations`
 
-contains an object with the current validation state of all validators. It has a shape like this:
+contains an object with the current validation state of all validators for this field. It has a shape like this:
 
 ```javascript
 [
@@ -346,7 +349,7 @@ contains an object with the current validation state of all validators. It has a
 
 ##### `type`
 
-contains the type of input. It's the first argument of the `wrapInput` function and can be used to treat e.g. `Checkboxes` differently within your theme
+contains the type of input. It's the first argument of the `wrapInput` function and can be used to treat e.g. `Checkbox`es differently within your theme
 
 ##### `id`
 
@@ -364,19 +367,15 @@ is `true` when the field currently is focused
 
 is `true` when the field was focused once
 
-##### `hasFailedToSubmit`
-
-This value is `true` when an attempt to submit failed. Will be `false` once validation was successful.
-
 ##### `fieldProps`
 
-contains the props passed to the `<Form>`'s input
+contains the props passed to the input by the theme's user.
 
 ### Custom Inputs via `wrapInput`
 
 react-reform only allows the use of _controlled_ inputs. I.e. it requires that the input defines a prop pair like `onChange` and `value`.
 
-Given this preqrequisite, wrapping custom form inputs is fairly straight forward using the `wrapInput` method.
+Given this preqrequisite, wrapping custom form inputs is fairly straight forward using the `wrapInput` method provided via `import {wrapInput} from "react-reform"`.
 
 `wrapInput` accepts the follwing parameters: `wrapInput(name, Component, opts)`
 
@@ -386,7 +385,7 @@ This parameter serves for setting a proper display name for the wrapper class an
 
 #### `Component`
 
-This can be either a string for wrapping a DOM node (like e.g. `select` or `input`), or a react component like e.g. a DatePicker Component.
+This can be either a string for wrapping a DOM node (like e.g. `"select"` or `"input"`), or a react component like e.g. a DatePicker Component.
 
 #### `opts`
 
@@ -436,7 +435,7 @@ const DatePicker2 = wrapInput("DatePicker2", require("react-date-picker"), {
 });
 ```
 
-##### [Belle's DatePicker](http://nikgraf.github.io/belle/#/component/date-picker?_k=9lwpee)
+##### [Belle's DatePicker](https://nikgraf.github.io/belle/#/component/date-picker)
 
 ```javascript
 const DatePicker3 = wrapInput("DatePicker3", require("belle").DatePicker, {
@@ -457,7 +456,7 @@ const DateRangePicker = wrapInput("DateRangePicker", require("react-bootstrap-da
 
 ##### Using these examples:
 
-The DatePickers can then be embedded like this:
+The date pickers can then be embedded like this:
 
 ```javascript
 <Form onSubmit={this.handleSubmit} theme="my-theme-name">
@@ -491,18 +490,18 @@ registerValidator("maxlength", {
 
 #### `name`
 
-The name is used for assigning this validator to an input. _A validator name has to be prefixed with either `is-` or `has-` when applied to an input._ If you name your validator `required` or `maxlength`, you need to apply them like `<Text name="..." is-required has-maxlength={5}/>` (or `<Text name="..." has-required is-maxlength={5}/>` if you really feel like it)
+The name is used for assigning this validator to an input. _A validator name has to be prefixed with either `is-` or `has-` when applied to an input._ If you name your validator `required` or `maxlength`, you need to apply them like `<Text name="..." is-required has-maxlength={5}/>` (or even `<Text name="..." has-required is-maxlength={5}/>` if you really feel like it)
 
 #### `opts`
 
-The `opts` is either an object of the shape `{isValid: ..., hintMessage: ..., errorMessage: ...}` or a function which returns an object of this shape.
+The `opts` needs to be either an object of the shape `{isValid: ..., hintMessage: ..., errorMessage: ...}` or a function which returns an object of this shape.
 If it is a function this function will be invoked when mounting an input. This will be useful for caching validation results – especially for async validators (See below).
 
  `isValid`, `hintMessage` and `errorMessage` all are functions with the same two first parameters:
 
 - `value` represents the input's current value.
 - `ctx` has this shape: `{opts: ...}`
-  - `opts` represent the value passed to the `is-[validatorname]` or `has-[validatorname]` prop. Be careful that e.g. `has-maxlength={5}` is different from `has-maxlength="5"`!
+  - `opts` represent the value passed to the `is-[validatorname]` or `has-[validatorname]` prop. Please note that e.g. `has-maxlength={5}` is different from `has-maxlength="5"`!
 
 ##### `isValid(value, ctx, validateAgainCb)`
 
@@ -510,7 +509,7 @@ This function should usually return `true` or `false`. But you can return whatev
 
 A form won't submit unless all validators return `true`.
 
-The meaning of `value` and `ctx` is explained above. The third parameter `validateAgainCb` is useful for async validations. Once you've received an answer from your server, you can store the result and call `validateAgainCb()` to re-run the validation on this input. Here's some example code:
+The purpose of `value` and `ctx` is explained above. The third parameter `validateAgainCb` is useful for async validations. Once you've received an answer from your server, you can store the result and call `validateAgainCb()` to re-run the validation on this input. Here's some example code:
 
 ```javascript
 import {registerValidator} from "react-reform";
@@ -667,7 +666,7 @@ This can then be used like
 </Form>
 ```
 
-Hint: `dontFocusAfterFail` prevents the default behaviour of focussing this field after validation failed while attempting to submit.
+Hint: `dontFocusAfterFail` prevents the default behaviour of focussing this field after validation failed when attempting to submit.
 
 ### Dynamic Form Inputs based on Form Value
 
@@ -677,10 +676,10 @@ TODO...
 
 ### Why are themes and validators registered globally?
 
-Ease of use. Rather then explicitely importing or requiring each single validator or theme each time a form is used, just relying on globals seems nicer. For themes you can if course create a theme collection like this:
+Ease of use. Rather then explicitely importing or requiring each single validator or theme each time a form is used, just relying on globals seems nicer. For themes a more explict variant is possible, too. You can create a theme collection like this:
 
 ```javascript
-const themes = {
+export default const themes = {
   theme1: (FormContainer, Fields, formContainerOpts) => ...
   theme2: (FormContainer, Fields, formContainerOpts) => ...
 }
@@ -689,7 +688,7 @@ const themes = {
 and in your form code apply it like this:
 
 ```javascript
-import {Form, themes, Text} from "./forms";
+import themes from "./file-above";
 
 ...
 
@@ -701,6 +700,10 @@ return (
 ```
 
 If you feel this sort of API would also benefit validations, let me know in the issues!
+
+### What's the status of this project?
+
+This library is being used and actively developed alongside [www.codecks.io](https://www.codecks.io/). Don't expect the API to stabilise too soon. A lot still can and probably will change. Breaking changes will be marked as such in the commit history and result in a new minor version.
 
 ### _more questions?_
 
