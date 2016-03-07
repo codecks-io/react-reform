@@ -394,9 +394,12 @@ Is an optional object to account for non-default behaviour of the component.
 
 ##### `defaultProps`
 
-props that should always be passed to the component. This makes sense for the various `<input>` variants:
+props that should always be passed to the component. This is useful for example for the various `<input>` variants:
 ```
-wrapInput("Password", "input", {defaultProps: {type: "password"}});
+wrapInput("Password", "input", {
+  defaultProps: {type: "password"},
+  extractValueFromOnChange: e => e.target.value
+});
 ```
 
 ##### `extractValueFromOnChange` _default: `value => value`_
