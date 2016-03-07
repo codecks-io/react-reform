@@ -1,6 +1,6 @@
 import React from "react";
 
-export default (FormContainer, Fields, {globalErrors, submitForm}) => (
+export default (FormContainer, Fields, {globalErrors, submitForm, status}) => (
   <FormContainer>
     {globalErrors.length ? (
       globalErrors.map((error, i) => (
@@ -8,7 +8,7 @@ export default (FormContainer, Fields, {globalErrors, submitForm}) => (
       ))
     ) : null}
     <Fields>
-      {(Field, {label, validations, isTouched, status, fieldProps, id}) => {
+      {(Field, {label, validations, isTouched, fieldProps, id}) => {
         const validationList = validations
           .filter(({isValid}) => fieldProps.showHints || ((isTouched || status === "preSubmitFail") && isValid !== true))
           .map(({isValid, errorMessage, hintMessage, type}) => {
