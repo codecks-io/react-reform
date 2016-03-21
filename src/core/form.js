@@ -128,7 +128,7 @@ export default class Form extends React.Component {
         }).catch(errors => { // shape of error: {fieldName: error} or "global error message as string"
           if (this.isUnmounted) return;
           const errorMessages = {$global: []};
-          if (typeof errors === "string") {
+          if (typeof errors === "string" || React.isValidElement(errors)) {
             errorMessages.$global.push(errors);
           } else {
             Object.keys(errors).forEach(errorField => {
