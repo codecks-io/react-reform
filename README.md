@@ -298,7 +298,7 @@ this key contains all props that were passed to the user's `<Form>` component. T
 
 is `true` if all validators on all fields return `true`.
 
-#### `validations`
+##### `validations`
 
 contains a map from a field name to it's validation list. To see what such a validation list looks like, checkout the [`<Fields>`](#fields) section.
 
