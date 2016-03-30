@@ -294,6 +294,14 @@ the value of `status` if `onSubmit` did not return a promise should currently be
 
 this key contains all props that were passed to the user's `<Form>` component. This could be used to allow your theme users to define a custom submit button label as shown in this [Recipe](#theme-with-custom-button-text).
 
+##### `isValid`
+
+is `true` if all validators on all fields return `true`.
+
+#### `validations`
+
+contains a map from a field name to it's validation list. To see what such a validation list looks like, checkout the [`<Fields>`](#fields) section.
+
 
 #### `<FormContainer>`
 

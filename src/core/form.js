@@ -202,11 +202,16 @@ export default class Form extends React.Component {
     } else {
       themeFn = theme;
     }
+
+    const {fields, status, serverErrors} = this.state;
+
     return themeFn(FormContainer, Fields, {
-      globalErrors: this.state.serverErrors.$global,
+      globalErrors: serverErrors.$global,
       submitForm: this.handleSubmit,
       formProps: this.props,
-      status: this.state.status
+      status,
+      validations: Object.keys(fields).reduce((m, f) => {m[f] = fields[f].validations; return m; }, {}),
+      isValid: Object.keys(fields).every(f => fields[f].validations.every(v => v.isValid === true))
     });
   }
 }
