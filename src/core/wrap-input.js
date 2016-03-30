@@ -124,15 +124,14 @@ export default function wrapInput(typeName, comp, {defaultProps = {}, extractVal
       if (this.props.onFocus) this.props.onFocus(e);
     }
 
-    validate = () => {
+    validate = (value) => {
       const validationResults = Object.keys(this.validators).map(name => {
         const {propName, validator} = this.validators[name];
-        const value = this.registerInfo.getValue();
         const ctx = {
           opts: this.props[propName]
         };
         return {
-          isValid: validator.isValid(value, ctx, () => {this.validate(); this.forceUpdate(); }),
+          isValid: validator.isValid(value, ctx, () => this.registerInfo.reValidate()),
           errorMessage: validator.errorMessage(value, ctx),
           hintMessage: validator.hintMessage ? validator.hintMessage(value, ctx) : validator.errorMessage(value, ctx),
           type: name
@@ -143,7 +142,7 @@ export default function wrapInput(typeName, comp, {defaultProps = {}, extractVal
 
     render() {
       const {formCtx, formFieldRendererCtx, ...rest} = this.props;
-      return formFieldRendererCtx(this.classPassedToTheme, ...rest, this.registerInfo, this.validate, typeName);
+      return formFieldRendererCtx(this.classPassedToTheme, ...rest, this.registerInfo, typeName);
     }
   };
 }

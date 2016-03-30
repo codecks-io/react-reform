@@ -31,14 +31,19 @@ export default class Form extends React.Component {
 
   getChildContext() {
     return {form: {
+      // this will be called whenever a wrapped input gets mounted
+      // it provides properties to interact with it and it receives
+      // an object the input can call to ask about it's properties
       registerField: (name, {focus, validate, reRender, defaultValue}) => {
         const {fields} = this.state;
+        const initialValue = this.props.model ? undefined : defaultValue || this.props.initialModel[name];
         fields[name] = {
           focus, validate, reRender,
-          value: this.props.model ? undefined : defaultValue || this.props.initialModel[name],
+          value: initialValue,
           touched: false,
           focused: false,
-          dirty: false
+          dirty: false,
+          validations: validate(initialValue)
         };
         this.setState({fields});
         return {
@@ -62,17 +67,38 @@ export default class Form extends React.Component {
           onChange: (val) => {
             const field = this.state.fields[name];
             if (this.props.onFieldChange(name, val) !== false) {
-              if (!this.props.model) field.value = val;
+              if (!this.props.model) {
+                field.value = val;
+                field.validations = field.validate(val);
+              }
               field.dirty = true;
               this.setState({fields: this.state.fields}, reRender);
             }
+          },
+          reValidate: () => {
+            const field = this.state.fields[name];
+            const value = this.props.model ? this.props.model[name] : field.value;
+            field.validations = field.validate(value);
+            this.setState({fields: this.state.fields}, reRender);
           }
         };
       },
       getUserFormProps: () => this.props,
       getHandleSubmit: () => this.handleSubmit,
+      getFieldValidations: (fieldName) => this.state.fields[fieldName].validations,
       serverErrors: () => this.state.serverErrors
     }};
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.model) {
+      const {fields} = this.state;
+      Object.keys(fields).forEach(name => {
+        const field = fields[name];
+        field.validations = field.validate(nextProps.model[name]);
+      });
+      this.setState({fields});
+    }
   }
 
   componentWillUnmount() {
@@ -98,7 +124,8 @@ export default class Form extends React.Component {
     let firstErrorField = null;
     let hasErrors = false;
     Object.keys(fields).forEach(name => {
-      fields[name].validate().forEach(validation => {
+      const value = this.props.model ? this.props.model[name] : this.state.fields[name].value;
+      fields[name].validate(value).forEach(validation => {
         if (validation.isValid !== true) hasErrors = true;
         if (validation.isValid === false && !firstErrorField) firstErrorField = fields[name];
       });
