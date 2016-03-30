@@ -36,7 +36,7 @@ export default class Form extends React.Component {
       // an object the input can call to ask about it's properties
       registerField: (name, {focus, validate, reRender, defaultValue}) => {
         const {fields} = this.state;
-        const initialValue = this.props.model ? undefined : defaultValue || this.props.initialModel[name];
+        const initialValue = this.props.model ? this.props.model[name] : defaultValue || this.props.initialModel[name];
         fields[name] = {
           focus, validate, reRender,
           value: initialValue,
@@ -111,7 +111,7 @@ export default class Form extends React.Component {
       const field = fields[name];
       field.touched = false;
       field.dirty = false;
-      field.value = this.props.model ? undefined : this.props.initialModel[name];
+      field.value = this.props.model ? this.props.model[name] : this.props.initialModel[name];
     });
     const newState = {fields: fields};
     if (status !== undefined) newState.status = status;
