@@ -13,8 +13,8 @@ export default class Fields extends React.Component {
     return {
       formFieldRenderer: (Comp, userFieldProps, registerInfo, typeName) => {
         const serverError = formCtx.serverErrors()[userFieldProps.name];
-        const validations = formCtx.getFieldValidations(userFieldProps.name);
-        if (serverError) validations.push(serverError);
+        let validations = formCtx.getFieldValidations(userFieldProps.name);
+        if (serverError) validations = [...validations, serverError];
 
         return renderFieldByTheme(Comp, {
           label: userFieldProps.label || userFieldProps.name,
