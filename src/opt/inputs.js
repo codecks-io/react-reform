@@ -2,16 +2,19 @@ import wrapInput from "../core/wrap-input";
 
 export const Text = wrapInput("Text", "input", {
   defaultProps: {type: "text"},
-  extractValueFromOnChange: e => e.target.value
+  extractValueFromOnChange: e => e.target.value,
+  valueToProps: value => ({value: value || ""})
 });
 
 export const Textarea = wrapInput("Textarea", "textarea", {
-  extractValueFromOnChange: e => e.target.value
+  extractValueFromOnChange: e => e.target.value,
+  valueToProps: value => ({value: value || ""})
 });
 
 export const Password = wrapInput("Password", "input", {
   defaultProps: {type: "password"},
-  extractValueFromOnChange: e => e.target.value
+  extractValueFromOnChange: e => e.target.value,
+  valueToProps: value => ({value: value || ""})
 });
 
 export const Select = wrapInput("Select", "select", {

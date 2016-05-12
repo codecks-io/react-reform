@@ -26,6 +26,7 @@
     "babel-loader": "^5.1.4",
     "babel-plugin-object-assign": "^1.2.0",
     "bootstrap": "^3.3.5",
+    "classnames": "^2.1.2",
     "css-loader": "^0.15.1",
     "csswring": "^3.0.5",
     "eslint": "^0.23.0",
@@ -41,19 +42,19 @@
     "karma-sourcemap-loader": "^0.3.5",
     "karma-webpack": "^1.5.1",
     "mocha": "^2.2.5",
+    "moment": "^2.13.0",
     "postcss-loader": "^0.5.1",
+    "react": "^15.0.0",
+    "react-addons-test-utils": "^15.0.0",
     "react-bootstrap-daterangepicker": "^1.0.4",
     "react-date-picker": "^2.1.6",
+    "react-dom": "^15.0.0",
     "style-loader": "^0.12.3",
     "webpack": "^1.9.12",
-    "webpack-dev-server": "^1.9.0",
-    "classnames": "^2.1.2",
-    "react": "^0.14.0",
-    "react-addons-test-utils": "^0.14.0",
-    "react-dom": "^0.14.0"
+    "webpack-dev-server": "^1.9.0"
   },
   "peerDependencies": {
-    "react": "^0.14.0",
-    "react-dom": "^0.14.0"
+    "react": "^0.14.0 || ^15.0.0",
+    "react-dom": "^0.14.0 || ^15.0.0"
   }
 }
