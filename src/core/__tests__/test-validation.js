@@ -39,4 +39,26 @@ describe("Validation", function() {
     buttonNode.click();
   });
 
+  it("should call console.error when onSubmit throws real error", function(done) {
+    function handleSubmit() {
+      return new Promise(() => {
+        throw new Error("expected error");
+      });
+    }
+    const root = TestUtils.renderIntoDocument(formComp(handleSubmit));
+    const rootNode = ReactDOM.findDOMNode(root);
+    const inputNode = rootNode.querySelector("input[name='name']");
+    const buttonNode = rootNode.querySelector("button");
+
+    TestUtils.Simulate.change(inputNode, {target: {value: "Daniel"}});
+
+    const orgErrorFn = console.error;
+    console.error = (arg1) => {
+      expect(arg1).toBe("onSubmit threw:");
+      console.error = orgErrorFn;
+      done();
+    };
+    buttonNode.click();
+  });
+
 });

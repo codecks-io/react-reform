@@ -153,6 +153,11 @@ export default class Form extends React.Component {
             status: "success"
           });
         }).catch(errors => { // shape of error: {fieldName: error} or "global error message as string"
+          // if it's a real Error, throw it!
+          if (errors instanceof Error) {
+            setTimeout(() => {console.error("onSubmit threw:", errors); });
+            throw errors;
+          }
           if (this.isUnmounted) return;
           const errorMessages = {$global: []};
           if (typeof errors === "string" || React.isValidElement(errors)) {
