@@ -38,6 +38,7 @@ export default function wrapInput(typeName, comp, {defaultProps = {}, extractVal
 
         render() {
           const {formCtx, defaultValue, ...userFieldProps} = getUserFieldProps();
+          const value = getRegisterInfo().getValue();
           return factory({
             ...defaultProps,
             ...userFieldProps,
@@ -46,7 +47,7 @@ export default function wrapInput(typeName, comp, {defaultProps = {}, extractVal
             onFocus: this.handleFocus,
             onBlur: this.handleBlur,
             ref: setInputNode,
-            ...valueToProps(getRegisterInfo().getValue() || null)
+            ...valueToProps(value === undefined ? null : value)
           });
         }
       };
