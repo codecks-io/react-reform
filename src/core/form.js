@@ -118,21 +118,31 @@ export default class Form extends React.Component {
     this.setState(newState, Object.keys(fields).forEach(name => fields[name].reRender()));
   }
 
-  handleSubmit = (e, ...args) => {
+  validate() {
     const {fields} = this.state;
-    if (e && typeof e.preventDefault === "function") e.preventDefault();
-    let firstErrorField = null;
+    let focusFirstInvalidField = null;
     let hasErrors = false;
     Object.keys(fields).forEach(name => {
       const value = this.props.model ? this.props.model[name] : this.state.fields[name].value;
       fields[name].validate(value).forEach(validation => {
         if (validation.isValid !== true) hasErrors = true;
-        if (validation.isValid === false && !firstErrorField) firstErrorField = fields[name];
+        if (validation.isValid === false && !focusFirstInvalidField) {
+          focusFirstInvalidField = () => {
+            fields[name].focus();
+            this.setState({status: "preSubmitFail"}, Object.keys(fields).forEach(name2 => fields[name2].reRender()));
+          };
+        }
       });
     });
+    return {hasErrors, focusFirstInvalidField};
+  }
+
+  handleSubmit = (e, ...args) => {
+    const {fields} = this.state;
+    if (e && typeof e.preventDefault === "function") e.preventDefault();
+    const {focusFirstInvalidField, hasErrors} = this.validate();
     if (hasErrors) {
-      if (firstErrorField) firstErrorField.focus();
-      this.setState({status: "preSubmitFail"}, Object.keys(fields).forEach(name => fields[name].reRender()));
+      focusFirstInvalidField();
     } else {
       this.setState({serverErrors: {$global: []}});
       const values = Object.keys(fields).reduce(
@@ -163,6 +173,7 @@ export default class Form extends React.Component {
           if (typeof errors === "string" || React.isValidElement(errors)) {
             errorMessages.$global.push(errors);
           } else {
+            let focussedInvalidField = false;
             Object.keys(errors).forEach(errorField => {
               if (fields[errorField]) {
                 errorMessages[errorField] = {
@@ -171,9 +182,9 @@ export default class Form extends React.Component {
                   hintMessage: errors[errorField],
                   type: "server"
                 };
-                if (!firstErrorField) {
-                  firstErrorField = fields[errorField];
-                  firstErrorField.focus();
+                if (!focussedInvalidField) {
+                  fields[errorField].focus();
+                  focussedInvalidField = true;
                 }
               } else {
                 errorMessages.$global.push({[errorField]: errors[errorField]});
