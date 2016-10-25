@@ -1,5 +1,10 @@
 {
-  "stage": 0,
-  "loose": ["all"],
-  "plugins": ["babel-plugin-object-assign"]
+  "presets": [
+    "es2015-loose",
+    "stage-1",
+    "react"
+  ],
+  "plugins": [
+    "babel-plugin-dev-expression"
+  ]
 }
