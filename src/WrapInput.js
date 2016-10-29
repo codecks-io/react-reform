@@ -1,4 +1,4 @@
-import React from "react"
+import React from 'react'
 
 // const MyInput = props => (
 //   <WrapInput {...props}>{({value, listeners: {onChange, ...restListeners}}) => (
@@ -11,16 +11,27 @@ import React from "react"
 // </Form>
 
 const createFieldComponent = (propsGetter, stateGetter, reformCtxGetter) => {
-  const handleChange = (v) => {
+  const handleChange = (v, themeOnChange) => {
+    if (themeOnChange) themeOnChange(v)
     reformCtxGetter().setValue(propsGetter().name, v)
   }
+  const handleFocus = (v, themeOnFocus) => {
+    if (themeOnFocus) themeOnFocus(v)
+    reformCtxGetter().onFocusField(propsGetter().name, v)
+  }
+  const handleBlur = (v, themeOnBlur) => {
+    if (themeOnBlur) themeOnBlur(v)
+    reformCtxGetter().onBlurField(propsGetter().name, v)
+  }
   return (themeProps) => {
-    const {children, name = name} = propsGetter()
+    const {children} = propsGetter()
     const {value} = stateGetter()
     return children({
       value,
       listeners: {
-        onChange: handleChange
+        onChange: themeProps.onChange ? (v) => handleChange(v, themeProps.onChange): handleChange,
+        onFocus: themeProps.onFocus ? (v) => handleFocus(v, themeProps.onFocus): handleFocus,
+        onBlur: themeProps.onBlur ? (v) => handleBlur(v, themeProps.onBlur): handleBlur
       },
       themeProps
     })
@@ -76,10 +87,17 @@ export default class WrapInput extends React.Component {
   }
 
   render() {
-    const {reformForm: {theme}} = this.context
+    const {reformForm: {theme, isDirty, isTouched, isFocused}} = this.context
     const {nonValidationRestProps, validations} = this.state
     const {name} = this.props
     // console.log("render", name)
-    return theme.renderField(this.fieldComponent, {directProps: nonValidationRestProps, validations, name})
+    return theme.renderField(this.fieldComponent, {
+      directProps: nonValidationRestProps,
+      validations,
+      name,
+      isDirty: isDirty(name),
+      isTouched: isTouched(name),
+      isFocused: isFocused(name)
+    })
   }
 }

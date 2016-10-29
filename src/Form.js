@@ -1,4 +1,4 @@
-import React from "react"
+import React from 'react'
 
 // FormContainer is what is being passed as first arg to theme.renderForm(FormContainer, children, opts)
 
@@ -27,7 +27,12 @@ export default class Form extends React.Component {
         getValue: this.getValue,
         setValue: this.setValue,
         notifyOfValidationResults: this.notifyOfValidationResults,
-        theme: this.getTheme()
+        onFocusField: this.handleFocusField,
+        onBlurField: this.handleBlurField,
+        theme: this.getTheme(),
+        isDirty: (name) => (this.state.fields[name] && this.state.fields[name].dirty) || false,
+        isTouched: (name) => (this.state.fields[name] && this.state.fields[name].touched) || false,
+        isFocused: (name) => (this.state.fields[name] && this.state.fields[name].focused) || false
       }
     }
   }
@@ -44,7 +49,7 @@ export default class Form extends React.Component {
   static defaultProps = {
     model: null,
     initialModel: {},
-    theme: "default",
+    theme: 'default',
     onFieldChange: () => {}
   }
 
@@ -52,16 +57,24 @@ export default class Form extends React.Component {
     fields: {}
   }
 
-  ensureFieldWith(name, key, value) {
+  ensureFieldWith(name, props) {
     const {fields} = this.state
     const {initialModel} = this.props
     const existing = fields[name]
     if (!existing) {
-      fields[name] = {value: initialModel[name] || null, validations: [], [key]: value}
+      fields[name] = {
+        value: initialModel[name] || null,
+        validations: [],
+        dirty: false,
+        touched: false,
+        focused: false,
+        ...props
+      }
       this.setState({fields})
     } else {
-      if (existing[key] !== value) {
-        existing[key] = value
+      const hasChanged = Object.keys(props).some(propName => existing[propName] !== props[propName])
+      if (hasChanged) {
+        fields[name] = {...existing, ...props}
         this.setState({fields})
       }
     }
@@ -85,9 +98,11 @@ export default class Form extends React.Component {
   setValue = (name, value) => {
     const {model, onFieldChange} = this.props
     if (model) {
-      onFieldChange(name, value)
+      if (onFieldChange(name, value) !== false) {
+        this.ensureFieldWith(name, {dirty: true})
+      }
     } else {
-      this.ensureFieldWith(name, "value", value)
+      this.ensureFieldWith(name, {value, dirty: true})
     }
   }
 
@@ -118,7 +133,15 @@ export default class Form extends React.Component {
       }
     }
     // postpone updating state, since we're currently within the render cycle
-    setTimeout(() => this.ensureFieldWith(name, "validations", validations))
+    setTimeout(() => this.ensureFieldWith(name, {validations}))
+  }
+
+  handleFocusField = (name) => {
+    this.ensureFieldWith(name, {focused: true, touched: true})
+  }
+
+  handleBlurField = (name) => {
+    this.ensureFieldWith(name, {focused: false})
   }
 
   handleSubmit = (e) => {
