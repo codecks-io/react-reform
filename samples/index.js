@@ -10,24 +10,47 @@ const themes = {
         <button>{directProps.buttonLabel || 'Submit'}</button>
       </FormContainer>
     ),
-    renderField: (Field, {directProps, name, isFocused}) => (
-      <div>
-        <label>{directProps.label || name}</label>
-        <Field style={{background: isFocused ? 'lightgreen' : 'yellow'}} {...directProps}/>
-      </div>
-    )
+    renderField: (Field, {directProps, name, isFocused, validations, id}) => {
+      const errors = validations.filter(({isValid}) => isValid === false).map(({errorMessage, name}) => <span key={name}>{errorMessage}, </span>)
+      return (
+        <div>
+          <label htmlFor={id}>{directProps.label || name}{errors}</label>
+          <Field id={id} style={{background: isFocused ? 'lightgreen' : 'yellow'}} {...directProps}/>
+        </div>
+      )
+    },
+    validationLabels: {
+      required: {
+        errorMessage: (val, {name, arg}) => `'${name}' is really required`
+      }
+    }
   })
 }
 
 const validations = {
   required: {
-    isValid: (val) => val === 0 || (!!val && (typeof val !== 'string' || val.trim().length > 0))
+    isValid: (val) => val === 0 || (!!val && (typeof val !== 'string' || val.trim().length > 0)),
+    errorMessage: (val, {name, arg}) => `'${name}' is required`
+  },
+  unique: () => {
+    const data = {}
+    return {
+      isValid: (val, args, askAgain) => {
+        if (!val) return true
+        if (data[val] === undefined) {
+          data[val] = 'pending'
+          setTimeout(() => {data[val] = false; askAgain()}, 1000)
+        }
+        return data[val]
+      },
+      errorMessage: (val, {name, arg}) => `'${name}' has to be unique. '${val}' isn't`
+    }
   }
 }
 
 const MyInput = props => (
-  <WrapInput {...props}>{({value, listeners: {onChange, ...restListeners}, themeProps}) => (
-    <input type="text" value={value || ''} {...themeProps} onChange={e => onChange(e.target.value)} {...restListeners}/>
+  <WrapInput {...props}>{({value, listeners: {onChange, ...restListeners}, themeProps, registerFocusNode}) => (
+    <input type="text" value={value || ''} {...themeProps} onChange={e => onChange(e.target.value)} {...restListeners} ref={registerFocusNode}/>
   )}</WrapInput>
 )
 
@@ -55,7 +78,7 @@ class App extends React.Component {
         <div>
           <h1>Uncontrolled</h1>
           <Form onSubmit={this.handleSubmit} style={{color: 'yellow'}} initialModel={{name: null}} buttonLabel="Yo!">
-            <MyInput name="name" label="Name"/>
+            <MyInput name="name" label="Name" is-unique/>
             <MyInput name="name2" label="Name2*" is-required/>
           </Form>
           <h1>Controlled</h1>

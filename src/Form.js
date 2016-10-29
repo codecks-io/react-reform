@@ -1,12 +1,13 @@
 import React from 'react'
 
+let nextFormId = 1 // used for id-generation
+
 // FormContainer is what is being passed as first arg to theme.renderForm(FormContainer, children, opts)
 
 const FormContainer = ({children, ...rest}, {reformForm}) => (
-  <form {...rest} onSubmit={reformForm.handleSubmit}>{children}</form>
+  <form {...rest} onSubmit={reformForm.onSubmit}>{children}</form>
 )
 
-FormContainer.propTypes = {children: React.PropTypes.node.isRequired}
 FormContainer.contextTypes = {reformForm: React.PropTypes.object}
 
 export default class Form extends React.Component {
@@ -17,24 +18,6 @@ export default class Form extends React.Component {
 
   static childContextTypes = {
     reformForm: React.PropTypes.object.isRequired
-  }
-
-  getChildContext() {
-    return {
-      reformForm: {
-        getRestProps: this.getRestProps,
-        handleSubmit: this.handleSubmit,
-        getValue: this.getValue,
-        setValue: this.setValue,
-        notifyOfValidationResults: this.notifyOfValidationResults,
-        onFocusField: this.handleFocusField,
-        onBlurField: this.handleBlurField,
-        theme: this.getTheme(),
-        isDirty: (name) => (this.state.fields[name] && this.state.fields[name].dirty) || false,
-        isTouched: (name) => (this.state.fields[name] && this.state.fields[name].touched) || false,
-        isFocused: (name) => (this.state.fields[name] && this.state.fields[name].focused) || false
-      }
-    }
   }
 
   static propTypes = {
@@ -53,8 +36,40 @@ export default class Form extends React.Component {
     onFieldChange: () => {}
   }
 
+  getChildContext() {
+    return {
+      reformForm: {
+        getRestProps: this.getRestProps,
+        onSubmit: this.handleSubmit,
+        getValue: this.getValue,
+        setValue: this.setValue,
+        notifyOfValidationResults: this.notifyOfValidationResults,
+        onFocusField: this.handleFocusField,
+        onBlurField: this.handleBlurField,
+        theme: this.getTheme(),
+        isDirty: (name) => (this.state.fields[name] && this.state.fields[name].dirty) || false,
+        isTouched: (name) => (this.state.fields[name] && this.state.fields[name].touched) || false,
+        isFocused: (name) => (this.state.fields[name] && this.state.fields[name].focused) || false,
+        registerFocusHook: (name, hook) => this.focusHooks[name] = hook,
+        unregisterFocusHook: (name) => {delete this.focusHooks[name]},
+        serverErrors: this.state.serverErrors,
+        formId: this.formId
+      }
+    }
+  }
+
   state = {
-    fields: {}
+    fields: {},
+    serverErrors: {$global: []},
+    status: 'unsubmitted'
+  }
+
+  isUnmounted = false
+  focusHooks = {}
+  formId = nextFormId++
+
+  componentWillUnmount() {
+    this.isUnmounted = true
   }
 
   ensureFieldWith(name, props) {
@@ -120,6 +135,14 @@ export default class Form extends React.Component {
     return this.context.reformRoot.getTheme(this.props.theme)
   }
 
+  reset() {
+    this.setState({fields: {}})
+  }
+
+  focusField(name) {
+    this.focusHooks[name]()
+  }
+
   notifyOfValidationResults = (name, validations) => {
     const {fields} = this.state
     const existing = fields[name] && fields[name].validations
@@ -144,16 +167,87 @@ export default class Form extends React.Component {
     this.ensureFieldWith(name, {focused: false})
   }
 
-  handleSubmit = (e) => {
-    e.preventDefault()
-    this.props.onSubmit(this.getAllValues())
+  handleSubmit = (e, ...args) => {
+    const {fields} = this.state
+    if (e && typeof e.preventDefault === 'function') e.preventDefault()
+    let firstInvalidFieldName = null
+    const hasErrors = !Object.keys(fields).every(name => {
+      if (!fields[name].validations.every(v => v.isValid === true)) {
+        firstInvalidFieldName = name
+        return false
+      } else {
+        return true
+      }
+    })
+
+    if (hasErrors) {
+      this.setState({status: 'preSubmitFail'})
+      this.focusField(firstInvalidFieldName)
+    } else {
+      this.setState({serverErrors: {$global: []}})
+      const result = this.props.onSubmit(this.getAllValues(), e, ...args)
+      if (result && typeof result.then === 'function') {
+        this.setState({status: 'pending'})
+        result.then(() => { // success
+          if (this.isUnmounted) return
+          this.reset()
+          this.setState({
+            serverErrors: {$global: []},
+            status: 'success'
+          })
+        }).catch(errors => { // shape of error: {fieldName: error} or 'global error message as string'
+          // if it's a real Error, throw it!
+          if (errors instanceof Error) {
+            setTimeout(() => {console.error('onSubmit threw:', errors)})
+            throw errors
+          }
+          if (this.isUnmounted) return
+          const errorMessages = {$global: []}
+          if (typeof errors === 'string' || React.isValidElement(errors)) {
+            errorMessages.$global.push(errors)
+          } else {
+            let focussedInvalidField = false
+            Object.keys(errors).forEach(errorField => {
+              if (fields[errorField]) {
+                errorMessages[errorField] = {
+                  isValid: false,
+                  errorMessage: errors[errorField],
+                  hintMessage: errors[errorField],
+                  name: 'server'
+                }
+                if (!focussedInvalidField) {
+                  this.focusField(errorField)
+                  focussedInvalidField = true // to ensure only the *first* field get focused
+                }
+              } else {
+                errorMessages.$global.push({[errorField]: errors[errorField]})
+              }
+            })
+          }
+          this.setState({
+            serverErrors: errorMessages,
+            status: 'postSubmitFail'
+          })
+        })
+      } else {
+        this.reset()
+        this.setState({status: 'UNCERTAIN STATUS'})
+      }
+    }
   }
 
   render() {
     const {children} = this.props
-    const {fields} = this.state
+    const {fields, status, serverErrors} = this.state
     const validations = Object.keys(fields).reduce((m, f) => {m[f] = fields[f].validations; return m}, {})
     const isValid = Object.keys(validations).every(name => validations[name].every(v => v.isValid === true))
-    return this.getTheme().renderForm(FormContainer, children, {directProps: this.getRestProps(), isValid, validationsPerField: validations})
+    return this.getTheme().renderForm(FormContainer, children, {
+      directProps: this.getRestProps(),
+      isValid,
+      validationsPerField: validations,
+      status,
+      submitForm: this.handleSubmit,
+      globalErrors: serverErrors.$global
+    })
   }
 }
