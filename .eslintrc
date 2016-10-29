@@ -1,27 +1,8 @@
 {
-  "parser": "babel-eslint",
-  "env": {
-    "browser": true,
-    "node": true
-  },
-  "plugins": [
-    "import",
-    "react"
-  ],
-  "extends": [
-    "eslint:recommended",
-    "plugin:import/errors",
-    "plugin:react/recommended"
-  ],
+  "extends": "react-app",
   "rules": {
-    "prefer-arrow-callback": 2,
-    "semi": [ 2, "never" ],
-    "no-unused-vars": [1, {
-      "vars": "local",
-      "varsIgnorePattern": "^_",
-      "args": "after-used",
-      "argsIgnorePattern": "^_"
-    }]
+    "semi": ["warn", "never"],
+    "quotes": ["warn", "single"]
   },
   "globals": {
     "__DEV__": true

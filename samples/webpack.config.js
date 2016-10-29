@@ -32,10 +32,16 @@ module.exports = {
   },
 
   module: {
+    preLoaders: [
+      { test: /\.js$/,
+        loader: path.join(__dirname, 'node_modules', 'eslint-loader'),
+        exclude: /node_modules/
+      }
+    ],
     loaders: [
       { test: /\.js$/,
         exclude: /node_modules|\.examples/,
-        loader: 'babel-loader'
+        loader: path.join(__dirname, 'node_modules', 'babel-loader')
       },
       { test: /\.css$/,
         loader: 'style-loader!css-loader?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!postcss-loader'
