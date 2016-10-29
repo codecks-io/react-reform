@@ -1,6 +1,7 @@
 import React from 'react'
 import {render} from 'react-dom'
-import {Form, ReformContext, createTheme, WrapInput} from 'react-reform'
+import {Form, ReformContext, createTheme} from 'react-reform'
+import {Text, Checkbox, Select} from 'react-reform/opt/inputs'
 
 const themes = {
   'default': createTheme({
@@ -48,12 +49,6 @@ const validations = {
   }
 }
 
-const MyInput = props => (
-  <WrapInput {...props}>{({value, listeners: {onChange, ...restListeners}, themeProps, registerFocusNode}) => (
-    <input type="text" value={value || ''} {...themeProps} onChange={e => onChange(e.target.value)} {...restListeners} ref={registerFocusNode}/>
-  )}</WrapInput>
-)
-
 
 class App extends React.Component {
 
@@ -78,13 +73,19 @@ class App extends React.Component {
         <div>
           <h1>Uncontrolled</h1>
           <Form onSubmit={this.handleSubmit} style={{color: 'yellow'}} initialModel={{name: null}} buttonLabel="Yo!">
-            <MyInput name="name" label="Name" is-unique/>
-            <MyInput name="name2" label="Name2*" is-required/>
+            <Text name="name" label="Name" is-unique/>
+            <Text name="name2" label="Name2*" is-required/>
           </Form>
           <h1>Controlled</h1>
           <Form onSubmit={this.handleAsyncSubmit} model={this.state.model} onFieldChange={(key, val) => this.setState({model: {...this.state.model, [key]: val}})}>
-            <MyInput name="name" label="Name"/>
-            <MyInput name="name2" label="Name2*" is-required/>
+            <Text name="name" label="Name"/>
+            <Text name="name2" label="Name2*" is-required/>
+            <Select name="fruit" label="favourite fruit">
+              <option value="orange">Orange</option>
+              <option value="apple">Apple</option>
+              <option value="tomato">Tomato</option>
+            </Select>
+            <Checkbox name="readTos" label="I've read this" is-required/>
           </Form>
         </div>
       </ReformContext>
