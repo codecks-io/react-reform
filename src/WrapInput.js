@@ -126,7 +126,7 @@ export default class WrapInput extends React.Component {
   }
 
   render() {
-    const {reformForm: {theme, isDirty, isTouched, isFocused, onSubmit, serverErrors, formId}} = this.context
+    const {reformForm: {theme, isDirty, isTouched, isFocused, onSubmit, serverErrors, formId, status}} = this.context
     const {nonValidationRestProps, validations} = this.state
     const {children: _, directProps: {name}, ...rest} = this.props
     return theme.renderField(this.fieldComponent, {
@@ -138,7 +138,8 @@ export default class WrapInput extends React.Component {
       isDirty: isDirty(name),
       isTouched: isTouched(name),
       isFocused: isFocused(name),
-      submitForm: onSubmit
+      submitForm: onSubmit,
+      formStatus: status
     })
   }
 }

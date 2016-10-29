@@ -53,7 +53,8 @@ export default class Form extends React.Component {
         registerFocusHook: (name, hook) => this.focusHooks[name] = hook,
         unregisterFocusHook: (name) => {delete this.focusHooks[name]},
         serverErrors: this.state.serverErrors,
-        formId: this.formId
+        formId: this.formId,
+        status: this.state.status
       }
     }
   }
