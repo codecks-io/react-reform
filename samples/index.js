@@ -2,6 +2,7 @@ import React from 'react'
 import {render} from 'react-dom'
 import {Form, ReformContext, createTheme} from 'react-reform'
 import {Text, Checkbox, Select} from 'react-reform/opt/inputs'
+import defaultValidators from 'react-reform/opt/validators'
 
 const themes = {
   'default': createTheme({
@@ -29,10 +30,6 @@ const themes = {
 }
 
 const validations = {
-  required: {
-    isValid: (val) => val === 0 || (!!val && (typeof val !== 'string' || val.trim().length > 0)),
-    errorMessage: (val, {name, arg}) => `'${name}' is required`
-  },
   unique: () => {
     const data = {}
     return {
@@ -69,7 +66,7 @@ class App extends React.Component {
 
   render() {
     return (
-      <ReformContext themes={themes} validations={validations}>
+      <ReformContext themes={themes} validations={{...defaultValidators, ...validations}}>
         <div>
           <h1>Uncontrolled</h1>
           <Form onSubmit={this.handleSubmit} style={{color: 'yellow'}} initialModel={{name: null}} buttonLabel="Yo!">
@@ -78,7 +75,7 @@ class App extends React.Component {
           </Form>
           <h1>Controlled</h1>
           <Form onSubmit={this.handleAsyncSubmit} model={this.state.model} onFieldChange={(key, val) => this.setState({model: {...this.state.model, [key]: val}})}>
-            <Text name="name" label="Name"/>
+            <Text name="name" label="Name" has-minlength={5}/>
             <Text name="name2" label="Name2*" is-required/>
             <Select name="fruit" label="favourite fruit">
               <option value="orange">Orange</option>
