@@ -167,9 +167,54 @@ export default class Form extends React.Component {
     this.ensureFieldWith(name, {focused: false})
   }
 
-  handleSubmit = (e, ...args) => {
+  handleAsyncSuccess = () => {
+    if (this.isUnmounted) return
+    this.reset()
+    this.setState({
+      serverErrors: {$global: []},
+      status: 'success'
+    })
+  }
+
+  // shape of error: {fieldName: error} or 'global error message as string or react object'
+  handleAsyncError = (errors) => {
     const {fields} = this.state
-    if (e && typeof e.preventDefault === 'function') e.preventDefault()
+    // if it's a real Error, throw it!
+    if (errors instanceof Error) {
+      setTimeout(() => {console.error('onSubmit threw:', errors)})
+      throw errors
+    }
+    if (this.isUnmounted) return
+    const errorMessages = {$global: []}
+    if (typeof errors === 'string' || React.isValidElement(errors)) {
+      errorMessages.$global.push(errors)
+    } else {
+      let focussedInvalidField = false
+      Object.keys(errors).forEach(errorField => {
+        if (fields[errorField]) {
+          errorMessages[errorField] = {
+            isValid: false,
+            errorMessage: errors[errorField],
+            hintMessage: errors[errorField],
+            name: 'server'
+          }
+          if (!focussedInvalidField) {
+            this.focusField(errorField)
+            focussedInvalidField = true // to ensure only the *first* field get focused
+          }
+        } else {
+          errorMessages.$global.push({[errorField]: errors[errorField]})
+        }
+      })
+    }
+    this.setState({
+      serverErrors: errorMessages,
+      status: 'postSubmitFail'
+    })
+  }
+
+  checkForErrors() {
+    const {fields} = this.state
     let firstInvalidFieldName = null
     const hasErrors = !Object.keys(fields).every(name => {
       if (!fields[name].validations.every(v => v.isValid === true)) {
@@ -179,7 +224,12 @@ export default class Form extends React.Component {
         return true
       }
     })
+    return {hasErrors, firstInvalidFieldName}
+  }
 
+  handleSubmit = (e, ...args) => {
+    if (e && typeof e.preventDefault === 'function') e.preventDefault()
+    const {hasErrors, firstInvalidFieldName} = this.checkForErrors()
     if (hasErrors) {
       this.setState({status: 'preSubmitFail'})
       this.focusField(firstInvalidFieldName)
@@ -188,47 +238,7 @@ export default class Form extends React.Component {
       const result = this.props.onSubmit(this.getAllValues(), e, ...args)
       if (result && typeof result.then === 'function') {
         this.setState({status: 'pending'})
-        result.then(() => { // success
-          if (this.isUnmounted) return
-          this.reset()
-          this.setState({
-            serverErrors: {$global: []},
-            status: 'success'
-          })
-        }).catch(errors => { // shape of error: {fieldName: error} or 'global error message as string'
-          // if it's a real Error, throw it!
-          if (errors instanceof Error) {
-            setTimeout(() => {console.error('onSubmit threw:', errors)})
-            throw errors
-          }
-          if (this.isUnmounted) return
-          const errorMessages = {$global: []}
-          if (typeof errors === 'string' || React.isValidElement(errors)) {
-            errorMessages.$global.push(errors)
-          } else {
-            let focussedInvalidField = false
-            Object.keys(errors).forEach(errorField => {
-              if (fields[errorField]) {
-                errorMessages[errorField] = {
-                  isValid: false,
-                  errorMessage: errors[errorField],
-                  hintMessage: errors[errorField],
-                  name: 'server'
-                }
-                if (!focussedInvalidField) {
-                  this.focusField(errorField)
-                  focussedInvalidField = true // to ensure only the *first* field get focused
-                }
-              } else {
-                errorMessages.$global.push({[errorField]: errors[errorField]})
-              }
-            })
-          }
-          this.setState({
-            serverErrors: errorMessages,
-            status: 'postSubmitFail'
-          })
-        })
+        result.then(this.handleAsyncSuccess, this.handleAsyncError)
       } else {
         this.reset()
         this.setState({status: 'UNCERTAIN STATUS'})
@@ -240,7 +250,7 @@ export default class Form extends React.Component {
     const {children} = this.props
     const {fields, status, serverErrors} = this.state
     const validations = Object.keys(fields).reduce((m, f) => {m[f] = fields[f].validations; return m}, {})
-    const isValid = Object.keys(validations).every(name => validations[name].every(v => v.isValid === true))
+    const isValid = !this.checkForErrors().hasErrors
     return this.getTheme().renderForm(FormContainer, children, {
       directProps: this.getRestProps(),
       isValid,

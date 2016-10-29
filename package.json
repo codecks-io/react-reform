@@ -4,7 +4,7 @@
   "description": "A React Form Framework",
   "scripts": {
     "start": "echo 'Make sure to `cd samples && npm install`' && cd samples && npm run dev",
-    "lint": "eslint src/**/*.js",
+    "lint": "eslint src/*.js src/**/*.js",
     "build-lib": "babel ./src -d . --ignore __tests__",
     "clean": "rm -rf opt/ && rm *.js",
     "test": "echo TODO",

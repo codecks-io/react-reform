@@ -15,9 +15,9 @@ export const simpleInputWrapper = (typeName, Comp, {defaultProps, extractValueFr
   )
 )
 
-export const Text = simpleInputWrapper('Text', 'input', {type: 'text', extractValueFromOnChange: e => e.target.value})
+export const Text = simpleInputWrapper('Text', 'input', {defaultProps: {type: 'text'}, extractValueFromOnChange: e => e.target.value})
 export const Textarea = simpleInputWrapper('Textarea', 'textarea', {extractValueFromOnChange: e => e.target.value})
-export const Password = simpleInputWrapper('Password', 'input', {type: 'password', extractValueFromOnChange: e => e.target.value})
+export const Password = simpleInputWrapper('Password', 'input', {defaultProps: {type: 'password'}, extractValueFromOnChange: e => e.target.value})
 export const Select = simpleInputWrapper('Select', 'select', {extractValueFromOnChange: e => e.target.value})
 export const Checkbox = props => (
   <WrapInput type="Checkbox" directProps={props}>{({value, listeners: {onChange, ...restListeners}, themeProps, registerFocusNode}) => (
