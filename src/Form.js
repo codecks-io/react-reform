@@ -133,7 +133,12 @@ export default class Form extends React.Component {
   }
 
   getTheme() {
-    return this.context.reformRoot.getTheme(this.props.theme)
+    const {theme} = this.props
+    if (theme && theme.$isReformTheme) {
+      return theme
+    } else {
+      return this.context.reformRoot.getTheme(theme)
+    }
   }
 
   reset() {
