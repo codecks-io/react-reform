@@ -22,7 +22,10 @@ export default class Form extends React.Component {
 
   static propTypes = {
     children: React.PropTypes.node.isRequired,
-    theme: React.PropTypes.string,
+    theme: React.PropTypes.oneOfType([
+      React.PropTypes.string,
+      React.PropTypes.object
+    ]).isRequired,
     onSubmit: React.PropTypes.func.isRequired,
     model: React.PropTypes.object,
     initialModel: React.PropTypes.object,
@@ -74,6 +77,7 @@ export default class Form extends React.Component {
   }
 
   ensureFieldWith(name, props) {
+    if (this.isUnmounted) return
     const {fields} = this.state
     const {initialModel} = this.props
     const existing = fields[name]
@@ -184,6 +188,7 @@ export default class Form extends React.Component {
 
   // shape of error: {fieldName: error} or 'global error message as string or react object'
   handleAsyncError = (errors) => {
+    if (this.isUnmounted) return
     const {fields} = this.state
     // if it's a real Error, throw it!
     if (errors instanceof Error) {

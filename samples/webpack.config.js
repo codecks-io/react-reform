@@ -40,7 +40,7 @@ module.exports = {
     ],
     loaders: [
       { test: /\.js$/,
-        exclude: /node_modules|\.examples/,
+        exclude: /node_modules/,
         loader: path.join(__dirname, 'node_modules', 'babel-loader')
       },
       { test: /\.css$/,

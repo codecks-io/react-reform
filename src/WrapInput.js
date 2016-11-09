@@ -20,13 +20,13 @@ const createFieldComponent = (instance, registerFocusNode) => {
     if (themeOnChange) themeOnChange(value)
     instance.context.reformForm.setValue(instance.props.directProps.name, value)
   }
-  const handleFocus = (v, themeOnFocus) => {
-    if (themeOnFocus) themeOnFocus(v)
-    instance.context.reformForm.onFocusField(instance.props.directProps.name, v)
+  const handleFocus = (e, themeOnFocus) => {
+    if (themeOnFocus) themeOnFocus(e)
+    instance.context.reformForm.onFocusField(instance.props.directProps.name)
   }
-  const handleBlur = (v, themeOnBlur) => {
-    if (themeOnBlur) themeOnBlur(v)
-    instance.context.reformForm.onBlurField(instance.props.directProps.name, v)
+  const handleBlur = (e, themeOnBlur) => {
+    if (themeOnBlur) themeOnBlur(e)
+    instance.context.reformForm.onBlurField(instance.props.directProps.name)
   }
   return (themeProps) => {
     const {children} = instance.props
@@ -35,9 +35,9 @@ const createFieldComponent = (instance, registerFocusNode) => {
     return children.call(instance, {
       value,
       listeners: {
-        onChange: themeProps.onChange ? (v) => handleChange(v, themeProps.onChange): handleChange,
-        onFocus: themeProps.onFocus ? (v) => handleFocus(v, themeProps.onFocus): handleFocus,
-        onBlur: themeProps.onBlur ? (v) => handleBlur(v, themeProps.onBlur): handleBlur
+        onChange: (v) => handleChange(v, themeProps.onChange),
+        onFocus: (e) => handleFocus(e, themeProps.onFocus),
+        onBlur: (e) => handleBlur(e, themeProps.onBlur)
       },
       themeProps,
       registerFocusNode
@@ -126,12 +126,13 @@ export default class WrapInput extends React.Component {
   }
 
   render() {
-    const {reformForm: {theme, isDirty, isTouched, isFocused, onSubmit, serverErrors, formId, status}} = this.context
+    const {reformForm: {theme, isDirty, isTouched, isFocused, onSubmit, serverErrors, formId, status, getRestProps}} = this.context
     const {nonValidationRestProps, validations} = this.state
     const {children: _, directProps: {name}, ...rest} = this.props
     return theme.renderField(this.fieldComponent, {
       directProps: nonValidationRestProps,
       wrapperProps: rest,
+      directFormProps: getRestProps(),
       validations: serverErrors[name] ? [...validations, serverErrors[name]] : validations,
       name,
       id: `form${formId}-${name}`,

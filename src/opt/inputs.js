@@ -7,7 +7,7 @@ import {WrapInput} from '../'
 // PS: there's nothing special about the `type` prop. Any prop you define here will
 // automatically show up within the `wrapperProps`
 
-export const simpleInputWrapper = (typeName, Comp, {defaultProps, extractValueFromOnChange = (value => value)}) => (
+export const simpleInputWrapper = (typeName, Comp, {defaultProps, extractValueFromOnChange = (value => value)} = {}) => (
   props => (
     <WrapInput type={typeName} directProps={props}>{({value, listeners: {onChange, ...restListeners}, themeProps, registerFocusNode}) => (
       <Comp {...defaultProps} value={value || ''} {...themeProps} onChange={e => onChange(extractValueFromOnChange(e))} {...restListeners} ref={registerFocusNode}/>
