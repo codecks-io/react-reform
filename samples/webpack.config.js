@@ -27,7 +27,8 @@ module.exports = {
 
   resolve: {
     alias: {
-      'react-reform': REACT_REFORM_SRC
+      'react-reform': REACT_REFORM_SRC,
+      'react': path.join(__dirname, 'node_modules', 'react')
     }
   },
 
