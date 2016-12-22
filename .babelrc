@@ -1,8 +1,6 @@
 {
   "presets": [
-    "es2015-loose",
-    "stage-1",
-    "react"
+    "react-app"
   ],
   "plugins": [
     "babel-plugin-dev-expression"

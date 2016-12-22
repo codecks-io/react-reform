@@ -1,7 +1,6 @@
 .gitignore
 .eslintrc
 .babelrc
-node_modules/
 src/
 samples/
 docs/

@@ -1,4 +1,11 @@
-export Form from './Form'
-export ReformContext from './ReformContext'
-export createTheme from './createTheme'
-export WrapInput from './WrapInput'
+import Form from './Form'
+import ReformContext from './ReformContext'
+import createTheme from './createTheme'
+import WrapInput from './WrapInput'
+
+export {
+  Form,
+  ReformContext,
+  createTheme,
+  WrapInput
+}
