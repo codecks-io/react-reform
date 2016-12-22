@@ -2,7 +2,8 @@
   "extends": "react-app",
   "rules": {
     "semi": ["warn", "never"],
-    "quotes": ["warn", "single"]
+    "quotes": ["warn", "single"],
+    "no-cond-assign": ["error", "except-parens"]
   },
   "globals": {
     "__DEV__": true
