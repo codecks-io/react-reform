@@ -60,6 +60,7 @@ export const SubH1 = (props) => <B f5 lh-title black60 mb5 {...props}/>
 export const H2 = (props) => <B component="h2" f4 b black80 lh-title {...props}/>
 export const H3 = (props) => <B component="h3" f5 b black80 lh-title {...props}/>
 
+export const Section = (props) => <B component="section" mb6 {...props}/>
 export const P = (props) => <B component="p" mb3 f5 black80 lh-copy {...props}/>
 
 export const List = (props) => <B component="ul" mb4 {...props}/>
