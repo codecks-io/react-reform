@@ -1,0 +1,298 @@
+<!DOCTYPE html><html lang=en><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><link rel="shortcut icon" href=/favicon.ico?fd73a6eb><title>React Reform</title><style>.css-1wx6ikw,.css-a1qwli,[data-css-1wx6ikw],[data-css-a1qwli]{display:-webkit-box;display:-moz-box;display:-ms-flexbox;display:-webkit-flex}.css-1wx6ikw,[data-css-1wx6ikw]{display:flex;min-height:100vh}.css-a1qwli,[data-css-a1qwli]{-webkit-flex:200px 1 0;-webkit-box-direction:normal;-webkit-box-orient:vertical;-webkit-box-align:end;-ms-flex-align:end;-ms-flex-direction:column;-webkit-flex-direction:column;-webkit-align-items:flex-end;-ms-flex:200px 1 0;flex-direction:column;align-items:flex-end;background-color:#d62288;flex:200px 1 0;display:flex;padding:11.7rem 2rem 2rem}.css-1s9imjh,.css-v7pku8,[data-css-1s9imjh],[data-css-v7pku8]{-webkit-flex-direction:column;-webkit-box-orient:vertical;-webkit-box-direction:normal}.css-trtyl2,.css-v7pku8,[data-css-trtyl2],[data-css-v7pku8]{display:-webkit-box;display:-moz-box;display:-ms-flexbox;display:-webkit-flex}.css-v7pku8,[data-css-v7pku8]{-ms-flex-direction:column;display:flex;padding-top:4rem;flex-direction:column}.css-1bszun2,[data-css-1bszun2]{-webkit-transition-property:color;display:inline-block;color:rgba(255,255,255,.8);font-weight:700;margin-bottom:2rem;text-align:right;font-size:1rem;transition-property:color;border-right-style:solid;border-width:.25rem;line-height:1.25;border-color:transparent;padding-right:1rem}.css-1bszun2:hover,[data-css-1bszun2]:hover{color:#fff}.css-trtyl2,[data-css-trtyl2]{-webkit-flex:800px 4 1;-ms-flex:800px 4 1;display:flex;flex:800px 4 1;min-width:1px;padding:8rem 4rem 2rem}.css-1iucno0,.css-pept6y,[data-css-1iucno0],[data-css-pept6y]{text-align:right;border-right-style:solid;border-width:.25rem;padding-right:1rem}.css-1s9imjh,[data-css-1s9imjh]{-ms-flex-direction:column;display:-webkit-box;display:-moz-box;display:-ms-flexbox;display:-webkit-flex;display:flex;width:100%;max-width:800px;margin-left:auto;margin-right:auto;flex-direction:column}.css-140hq7u,.css-q8r042,[data-css-140hq7u],[data-css-q8r042]{margin-left:-1rem;margin-right:-1rem;max-width:100%;overflow-x:auto}.css-bo9myk,[data-css-bo9myk]{display:block;margin-bottom:1rem;font-size:1rem;color:rgba(0,0,0,.8);line-height:1.5}.css-1psjutm,[data-css-1psjutm]{display:block;color:rgba(0,0,0,.4);margin-top:auto;padding-top:4rem;font-size:.875rem}.css-rtu0rj,[data-css-rtu0rj]{-webkit-transition-property:color;display:inline-block;transition-property:color;color:rgba(0,0,0,.6);font-weight:700}.css-rtu0rj:hover,[data-css-rtu0rj]:hover{color:#00449e}.css-1iucno0,[data-css-1iucno0]{-webkit-transition-property:color;display:inline-block;color:#fff;font-weight:700;margin-bottom:2rem;font-size:1rem;transition-property:color;line-height:1.25;border-color:#fff}.css-1iucno0:hover,[data-css-1iucno0]:hover{color:#fff}.css-1w4crqy,[data-css-1w4crqy]{-webkit-flex-direction:column;-ms-flex-direction:column;-webkit-box-orient:vertical;-webkit-box-direction:normal;display:-webkit-box;display:-moz-box;display:-ms-flexbox;display:-webkit-flex;display:flex;margin-top:-1rem;margin-bottom:.5rem;flex-direction:column}.css-pept6y,[data-css-pept6y]{-webkit-transition-property:border-color,color;display:inline-block;color:rgba(255,255,255,.8);margin-bottom:1rem;font-size:.875rem;transition-property:border-color,color;border-color:rgba(255,255,255,.3)}.css-pept6y:hover,[data-css-pept6y]:hover{color:#fff;border-color:#fff}.css-1ro9wwy,[data-css-1ro9wwy]{display:inline-block;padding-left:.25rem;padding-right:.25rem;background-color:rgba(0,0,0,.05)}.css-ciiya9,[data-css-ciiya9]{display:block;font-size:1.5rem;font-weight:700;color:rgba(0,0,0,.8);line-height:1.25;margin-bottom:.25rem}.css-1xp34d9,[data-css-1xp34d9]{display:block;font-size:1rem;line-height:1.25;color:rgba(0,0,0,.6);margin-bottom:4rem}.css-163h4rl,[data-css-163h4rl]{display:block;margin-bottom:8rem}.css-1div3xm,[data-css-1div3xm]{display:block;font-size:1.25rem;font-weight:700;color:rgba(0,0,0,.8);line-height:1.25;margin-bottom:1rem}.css-140hq7u,.css-1at2h7r,.css-1k009wt,[data-css-140hq7u],[data-css-1at2h7r],[data-css-1k009wt]{margin-bottom:2rem;display:block}.css-140hq7u,[data-css-140hq7u]{background-color:rgba(0,0,0,.05);color:rgba(0,0,0,.7);font-size:.875rem;padding:.5rem 1rem}.css-1at2h7r,[data-css-1at2h7r]{font-size:1rem;font-weight:700;color:rgba(0,0,0,.8);line-height:1.25}.css-q8r042,[data-css-q8r042]{display:block;background-color:rgba(214,34,136,.05);color:rgba(0,0,0,.7);padding:1rem}.css-13d4kty,[data-css-13d4kty]{display:block;font-size:1rem;font-weight:700;color:rgba(0,0,0,.8);line-height:1.25;margin-bottom:1rem}/*! normalize.css v5.0.0 | MIT License | github.com/necolas/normalize.css */html{font-family:sans-serif;line-height:1.15;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%;box-sizing:border-box;transition-duration:.15s;transition-timing-function:ease-out}main,section{display:block}h1{font-size:2em}code,pre{font-family:monospace,monospace;font-size:1em}a{background-color:transparent;-webkit-text-decoration-skip:objects;color:inherit;text-decoration:none}a:active,a:hover{outline-width:0}b{font-weight:inherit;font-weight:bolder}button,input,select,textarea{font-family:sans-serif;font-size:100%;line-height:1.15;margin:0}button,input{overflow:visible}button,select{text-transform:none}[type=reset],[type=submit],button,html [type=button]{-webkit-appearance:button}[type=button]::-moz-focus-inner,[type=reset]::-moz-focus-inner,[type=submit]::-moz-focus-inner,button::-moz-focus-inner{border-style:none;padding:0}[type=button]:-moz-focusring,[type=reset]:-moz-focusring,[type=submit]:-moz-focusring,button:-moz-focusring{outline:ButtonText dotted 1px}textarea{overflow:auto}[type=checkbox],[type=radio]{box-sizing:border-box;padding:0}[type=number]::-webkit-inner-spin-button,[type=number]::-webkit-outer-spin-button{height:auto}[type=search]{-webkit-appearance:textfield;outline-offset:-2px}[type=search]::-webkit-search-cancel-button,[type=search]::-webkit-search-decoration{-webkit-appearance:none}::-webkit-file-upload-button{-webkit-appearance:button;font:inherit}[hidden]{display:none}*,:after,:before{box-sizing:inherit;transition-duration:inherit;transition-timing-function:inherit;transition-property:none}body{margin:0;font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen,Ubuntu,Cantarell,Fira Sans,Droid Sans,Helvetica Neue,sans-serif}h1,h2,h3,h4,h5,h6,p,pre{margin:0;padding:0}</style></head><body><div id=app><div data-css-1wx6ikw=""><div data-css-a1qwli=""><div style="width:180px;height:1px;"><div><div data-css-v7pku8=""><a data-css-1bszun2="" href="/">Home</a><a data-css-1bszun2="" href="/getting-started/">Getting Started</a><a data-css-1iucno0="" href="/examples/">Examples</a><div data-css-1w4crqy=""><a data-css-pept6y="" href="/examples/#required-with-stars">Add a <code data-css-1ro9wwy="">*</code> to all required fields</a><a data-css-pept6y="" href="/examples/#custom-button-text">Custom button text</a><a data-css-pept6y="" href="/examples/#multiple-submit">Multiple submit buttons</a><a data-css-pept6y="" href="/examples/#submit-on-blur">Submit on blur</a><a data-css-pept6y="" href="/examples/#dynamic-fields">Dynamic fields</a></div><a data-css-1bszun2="" href="/docs/">Api Docs</a></div></div></div></div><div data-css-trtyl2=""><div data-css-1s9imjh=""><h1 data-css-ciiya9="">Examples</h1><div data-css-1xp34d9="">See some typical patterns in action</div><section data-css-163h4rl=""><h2 data-css-1div3xm="" id="required-with-stars">Add a <code data-css-1ro9wwy="">*</code> to all required fields</h2><p data-css-bo9myk="">When rendering a field, see if there&#x27;s a validation with <code data-css-1ro9wwy="">name === &#x27;required&#x27;</code>:</p><pre data-css-140hq7u="">import React from &#x27;react&#x27;
+import {Form, ReformContext, createTheme} from &#x27;react-reform&#x27;
+import defaultValidators from &#x27;react-reform/opt/validators&#x27;
+import {Text} from &#x27;react-reform/opt/inputs&#x27;
+
+const defaultTheme = createTheme({
+  renderForm: (FormContainer, children, {directProps}) =&gt; (
+    &lt;FormContainer {...directProps}&gt;
+      &lt;div&gt;{children}&lt;/div&gt;
+      &lt;button&gt;Submit&lt;/button&gt;
+    &lt;/FormContainer&gt;
+  ),
+  renderField: (Field, {directProps, name, validations, id}) =&gt; {
+    const errors = validations
+      .filter(({isValid}) =&gt; isValid === false)
+      .map(({errorMessage, name}) =&gt; &lt;span key={name}&gt;{errorMessage} &lt;/span&gt;)
+    const isRequired = validations.some(({name}) =&gt; name === &#x27;required&#x27;)
+    return (
+      &lt;div&gt;
+        &lt;label htmlFor={id}&gt;{name}{isRequired &amp;&amp; &#x27;*&#x27;}&lt;/label&gt;
+        &lt;Field id={id} {...directProps}/&gt;
+        {errors.length &gt; 0 &amp;&amp; &lt;span&gt;{errors}&lt;/span&gt;}
+      &lt;/div&gt;
+    )
+  }
+})
+
+export default class ExampleForm extends React.Component {
+
+  handleSubmit = (data) =&gt; {
+    console.log(&#x27;data&#x27;, data)
+  }
+  render() {
+    return (
+      &lt;ReformContext themes={{default: defaultTheme}} validations={defaultValidators}&gt;
+        &lt;div&gt;
+          &lt;h4&gt;Form&lt;/h4&gt;
+          &lt;Form onSubmit={this.handleSubmit}&gt;
+            &lt;Text name=&quot;required-name&quot; is-required/&gt;
+            &lt;Text name=&quot;optional-name&quot;/&gt;
+          &lt;/Form&gt;
+        &lt;/div&gt;
+      &lt;/ReformContext&gt;
+    )
+  }
+}</pre><div data-css-1k009wt=""><h3 data-css-1at2h7r="">See it in action</h3><div data-css-q8r042=""><div><h4>Form</h4><form><div><div><label for="form1-required-name">required-name*</label><input type="text" value="" id="form1-required-name" name="required-name"/><span><span>is required </span></span></div><div><label for="form1-optional-name">optional-name</label><input type="text" value="" id="form1-optional-name" name="optional-name"/></div></div><button>Submit</button></form></div></div></div></section><section data-css-163h4rl=""><h2 data-css-1div3xm="" id="custom-button-text">Custom button text</h2><p data-css-bo9myk="">Look at the <code data-css-1ro9wwy="">directProps</code> passed to the <code data-css-1ro9wwy="">Form</code> and filter out a <code data-css-1ro9wwy="">buttonLabel</code> prop:</p><pre data-css-140hq7u="">import React from &#x27;react&#x27;
+import {Form, ReformContext, createTheme} from &#x27;react-reform&#x27;
+import defaultValidators from &#x27;react-reform/opt/validators&#x27;
+import {Text} from &#x27;react-reform/opt/inputs&#x27;
+
+const defaultTheme = createTheme({
+  renderForm: (FormContainer, children, {directProps: {buttonLabel = &#x27;Submit&#x27;, ...remainingDirectProps}}) =&gt; (
+    &lt;FormContainer {...remainingDirectProps}&gt;
+      &lt;div&gt;{children}&lt;/div&gt;
+      &lt;button&gt;{buttonLabel}&lt;/button&gt;
+    &lt;/FormContainer&gt;
+  ),
+  renderField: (Field, {directProps, name, validations, id}) =&gt; {
+    const errors = validations
+      .filter(({isValid}) =&gt; isValid === false)
+      .map(({errorMessage, name}) =&gt; &lt;span key={name}&gt;{errorMessage} &lt;/span&gt;)
+    return (
+      &lt;div&gt;
+        &lt;label htmlFor={id}&gt;{name}&lt;/label&gt;
+        &lt;Field id={id} {...directProps}/&gt;
+        {errors.length &gt; 0 &amp;&amp; &lt;span&gt;{errors}&lt;/span&gt;}
+      &lt;/div&gt;
+    )
+  }
+})
+
+export default class ExampleForm extends React.Component {
+
+  handleSubmit = (data) =&gt; {
+    console.log(&#x27;data&#x27;, data)
+  }
+  render() {
+    return (
+      &lt;ReformContext themes={{default: defaultTheme}} validations={defaultValidators}&gt;
+        &lt;div&gt;
+          &lt;h4&gt;Form&lt;/h4&gt;
+          &lt;Form onSubmit={this.handleSubmit} buttonLabel=&quot;Custom button text&quot;&gt;
+            &lt;Text name=&quot;field1&quot; is-required/&gt;
+          &lt;/Form&gt;
+        &lt;/div&gt;
+      &lt;/ReformContext&gt;
+    )
+  }
+}</pre><div data-css-1k009wt=""><h3 data-css-1at2h7r="">See it in action</h3><div data-css-q8r042=""><div><h4>Form</h4><form><div><div><label for="form2-field1">field1</label><input type="text" value="" id="form2-field1" name="field1"/><span><span>is required </span></span></div></div><button>Custom button text</button></form></div></div></div></section><section data-css-163h4rl=""><h2 data-css-1div3xm="" id="multiple-submit">Multiple submit buttons</h2><h3 data-css-13d4kty="">Approach 1: Create a theme</h3><p data-css-bo9myk="">If it&#x27;s a recurring feature within your application it may be worth creating a explicit theme for this.<code data-css-1ro9wwy="">renderForm</code> offers a <code data-css-1ro9wwy="">submitForm</code> callback which allows you to pass additional arguments to the <code data-css-1ro9wwy="">onSubmit</code> handler:</p><pre data-css-140hq7u="">import React from &#x27;react&#x27;
+import {Form, ReformContext, createTheme} from &#x27;react-reform&#x27;
+import defaultValidators from &#x27;react-reform/opt/validators&#x27;
+import {Text} from &#x27;react-reform/opt/inputs&#x27;
+
+const defaultTheme = createTheme({
+  renderForm: (FormContainer, children, {submitForm, directProps: {button1, button2, ...remainingDirectProps}}) =&gt; (
+    &lt;FormContainer {...remainingDirectProps}&gt;
+      &lt;div&gt;{children}&lt;/div&gt;
+      &lt;button onClick={e =&gt; submitForm(e, button1.data)} type={button1.type}&gt;
+        {button1.label}
+      &lt;/button&gt;
+      &lt;button onClick={e =&gt; submitForm(e, button2.data)} type={button2.type}&gt;
+        {button2.label}
+      &lt;/button&gt;
+    &lt;/FormContainer&gt;
+  ),
+  renderField: (Field, {directProps, name, validations, id}) =&gt; {
+    const errors = validations
+      .filter(({isValid}) =&gt; isValid === false)
+      .map(({errorMessage, name}) =&gt; &lt;span key={name}&gt;{errorMessage} &lt;/span&gt;)
+    return (
+      &lt;div&gt;
+        &lt;label htmlFor={id}&gt;{name}&lt;/label&gt;
+        &lt;Field id={id} {...directProps}/&gt;
+        {errors.length &gt; 0 &amp;&amp; &lt;span&gt;{errors}&lt;/span&gt;}
+      &lt;/div&gt;
+    )
+  }
+})
+
+export default class ExampleForm extends React.Component {
+
+  handleSubmit = (data, event, buttonArgs) =&gt; {
+    console.log(&#x27;data&#x27;, data, &#x27;buttonArgs&#x27;, buttonArgs)
+  }
+  render() {
+    return (
+      &lt;ReformContext themes={{default: defaultTheme}} validations={defaultValidators}&gt;
+        &lt;div&gt;
+          &lt;h4&gt;Form&lt;/h4&gt;
+          &lt;Form onSubmit={this.handleSubmit}
+            button1={{label: &#x27;Send&#x27;, type: &#x27;button&#x27;, data: {close: false}}}
+            button2={{label: &#x27;Send &amp; Close&#x27;, type: &#x27;submit&#x27;, data: {close: true}}}
+          &gt;
+            &lt;Text name=&quot;comment&quot; is-required/&gt;
+          &lt;/Form&gt;
+        &lt;/div&gt;
+      &lt;/ReformContext&gt;
+    )
+  }
+}</pre><div data-css-1k009wt=""><h3 data-css-1at2h7r="">See it in action</h3><div data-css-q8r042=""><div><h4>Form</h4><form><div><div><label for="form3-comment">comment</label><input type="text" value="" id="form3-comment" name="comment"/><span><span>is required </span></span></div></div><button type="button">Send</button><button type="submit">Send &amp; Close</button></form></div></div></div><h3 data-css-13d4kty="">Approach 2: Create a custom handler in your form</h3><p data-css-bo9myk="">Here we&#x27;re creating a theme that allows to have no button by default. So instead we&#x27;re passing our own buttons to the form. The second button is our <code data-css-1ro9wwy="">submit</code> button and will execute the default <code data-css-1ro9wwy="">onSubmit</code> handler. The first button gets an <code data-css-1ro9wwy="">onClick</code> handler which calls <code data-css-1ro9wwy="">handleSubmit</code> on the form&#x27;s <code data-css-1ro9wwy="">ref</code>. This function expects an event as an argument. Instead of this, we just pass a string signaling to the submit handler that this is a special case.</p><p data-css-bo9myk="">Calling <code data-css-1ro9wwy="">handleSubmit</code> will perform all validation checks, so your <code data-css-1ro9wwy="">onSubmit</code> won&#x27;t be called if there&#x27;s still invalid data.</p><pre data-css-140hq7u="">import React from &#x27;react&#x27;
+import {Form, ReformContext, createTheme} from &#x27;react-reform&#x27;
+import defaultValidators from &#x27;react-reform/opt/validators&#x27;
+import {Text} from &#x27;react-reform/opt/inputs&#x27;
+
+const defaultTheme = createTheme({
+  renderForm: (FormContainer, children, {directProps: {noButton, ...remainingDirectProps}}) =&gt; (
+    &lt;FormContainer {...remainingDirectProps}&gt;
+      &lt;div&gt;{children}&lt;/div&gt;
+      {!noButton &amp;&amp; &lt;button&gt;Submit&lt;/button&gt;}
+    &lt;/FormContainer&gt;
+  ),
+  renderField: (Field, {directProps, name, validations, id}) =&gt; {
+    const errors = validations
+      .filter(({isValid}) =&gt; isValid === false)
+      .map(({errorMessage, name}) =&gt; &lt;span key={name}&gt;{errorMessage} &lt;/span&gt;)
+    return (
+      &lt;div&gt;
+        &lt;label htmlFor={id}&gt;{name}&lt;/label&gt;
+        &lt;Field id={id} {...directProps}/&gt;
+        {errors.length &gt; 0 &amp;&amp; &lt;span&gt;{errors}&lt;/span&gt;}
+      &lt;/div&gt;
+    )
+  }
+})
+
+export default class ExampleForm extends React.Component {
+
+  handleSendClick = () =&gt; {
+    this.formNode.handleSubmit(&#x27;noClose&#x27;)
+  }
+
+  handleSubmit = (data, event) =&gt; {
+    console.log(&#x27;data&#x27;, data, &#x27;close&#x27;, event !== &#x27;noClose&#x27;)
+  }
+  render() {
+    return (
+      &lt;ReformContext themes={{default: defaultTheme}} validations={defaultValidators}&gt;
+        &lt;div&gt;
+          &lt;h4&gt;Form&lt;/h4&gt;
+          &lt;Form onSubmit={this.handleSubmit} noButton ref={node =&gt; this.formNode = node}&gt;
+            &lt;Text name=&quot;comment&quot; is-required/&gt;
+            &lt;div&gt;
+              &lt;button type=&quot;button&quot; onClick={this.handleSendClick}&gt;Send&lt;/button&gt;
+              &lt;button type=&quot;submit&quot;&gt;Send &amp; Close&lt;/button&gt;
+            &lt;/div&gt;
+          &lt;/Form&gt;
+        &lt;/div&gt;
+      &lt;/ReformContext&gt;
+    )
+  }
+}</pre><div data-css-1k009wt=""><h3 data-css-1at2h7r="">See it in action</h3><div data-css-q8r042=""><div><h4>Form</h4><form><div><div><label for="form4-comment">comment</label><input type="text" value="" id="form4-comment" name="comment"/><span><span>is required </span></span></div><div><button type="button">Send</button><button type="submit">Send &amp; Close</button></div></div></form></div></div></div></section><section data-css-163h4rl=""><h2 data-css-1div3xm="" id="submit-on-blur">Submit on blur</h2><p data-css-bo9myk=""><code data-css-1ro9wwy="">submitForm</code> is also available in the <code data-css-1ro9wwy="">renderField</code> function. This can be called when the input is blurred.</p><p data-css-bo9myk="">There&#x27;s a special case here. When validation fails, React Reform focusses the first invalid field by default. In our submit-on-blur case however, this would result in focussing the field immediately blurring if there&#x27;s an validation error. This behaviour can be skipped via setting <code data-css-1ro9wwy="">dontFocusAfterFail</code> on the field.</p><pre data-css-140hq7u="">import React from &#x27;react&#x27;
+import {Form, ReformContext, createTheme} from &#x27;react-reform&#x27;
+import defaultValidators from &#x27;react-reform/opt/validators&#x27;
+import {Text} from &#x27;react-reform/opt/inputs&#x27;
+
+const defaultTheme = createTheme({
+  renderForm: (FormContainer, children, {directProps}) =&gt; (
+    &lt;FormContainer {...directProps}&gt;{children}&lt;/FormContainer&gt;
+  ),
+  renderField: (Field, {directProps, submitForm, name, validations, id}) =&gt; {
+    const errors = validations
+      .filter(({isValid}) =&gt; isValid === false)
+      .map(({errorMessage, name}) =&gt; &lt;span key={name}&gt;{errorMessage} &lt;/span&gt;)
+    return (
+      &lt;div&gt;
+        &lt;label htmlFor={id}&gt;{name}&lt;/label&gt;
+        &lt;Field id={id} onBlur={submitForm} dontFocusAfterFail {...directProps}/&gt;
+        {errors.length &gt; 0 &amp;&amp; &lt;span&gt;{errors}&lt;/span&gt;}
+      &lt;/div&gt;
+    )
+  }
+})
+
+export default class ExampleForm extends React.Component {
+
+  handleSubmit = (data) =&gt; {
+    console.log(&#x27;data&#x27;, data)
+  }
+  render() {
+    return (
+      &lt;ReformContext themes={{default: defaultTheme}} validations={defaultValidators}&gt;
+        &lt;div&gt;
+          &lt;h4&gt;Form&lt;/h4&gt;
+          &lt;Form onSubmit={this.handleSubmit}&gt;
+            &lt;Text name=&quot;field1&quot; has-minlength={5}/&gt;
+          &lt;/Form&gt;
+        &lt;/div&gt;
+      &lt;/ReformContext&gt;
+    )
+  }
+}</pre><div data-css-1k009wt=""><h3 data-css-1at2h7r="">See it in action</h3><div data-css-q8r042=""><div><h4>Form</h4><form><div><label for="form5-field1">field1</label><input type="text" value="" id="form5-field1" name="field1"/><span><span>minimal length: 0/5 </span></span></div></form></div></div></div></section><section data-css-163h4rl=""><h2 data-css-1div3xm="" id="dynamic-fields">Dynamic fields</h2><p data-css-bo9myk="">When using a <b>controlled form</b> you can render your form using different fields or validation rules:</p><pre data-css-140hq7u="">import React from &#x27;react&#x27;
+import {Form, ReformContext, createTheme} from &#x27;react-reform&#x27;
+import defaultValidators from &#x27;react-reform/opt/validators&#x27;
+import {Text, Textarea, Select} from &#x27;react-reform/opt/inputs&#x27;
+
+const defaultTheme = createTheme({
+  renderForm: (FormContainer, children, {directProps}) =&gt; (
+    &lt;FormContainer {...directProps}&gt;
+      &lt;div&gt;{children}&lt;/div&gt;
+      &lt;button&gt;Submit&lt;/button&gt;
+    &lt;/FormContainer&gt;
+  ),
+  renderField: (Field, {directProps, name, validations, id}) =&gt; {
+    const errors = validations
+      .filter(({isValid}) =&gt; isValid === false)
+      .map(({errorMessage, name}) =&gt; &lt;span key={name}&gt;{errorMessage} &lt;/span&gt;)
+    return (
+      &lt;div&gt;
+        &lt;label htmlFor={id}&gt;{name}&lt;/label&gt;
+        &lt;Field id={id} {...directProps}/&gt;
+        {errors.length &gt; 0 &amp;&amp; &lt;span&gt;{errors}&lt;/span&gt;}
+      &lt;/div&gt;
+    )
+  }
+})
+
+export default class ExampleForm extends React.Component {
+
+  state = {model: {
+    formVariant: &#x27;one&#x27;,
+    changingMinlength: &#x27;inital&#x27;,
+    withinInFormVariant1: null,
+    withinInFormVariant2: null
+  }}
+
+  handleSubmit = (data) =&gt; {
+    console.log(&#x27;data&#x27;, data)
+  }
+
+  handleFieldChange = (fieldName, value) =&gt; {
+    this.setState({model: {...this.state.model, [fieldName]: value}})
+  }
+
+  render() {
+    const {model} = this.state
+    return (
+      &lt;ReformContext themes={{default: defaultTheme}} validations={defaultValidators}&gt;
+        &lt;div&gt;
+          &lt;h4&gt;Form&lt;/h4&gt;
+          &lt;Form onSubmit={this.handleSubmit} model={model}
+            onFieldChange={this.handleFieldChange}
+          &gt;
+            &lt;Select name=&quot;formVariant&quot;&gt;
+              &lt;option value=&quot;one&quot;&gt;Variant one&lt;/option&gt;
+              &lt;option value=&quot;two&quot;&gt;Variant two&lt;/option&gt;
+            &lt;/Select&gt;
+            &lt;Text name=&quot;changingMinlength&quot; has-minlength={model.formVariant === &#x27;one&#x27; ? 10 : 20}/&gt;
+            {model.formVariant === &#x27;one&#x27; ? (
+              &lt;Textarea rows={5} name=&quot;withinInFormVariant1&quot; is-required/&gt;
+            ) : (
+              &lt;Text name=&quot;withinInFormVariant2&quot; is-email/&gt;
+            )}
+          &lt;/Form&gt;
+        &lt;/div&gt;
+      &lt;/ReformContext&gt;
+    )
+  }
+}</pre><div data-css-1k009wt=""><h3 data-css-1at2h7r="">See it in action</h3><div data-css-q8r042=""><div><h4>Form</h4><form><div><div><label for="form6-formVariant">formVariant</label><select id="form6-formVariant" name="formVariant"><option selected="" value="one">Variant one</option><option value="two">Variant two</option></select></div><div><label for="form6-changingMinlength">changingMinlength</label><input type="text" value="inital" id="form6-changingMinlength" name="changingMinlength"/><span><span>minimal length: 6/10 </span></span></div><div><label for="form6-withinInFormVariant1">withinInFormVariant1</label><textarea id="form6-withinInFormVariant1" rows="5" name="withinInFormVariant1"></textarea><span><span>is required </span></span></div></div><button>Submit</button></form></div></div></div></section><div data-css-1psjutm="">React Reform is brought to you by <a data-css-rtu0rj="" href="https://www.codecks.io">Codecks</a>.</div></div></div></div></div><script async src=/main-cf472.js type="text/javascript"></script><script type="text/javascript">(function(){var a=document.createElement("link");a.rel="stylesheet";a.href="/main-fb1b6d06bf6f1a6450d822a0170c7edc.css";(document.getElementsByTagName("head")[0]).appendChild(a)})();</script></body></html>
