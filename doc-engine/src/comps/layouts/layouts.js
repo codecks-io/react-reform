@@ -35,14 +35,19 @@ export const Scaffold = ({children}) => (
   </B.Row>
 )
 
-const NavLink = (props) => (
-  <PlainLink white80 b mb4 tr f5 pr3 {...props}/>
+const NavLink = ({to, onlyActiveOnIndex = false, ...rest}, {router}) => (
+  <PlainLink white80 b mb4 tr f5 pr3 br bw2
+    {...(to && router.isActive(to, onlyActiveOnIndex) ? {to, white: true, 'b--white': true} : {to, 'b--transparent': true})}
+    {...rest}
+  />
 )
+
+NavLink.contextTypes = {router: React.PropTypes.object}
 
 export const Nav = () => (
   <StickyBox width={180}>
     <B.Col pt5>
-      <NavLink to="/" white br bw2 b--white>Home</NavLink>
+      <NavLink to="/" onlyActiveOnIndex>Home</NavLink>
       <NavLink to="/getting-started/">Getting Started</NavLink>
       <NavLink to="/examples/">Examples</NavLink>
       <NavLink to="/docs/">Api Docs</NavLink>
@@ -57,8 +62,8 @@ export const Footer = () => (
 export const H1 = (props) => <B component="h1" f3 b black80 lh-title {...props}/>
 export const SubH1 = (props) => <B f5 lh-title black60 mb5 {...props}/>
 
-export const H2 = (props) => <B component="h2" f4 b black80 lh-title {...props}/>
-export const H3 = (props) => <B component="h3" f5 b black80 lh-title {...props}/>
+export const H2 = (props) => <B component="h2" f4 b black80 lh-title mb3 {...props}/>
+export const H3 = (props) => <B component="h3" f5 b black80 lh-title mb3 {...props}/>
 
 export const Section = (props) => <B component="section" mb6 {...props}/>
 export const P = (props) => <B component="p" mb3 f5 black80 lh-copy {...props}/>
@@ -78,7 +83,7 @@ const stripLines = (text) => {
 
 export const Code = ({children: rawChildren, ...rest}) => {
   const children = typeof rawChildren === 'string' ? stripLines(rawChildren) : rawChildren
-  return <B component="pre" {...rest} ph3 pv2 marginLeft="-1rem" marginRight="-1rem" bgBlack05 black70 f6 maxWidth="100%" overflowX="auto">{children}</B>
+  return <B component="pre" mb4 ph3 pv2 marginLeft="-1rem" marginRight="-1rem" bgBlack05 black70 f6 maxWidth="100%" overflowX="auto" {...rest}>{children}</B>
 }
 
 Code.Inline = (props) => <B.I component="code" ph1 bgBlack05 {...props}/>

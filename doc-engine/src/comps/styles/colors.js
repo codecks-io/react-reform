@@ -11,6 +11,9 @@ export default {
   nearWhite: '#f4f4f4',
   white: '#fff',
 
+  brand: '#d62288',
+  brand05: 'rgba(214,34,136,.05)',
+
   transparent: 'transparent',
 
   black90: 'rgba(0,0,0,.9)',

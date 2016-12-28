@@ -7,7 +7,6 @@ import getRoutes from './routes'
 import P404 from 'pages/404'
 
 export default function render(locals, cb) {
-  // eslint-disable-next-line
   match({routes: getRoutes(true, require('routes?onlySync!pages/Home')), location: locals.path}, (error, redirectLocation, renderProps) => {
     if (error) {
       throw new Error(error)
