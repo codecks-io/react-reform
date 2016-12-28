@@ -4,7 +4,7 @@ import defaultValidators from 'react-reform/opt/validators'
 import {Text} from 'react-reform/opt/inputs'
 
 const defaultTheme = createTheme({
-  renderForm: (FormContainer, children, {directProps: {buttonLabel = "Submit", ...remainingDirectProps}}) => (
+  renderForm: (FormContainer, children, {directProps: {buttonLabel = 'Submit', ...remainingDirectProps}}) => (
     <FormContainer {...remainingDirectProps}>
       <div>{children}</div>
       <button>{buttonLabel}</button>
