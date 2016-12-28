@@ -9,8 +9,8 @@ import {WrapInput} from '../'
 
 export const simpleInputWrapper = (typeName, Comp, {defaultProps, extractValueFromOnChange = (value => value)} = {}) => (
   props => (
-    <WrapInput type={typeName} directProps={props}>{({value, listeners: {onChange, ...restListeners}, themeProps, registerFocusNode}) => (
-      <Comp {...defaultProps} value={value || ''} {...themeProps} onChange={e => onChange(extractValueFromOnChange(e))} {...restListeners} ref={registerFocusNode}/>
+    <WrapInput type={typeName} directProps={props}>{({value, themeProps: {onChange, ...restThemeProps}}) => (
+      <Comp {...defaultProps} value={value || ''} onChange={e => onChange(extractValueFromOnChange(e))} {...restThemeProps}/>
     )}</WrapInput>
   )
 )
@@ -20,7 +20,7 @@ export const Textarea = simpleInputWrapper('Textarea', 'textarea', {extractValue
 export const Password = simpleInputWrapper('Password', 'input', {defaultProps: {type: 'password'}, extractValueFromOnChange: e => e.target.value})
 export const Select = simpleInputWrapper('Select', 'select', {extractValueFromOnChange: e => e.target.value})
 export const Checkbox = props => (
-  <WrapInput type="Checkbox" directProps={props}>{({value, listeners: {onChange, ...restListeners}, themeProps, registerFocusNode}) => (
-    <input type="checkbox" value={value || false} {...themeProps} onChange={e => onChange(e.target.checked)} {...restListeners} ref={registerFocusNode}/>
+  <WrapInput type="Checkbox" directProps={props}>{({value, themeProps: {onChange, ...restThemeProps}}) => (
+    <input type="checkbox" value={value || false} onChange={e => onChange(e.target.checked)} {...restThemeProps}/>
   )}</WrapInput>
 )

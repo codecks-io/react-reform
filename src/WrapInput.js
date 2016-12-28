@@ -14,34 +14,44 @@ import React from 'react'
 // it would be much easier to understand if we created this component within the render method,
 // but this would mean creating a *new* component type every time we call render, leading to new
 // dom nodes being created constantly.
-const createFieldComponent = (instance, registerFocusNode) => {
-  const handleChange = (v, themeOnChange) => {
-    const value = typeof v === 'function' ? v(instance.state.value) : v
-    if (themeOnChange) themeOnChange(value)
-    instance.context.reformForm.setValue(instance.props.directProps.name, value)
-  }
-  const handleFocus = (e, themeOnFocus) => {
-    if (themeOnFocus) themeOnFocus(e)
-    instance.context.reformForm.onFocusField(instance.props.directProps.name)
-  }
-  const handleBlur = (e, themeOnBlur) => {
-    if (themeOnBlur) themeOnBlur(e)
-    instance.context.reformForm.onBlurField(instance.props.directProps.name)
-  }
-  return (themeProps) => {
-    const {children} = instance.props
-    const {value} = instance.state
-    // setting `instance` as `this` so that you can call e.g. `this.setState` for more complex interactions
-    return children.call(instance, {
-      value,
-      listeners: {
-        onChange: (v) => handleChange(v, themeProps.onChange),
-        onFocus: (e) => handleFocus(e, themeProps.onFocus),
-        onBlur: (e) => handleBlur(e, themeProps.onBlur)
-      },
-      themeProps,
-      registerFocusNode
-    })
+const createFieldComponent = (instance) => {
+  return class extends React.Component {
+
+    constructor(props) {
+      super(props)
+      instance.shouldPreventFocusAfterFail = () => this.props.dontFocusAfterFail
+    }
+
+    handleChange = (v, themeOnChange) => {
+      const value = typeof v === 'function' ? v(instance.state.value) : v
+      if (themeOnChange) themeOnChange(value)
+      instance.context.reformForm.setValue(instance.props.directProps.name, value)
+    }
+    handleFocus = (e, themeOnFocus) => {
+      if (themeOnFocus) themeOnFocus(e)
+      instance.context.reformForm.onFocusField(instance.props.directProps.name)
+    }
+    handleBlur = (e, themeOnBlur) => {
+      if (themeOnBlur) themeOnBlur(e)
+      instance.context.reformForm.onBlurField(instance.props.directProps.name)
+    }
+
+    render() {
+      const {onChange, onFocus, onBlur, dontFocusAfterFail: _, ...remainingThemeProps} = this.props
+      const {children: wrapInputChild} = instance.props
+      const {value} = instance.state
+      // setting `instance` as `this` so that you can call e.g. `this.setState` for more complex interactions
+      return wrapInputChild.call(instance, {
+        value,
+        themeProps: {
+          onChange: (v) => this.handleChange(v, onChange),
+          onFocus: (e) => this.handleFocus(e, onFocus),
+          onBlur: (e) => this.handleBlur(e, onBlur),
+          ref: n => instance.registeredNode = n,
+          ...remainingThemeProps
+        }
+      })
+    }
   }
 }
 
@@ -55,14 +65,13 @@ export default class WrapInput extends React.Component {
   static propTypes = {
     children: React.PropTypes.func.isRequired,
     directProps: React.PropTypes.shape({
-      name: React.PropTypes.string.isRequired,
-      preventFocusAfterFail: React.PropTypes.bool
+      name: React.PropTypes.string.isRequired
     }),
     focusFn: React.PropTypes.func.isRequired,
   }
 
   static defaultProps = {
-    focusFn(node) {if (!this.props.directProps.preventFocusAfterFail) node.focus()}
+    focusFn(node) {if (!this.shouldPreventFocusAfterFail || !this.shouldPreventFocusAfterFail()) node.focus()}
   }
 
   constructor(props, context) {
@@ -71,7 +80,7 @@ export default class WrapInput extends React.Component {
     this.scopedValidators = {}
     const value = this.context.reformForm.getValue(props.directProps.name)
     this.state = this.prepareState(value, props, context)
-    this.fieldComponent = createFieldComponent(this, n => {this.registeredNode = n})
+    this.fieldComponent = createFieldComponent(this)
   }
 
   componentDidMount() {
