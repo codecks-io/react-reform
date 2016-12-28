@@ -10,7 +10,7 @@ const defaultTheme = createTheme({
       <button>{buttonLabel}</button>
     </FormContainer>
   ),
-  renderField: (Field, {directProps, name, isFocused, validations, id}) => {
+  renderField: (Field, {directProps, name, validations, id}) => {
     const errors = validations
       .filter(({isValid}) => isValid === false)
       .map(({errorMessage, name}) => <span key={name}>{errorMessage} </span>)

@@ -5,20 +5,16 @@ import {Text} from 'react-reform/opt/inputs'
 
 const defaultTheme = createTheme({
   renderForm: (FormContainer, children, {directProps}) => (
-    <FormContainer {...directProps}>
-      <div>{children}</div>
-      <button>Submit</button>
-    </FormContainer>
+    <FormContainer {...directProps}>{children}</FormContainer>
   ),
-  renderField: (Field, {directProps, name, validations, id}) => {
+  renderField: (Field, {directProps, submitForm, name, validations, id}) => {
     const errors = validations
       .filter(({isValid}) => isValid === false)
       .map(({errorMessage, name}) => <span key={name}>{errorMessage} </span>)
-    const isRequired = validations.some(({name}) => name === 'required')
     return (
       <div>
-        <label htmlFor={id}>{name}{isRequired && '*'}</label>
-        <Field id={id} {...directProps}/>
+        <label htmlFor={id}>{name}</label>
+        <Field id={id} onBlur={submitForm} dontFocusAfterFail {...directProps}/>
         {errors.length > 0 && <span>{errors}</span>}
       </div>
     )
@@ -36,8 +32,7 @@ export default class ExampleForm extends React.Component {
         <div>
           <h4>Form</h4>
           <Form onSubmit={this.handleSubmit}>
-            <Text name="required-name" is-required/>
-            <Text name="optional-name"/>
+            <Text name="field1" has-minlength={5}/>
           </Form>
         </div>
       </ReformContext>

@@ -49,6 +49,13 @@ export default class Examples extends React.Component {
           <Code>{require('raw!comps/examples/multiple-submit-inline')}</Code>
           <Applied comp={require('babel!comps/examples/multiple-submit-inline').default}/>
         </Section>
+        <Section>
+          <H2>Submit on blur</H2>
+          <P><Code.Inline>submitForm</Code.Inline> is also available in the <Code.Inline>renderField</Code.Inline> function. This can be called when the input is blurred.</P>
+          <P>There's a special case here. When validation fails, React Reform focusses the first invalid field by default. In our submit-on-blur case however, this would result in focussing the field immediately blurring if there's an validation error. This behaviour can be skipped via setting <Code.Inline>dontFocusAfterFail</Code.Inline> on the field.</P>
+          <Code>{require('raw!comps/examples/submit-on-blur')}</Code>
+          <Applied comp={require('babel!comps/examples/submit-on-blur').default}/>
+        </Section>
       </Scaffold>
     )
   }
