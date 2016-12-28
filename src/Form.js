@@ -81,7 +81,7 @@ export default class Form extends React.Component {
     const {fields} = this.state
     const {initialModel} = this.props
     const existing = fields[name]
-    if (!existing) {
+    if (!existing || this.resetInProgress) {
       fields[name] = {
         value: initialModel[name] || null,
         validations: [],
@@ -146,7 +146,8 @@ export default class Form extends React.Component {
   }
 
   reset() {
-    this.setState({fields: {}})
+    this.resetInProgress = true
+    this.setState({fields: {}}, () => this.resetInProgress = false)
   }
 
   focusField(name) {
@@ -165,7 +166,7 @@ export default class Form extends React.Component {
         if (areIdentical) return
       }
     }
-    // postpone updating state, since we're currently within the render cycle
+    // postpone updating state, since we're within the constructor/cwr part of the child here
     setTimeout(() => this.ensureFieldWith(name, {validations}))
   }
 
