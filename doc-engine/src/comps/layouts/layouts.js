@@ -1,7 +1,9 @@
 import React from 'react'
+import ReactDOM from 'react-dom'
 import {B, col} from 'comps/styles'
 import {Link as RRLink} from 'react-router'
 import StickyBox from 'react-sticky-box'
+import {scrollTo} from 'lib/scroll'
 
 export const RawButton = ({onClick, to, href, disabled, type = to || href ? undefined : 'button', props, ...rest}) => (
   <B component={to ? RRLink : href ? 'a' : 'button'} props={{onClick, type, to, href, disabled, ...props}} {...rest} cursor="pointer"/>
@@ -36,24 +38,42 @@ export const Scaffold = ({children}) => (
 )
 
 const NavLink = ({to, onlyActiveOnIndex = false, ...rest}, {router}) => (
-  <PlainLink white80 b mb4 tr f5 pr3 br bw2
+  <PlainLink white80 b mb4 tr f5 pr3 br bw2 lh-title
+    hover={{color: col.white}}
     {...(to && router.isActive(to, onlyActiveOnIndex) ? {to, white: true, 'b--white': true} : {to, 'b--transparent': true})}
     {...rest}
   />
 )
 
+const NavSubLink = (props, {router}) => (
+  <PlainLink white80 mb3 tr f6 pr3 br bw2 b--white30 transitionProperty="border-color, color"
+    hover={{color: col.white, borderColor: col.white}} {...props}
+  />
+)
+
 NavLink.contextTypes = {router: React.PropTypes.object}
 
-export const Nav = () => (
+export const Nav = (props, {router}) => (
   <StickyBox width={180}>
     <B.Col pt5>
       <NavLink to="/" onlyActiveOnIndex>Home</NavLink>
       <NavLink to="/getting-started/">Getting Started</NavLink>
       <NavLink to="/examples/">Examples</NavLink>
+      {router.isActive('/examples/') && (
+        <B.Col marginTop="-1rem" mb2>
+          <NavSubLink to="/examples/#required-with-stars">Add a <Code.Inline>*</Code.Inline> to all required fields</NavSubLink>
+          <NavSubLink to="/examples/#custom-button-text">Custom button text</NavSubLink>
+          <NavSubLink to="/examples/#multiple-submit">Multiple submit buttons</NavSubLink>
+          <NavSubLink to="/examples/#submit-on-blur">Submit on blur</NavSubLink>
+          <NavSubLink to="/examples/#dynamic-fields">Dynamic fields</NavSubLink>
+        </B.Col>
+      )}
       <NavLink to="/docs/">Api Docs</NavLink>
     </B.Col>
   </StickyBox>
 )
+
+Nav.contextTypes = {router: React.PropTypes.object}
 
 export const Footer = () => (
   <B black40 mta pt5 f6>React Reform is brought to you by <Link black60 href="https://www.codecks.io">Codecks</Link>.</B>
@@ -62,7 +82,37 @@ export const Footer = () => (
 export const H1 = (props) => <B component="h1" f3 b black80 lh-title {...props}/>
 export const SubH1 = (props) => <B f5 lh-title black60 mb5 {...props}/>
 
-export const H2 = (props) => <B component="h2" f4 b black80 lh-title mb3 {...props}/>
+export const H2 = class extends React.Component {
+
+  static contextTypes = {router: React.PropTypes.object}
+
+  constructor(props, context) {
+    super(props);
+    this.lastHash = null;
+  }
+
+  componentDidMount() {
+    this.respondToHash();
+  }
+
+  componentDidUpdate() {
+    this.respondToHash();
+  }
+
+  respondToHash() {
+    const {hash} = this.context.router.location;
+    if (this.lastHash === hash || !this.props.id) return;
+    this.lastHash = hash;
+    if (hash === `#${this.props.id}`) {
+      const node = ReactDOM.findDOMNode(this)
+      scrollTo(node.getBoundingClientRect().top + window.scrollY)
+    }
+  }
+
+  render() {
+    return <B component="h2" f4 b black80 lh-title mb3 ref={n => this.node = n} {...this.props}/>
+  }
+}
 export const H3 = (props) => <B component="h3" f5 b black80 lh-title mb3 {...props}/>
 
 export const Section = (props) => <B component="section" mb6 {...props}/>

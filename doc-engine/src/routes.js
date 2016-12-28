@@ -7,7 +7,11 @@ import {useScroll} from 'react-router-scroll'
 export default function(isServerRender, routeList) {
   const AppWithRoutes = (props) => <App allRoutes={routeList} {...props}/>
   return (
-    <Router history={browserHistory} render={applyRouterMiddleware(useScroll())}>
+    <Router history={browserHistory} render={
+      applyRouterMiddleware(useScroll((prevRouterProps, {location}) => (
+        prevRouterProps && location.pathname !== prevRouterProps.location.pathname
+      )))
+    }>
       <Route component={AppWithRoutes}>
         {routeList.map(({path, comp: Comp, isAsync}) => {
           const props = {path, key: path}
