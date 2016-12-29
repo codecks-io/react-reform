@@ -13,6 +13,7 @@ export default {
 
   brand: '#d62288',
   brand05: 'rgba(214,34,136,.05)',
+  darkBrand: '#ac1b6d',
 
   transparent: 'transparent',
 

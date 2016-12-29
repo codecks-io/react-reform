@@ -12,7 +12,7 @@ export const PlainLink = ({href, to, target, props, nofollow, ...rest}) => (
   <B.I component={to ? RRLink : 'a'} props={{...props, to, href, target, rel: nofollow ? 'nofollow' : undefined}} transitionProperty="color" {...rest}/>
 )
 export const Link = (props) => (
-  <PlainLink blue b hover={{color: col.darkBlue}} {...props}/>
+  <PlainLink brand b hover={{color: col.darkBrand}} {...props}/>
 )
 
 export const BigButton = (props) => (
@@ -69,6 +69,16 @@ export const Nav = (props, {router}) => (
         </B.Col>
       )}
       <NavLink to="/docs/">Api Docs</NavLink>
+      {router.isActive('/docs/') && (
+        <B.Col marginTop="-1rem" mb2>
+          <NavSubLink to="/docs/reform-context">ReformContext</NavSubLink>
+          <NavSubLink to="/docs/create-theme">Themes</NavSubLink>
+          <NavSubLink to="/docs/create-validators">Validators</NavSubLink>
+          <NavSubLink to="/docs/wrap-input">WrapInput</NavSubLink>
+          <NavSubLink to="/docs/form">Form</NavSubLink>
+          <NavSubLink to="/docs/optional">Optional default validations and inputs</NavSubLink>
+        </B.Col>
+      )}
     </B.Col>
   </StickyBox>
 )
