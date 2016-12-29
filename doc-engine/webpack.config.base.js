@@ -62,7 +62,7 @@ module.exports = function(env) {
         {
           test: /\.js?$/,
           loader: path.join(__dirname, 'node_modules', 'babel-loader'),
-          exclude: /node_modules|comps\/examples/,
+          exclude: /node_modules|comps\/recipes/,
           query: {
             cacheDirectory: true
           }

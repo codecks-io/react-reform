@@ -15,9 +15,9 @@ const defaultTheme = createTheme({
       .filter(({isValid}) => isValid === false)
       .map(({errorMessage, name}) => <span key={name}>{errorMessage} </span>)
     return (
-      <div>
+      <div style={{marginBottom: 15}}>
         <label htmlFor={id}>{name}</label>
-        <Field id={id} {...directProps}/>
+        <Field id={id} style={{display: 'block'}} {...directProps}/>
         {errors.length > 0 && <span>{errors}</span>}
       </div>
     )

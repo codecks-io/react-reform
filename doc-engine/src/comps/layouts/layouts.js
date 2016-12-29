@@ -58,14 +58,14 @@ export const Nav = (props, {router}) => (
     <B.Col pt5>
       <NavLink to="/" onlyActiveOnIndex>Home</NavLink>
       <NavLink to="/getting-started/">Getting Started</NavLink>
-      <NavLink to="/examples/">Examples</NavLink>
-      {router.isActive('/examples/') && (
+      <NavLink to="/recipes/">Recipes</NavLink>
+      {router.isActive('/recipes/') && (
         <B.Col marginTop="-1rem" mb2>
-          <NavSubLink to="/examples/#required-with-stars">Add a <Code.Inline>*</Code.Inline> to all required fields</NavSubLink>
-          <NavSubLink to="/examples/#custom-button-text">Custom button text</NavSubLink>
-          <NavSubLink to="/examples/#multiple-submit">Multiple submit buttons</NavSubLink>
-          <NavSubLink to="/examples/#submit-on-blur">Submit on blur</NavSubLink>
-          <NavSubLink to="/examples/#dynamic-fields">Dynamic fields</NavSubLink>
+          <NavSubLink to="/recipes/#required-with-stars">Add a <Code.Inline>*</Code.Inline> to all required fields</NavSubLink>
+          <NavSubLink to="/recipes/#custom-button-text">Custom button text</NavSubLink>
+          <NavSubLink to="/recipes/#multiple-submit">Multiple submit buttons</NavSubLink>
+          <NavSubLink to="/recipes/#submit-on-blur">Submit on blur</NavSubLink>
+          <NavSubLink to="/recipes/#dynamic-fields">Dynamic fields</NavSubLink>
         </B.Col>
       )}
       <NavLink to="/docs/">Api Docs</NavLink>
@@ -87,22 +87,22 @@ export const H2 = class extends React.Component {
   static contextTypes = {router: React.PropTypes.object}
 
   constructor(props, context) {
-    super(props);
-    this.lastHash = null;
+    super(props)
+    this.lastHash = null
   }
 
   componentDidMount() {
-    this.respondToHash();
+    this.respondToHash()
   }
 
   componentDidUpdate() {
-    this.respondToHash();
+    this.respondToHash()
   }
 
   respondToHash() {
-    const {hash} = this.context.router.location;
-    if (this.lastHash === hash || !this.props.id) return;
-    this.lastHash = hash;
+    const {hash} = this.context.router.location
+    if (this.lastHash === hash || !this.props.id) return
+    this.lastHash = hash
     if (hash === `#${this.props.id}`) {
       const node = ReactDOM.findDOMNode(this)
       scrollTo(node.getBoundingClientRect().top + window.scrollY)
