@@ -65,7 +65,7 @@ export default class ReformContext extends React.Component {
           <P>This validation names can then be used by inputs by prefixing <Code.Inline>is-</Code.Inline> or <Code.Inline>has-</Code.Inline>:</P>
           <Code>{`
             <Form onSubmit={this.handleSubmit}>
-              <Text name="tag" is-required is-validTag has-minlength={3}>
+              <Text name="tag" is-required is-validTag has-minlength={3}/>
             </Form>
           `}</Code>
         </Section>

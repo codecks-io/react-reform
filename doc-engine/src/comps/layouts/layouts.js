@@ -40,18 +40,21 @@ export const Scaffold = ({children}) => (
 const NavLink = ({to, onlyActiveOnIndex = false, ...rest}, {router}) => (
   <PlainLink white80 b mb4 tr f5 pr3 br bw2 lh-title
     hover={{color: col.white}}
-    {...(to && router.isActive(to, onlyActiveOnIndex) ? {to, white: true, 'b--white': true} : {to, 'b--transparent': true})}
+    {...(to && (onlyActiveOnIndex ? router.isActive(to, true) : router.location.pathname.startsWith(to)) ? {to, white: true, 'b--white': true} : {to, 'b--transparent': true})}
     {...rest}
   />
 )
 
+NavLink.contextTypes = {router: React.PropTypes.object}
+
 const NavSubLink = (props, {router}) => (
   <PlainLink white80 mb3 tr f6 pr3 br bw2 b--white30 transitionProperty="border-color, color"
+    {...(router.isActive(props.to) ? {'b--white': true, white: true} : {})}
     hover={{color: col.white, borderColor: col.white}} {...props}
   />
 )
 
-NavLink.contextTypes = {router: React.PropTypes.object}
+NavSubLink.contextTypes = {router: React.PropTypes.object}
 
 export const Nav = (props, {router}) => (
   <StickyBox width={180}>
@@ -86,7 +89,10 @@ export const Nav = (props, {router}) => (
 Nav.contextTypes = {router: React.PropTypes.object}
 
 export const Footer = () => (
-  <B black40 mta pt5 f6>React Reform is brought to you by <Link black60 href="https://www.codecks.io">Codecks</Link>.</B>
+  <B black40 mta pt5 f6>
+    React Reform is brought to you by <Link black60 href="https://www.codecks.io">Codecks</Link>.
+    Suggest edits for these pages on <Link black60 href="https://github.com/codecks-io/react-reform/tree/master/doc-engine/pages">GitHub</Link>
+  </B>
 )
 
 export const H1 = (props) => <B component="h1" f3 b black80 lh-title {...props}/>
@@ -115,7 +121,7 @@ export const H2 = class extends React.Component {
     this.lastHash = hash
     if (hash === `#${this.props.id}`) {
       const node = ReactDOM.findDOMNode(this)
-      scrollTo(node.getBoundingClientRect().top + window.scrollY)
+      setTimeout(() => scrollTo(node.getBoundingClientRect().top + window.scrollY), 10)
     }
   }
 
@@ -146,4 +152,4 @@ export const Code = ({children: rawChildren, ...rest}) => {
   return <B component="pre" mb4 ph3 pv2 marginLeft="-1rem" marginRight="-1rem" bgBlack05 black70 f6 maxWidth="100%" overflowX="auto" {...rest}>{children}</B>
 }
 
-Code.Inline = (props) => <B.I component="code" ph1 bgBlack05 {...props}/>
+Code.Inline = (props) => <B.I component="code" display="inline" ph1 bgBlack05 {...props}/>
