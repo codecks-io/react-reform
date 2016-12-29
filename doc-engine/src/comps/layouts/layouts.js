@@ -69,14 +69,14 @@ export const Nav = (props, {router}) => (
         </B.Col>
       )}
       <NavLink to="/docs/">Api Docs</NavLink>
-      {router.isActive('/docs/') && (
+      {router.location.pathname.startsWith('/docs/') && (
         <B.Col marginTop="-1rem" mb2>
-          <NavSubLink to="/docs/reform-context">ReformContext</NavSubLink>
-          <NavSubLink to="/docs/create-theme">Themes</NavSubLink>
-          <NavSubLink to="/docs/create-validators">Validators</NavSubLink>
-          <NavSubLink to="/docs/wrap-input">WrapInput</NavSubLink>
-          <NavSubLink to="/docs/form">Form</NavSubLink>
-          <NavSubLink to="/docs/optional">Optional default validations and inputs</NavSubLink>
+          <NavSubLink to="/docs/reform-context/">ReformContext</NavSubLink>
+          <NavSubLink to="/docs/themes/">Themes</NavSubLink>
+          <NavSubLink to="/docs/validations/">Validations</NavSubLink>
+          <NavSubLink to="/docs/wrap-input/">WrapInput</NavSubLink>
+          <NavSubLink to="/docs/form/">Form</NavSubLink>
+          <NavSubLink to="/docs/optional/">Optional default validations and inputs</NavSubLink>
         </B.Col>
       )}
     </B.Col>

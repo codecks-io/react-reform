@@ -92,7 +92,7 @@ export default class GettingStarted extends React.Component {
               }
             }
 
-            render(<App/>, document.getElementById('app'))
+            render(<App/>, document.getElementById('root'))
           `}</Code>
         </Section>
 
