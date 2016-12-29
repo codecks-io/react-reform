@@ -88,6 +88,33 @@ export default class Validations extends React.Component {
           <H3><Code.Inline>data.name</Code.Inline></H3>
           <P>Contains the name of the field.</P>
         </Section>
+        <Section>
+          <H2>Asynchronous validation</H2>
+          <P>It's also possible to define asynchronous validations. The API is rather similar. But rather than defining a validation description like above we're using a <i>function</i> returning a validation description:</P>
+          <Code>{`
+            const validations = {
+              unique: () => {
+                const cachedResults = {}
+                return {
+                  isValid: (val, data, askAgain) => {
+                    if (!val) return true
+                    if (cachedResults[val] === undefined) {
+                      cachedResults[val] = 'pending'
+                      setTimeout(() => {
+                        cachedResults[val] = Math.random() > 0.5
+                        askAgain()
+                      }, 1000)
+                    }
+                    return cachedResults[val]
+                  },
+                  errorMessage: (val, {arg}) => \`has to be unique. But '\${val}' isn't\`
+                }
+              }
+            }
+          `}</Code>
+          <P>This function gets invoked once the input is mounted. This means that the <Code.Inline>cachedResults</Code.Inline> variable is unique for each input using this validation.</P>
+          <P>As you can see we're doing any real request but simulate this via <Code.Inline>setTimeout</Code.Inline>. We fill the cache with a value and return this value on any subsequent validation request. Once we receive the proper value, we're calling the third argument of the <Code.Inline>isValid</Code.Inline> function, indicating that we'd like to be asked again, whether the input is valid.</P>
+        </Section>
       </Scaffold>
     )
   }

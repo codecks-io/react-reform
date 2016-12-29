@@ -153,3 +153,10 @@ export const Code = ({children: rawChildren, ...rest}) => {
 }
 
 Code.Inline = (props) => <B.I component="code" display="inline" ph1 bgBlack05 {...props}/>
+
+export const AppliedCode = ({comp: Comp}) => (
+  <B mb4>
+    <H3 mb4>See it in action</H3>
+    <B ph3 pv3 marginLeft="-1rem" marginRight="-1rem" bgLightBlue black70 maxWidth="100%" overflowX="auto"><Comp/></B>
+  </B>
+)

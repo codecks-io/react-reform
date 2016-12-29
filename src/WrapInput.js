@@ -66,7 +66,7 @@ export default class WrapInput extends React.Component {
     children: React.PropTypes.func.isRequired,
     directProps: React.PropTypes.shape({
       name: React.PropTypes.string.isRequired
-    }),
+    }).isRequired,
     focusFn: React.PropTypes.func.isRequired,
   }
 
