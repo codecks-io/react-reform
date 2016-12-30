@@ -4,8 +4,6 @@ import React from 'react'
 import 'normalize.css/normalize.css'
 import './App.css'
 
-import {ReformContext, validations, defaultTheme} from 'comps/forms'
-
 export default class App extends React.Component {
 
   static childContextTypes = {
@@ -22,10 +20,6 @@ export default class App extends React.Component {
   }
 
   render() {
-    return (
-      <ReformContext validations={validations} themes={{default: defaultTheme}}>
-        {this.props.children}
-      </ReformContext>
-    )
+    return this.props.children
   }
 }
