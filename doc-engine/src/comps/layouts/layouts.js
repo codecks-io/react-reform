@@ -25,7 +25,7 @@ export const Input = (props) => (
 
 export const Scaffold = ({children}) => (
   <B.Row minHeight="100vh">
-    <B.Col ph4 pv4 flex="200px 1 0" bgHotPink paddingTop="11.7rem" alignItems="flex-end">
+    <B.Col ph4 pv4 flex="200px 1 0" bgBrand paddingTop="11.7rem" alignItems="flex-end">
       <Nav/>
     </B.Col>
     <B.Row pb4 ph5 flex="800px 4 1" pt6 minWidth="1px">
@@ -157,7 +157,7 @@ Code.Inline = (props) => <B.I component="code" display="inline" ph1 bgBlack05 {.
 export const AppliedCode = ({comp: Comp}) => (
   <B mb4>
     <H3 mb4>See it in action</H3>
-    <B ph3 pv3 marginLeft="-1rem" marginRight="-1rem" bgLightBlue black70 maxWidth="100%" overflowX="auto" mb2><Comp/></B>
+    <B ph3 pv3 marginLeft="-1rem" marginRight="-1rem" bgWashedGreen black70 maxWidth="100%" overflowX="auto" mb2><Comp/></B>
     <B f6 black50>Check your console to see the submitted value</B>
   </B>
 )
