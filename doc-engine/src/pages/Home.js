@@ -28,12 +28,12 @@ export default class Home extends React.Component {
         </Section>
         <Section>
           <H2 mb4>Features</H2>
-          <H3>You get full control over all tags and styles.</H3>
+          <H3>You get full control over all tags and styles</H3>
           <P mb4>
             Do you prefer <Code.Inline>{'<p>'}</Code.Inline>s over <Code.Inline>{'<div>'}</Code.Inline>s?
             Do you prefer inline styles over class names? It's all up to you! You remain control over how your forms are rendered.
           </P>
-          <H3>Define your custom behaviour for your validation rules.</H3>
+          <H3>Define your custom behaviour for validation</H3>
           <P mb4>
             Do you want to indicate validation errors while the user is typing?
             Do you want to treat erros sent from the server differently?
@@ -43,7 +43,7 @@ export default class Home extends React.Component {
           <P mb4>
             Take a look at the <Link to="/recipes/">recipes</Link> to see what kind of stuff React Reform allows you to do. Sure, being low level means that you've got quite some stuff to write to get production-ready themes. But you'll be rewarded with a very concise way of creating powerful and consistent forms.
           </P>
-          <H3>Small.</H3>
+          <H3>Small</H3>
           <P mb4>
             React Reform comes with <b>0</b> dependencies.
             It also leaves out all optional things like default inputs and validation rules out of the core.
