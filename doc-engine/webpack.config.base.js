@@ -71,7 +71,7 @@ module.exports = function(env) {
         },
         {
           test: /\.css$/,
-          loader: isProd ? ExtractTextPlugin.extract('style', 'css') : 'style!css'
+          loader: isProd ? ExtractTextPlugin.extract('style', 'css?sourceMap') : 'style!css'
         },
         {
           test: /\.svg\?inline$/,
