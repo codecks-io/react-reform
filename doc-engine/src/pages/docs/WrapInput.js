@@ -58,6 +58,10 @@ export default class WrapInput extends React.Component {
           <Link href="https://github.com/skratchdot/react-bootstrap-daterangepicker"><H3 color="inherit">react-bootstrap-daterangepicker</H3></Link>
           <Code>{require('raw!comps/recipes/wrapinput-react-bootstrap-daterangepicker')}</Code>
           <AppliedCode comp={require('babel!comps/recipes/wrapinput-react-bootstrap-daterangepicker').default}/>
+          <H3>Custom components</H3>
+          <P>The recommended way would be to create one component first and wrap it rather than wrapping 3 inputs. But to give you a idea of what a very incomplete approach could look like:</P>
+          <Code>{require('raw!comps/recipes/wrapinput-custom-datepicker')}</Code>
+          <AppliedCode comp={require('babel!comps/recipes/wrapinput-custom-datepicker').default}/>
         </Section>
       </Scaffold>
     )

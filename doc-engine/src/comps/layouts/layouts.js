@@ -157,6 +157,7 @@ Code.Inline = (props) => <B.I component="code" display="inline" ph1 bgBlack05 {.
 export const AppliedCode = ({comp: Comp}) => (
   <B mb4>
     <H3 mb4>See it in action</H3>
-    <B ph3 pv3 marginLeft="-1rem" marginRight="-1rem" bgLightBlue black70 maxWidth="100%" overflowX="auto"><Comp/></B>
+    <B ph3 pv3 marginLeft="-1rem" marginRight="-1rem" bgLightBlue black70 maxWidth="100%" overflowX="auto" mb2><Comp/></B>
+    <B f6 black50>Check your console to see the submitted value</B>
   </B>
 )
