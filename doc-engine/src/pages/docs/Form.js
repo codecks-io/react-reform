@@ -55,6 +55,16 @@ export default class Form extends React.Component {
             </Form>
           `}</Code>
         </Section>
+        <Section>
+          <H2>Form instance methods</H2>
+          <P>You may attach a <Code.Inline>ref</Code.Inline> prop to the form. This ref officially supports some methods you might want to take advantage of.</P>
+          <H3><Code.Inline>reset()</Code.Inline></H3>
+          <P>Sets the form inputs to an untouched state.</P>
+          <H3><Code.Inline>{'checkForErrors() => ({hasErrors, firstInvalidFieldName})'}</Code.Inline></H3>
+          <P>In case you'd like to validate the form without submitting it. Call this method. You can use the <Code.Inline>firstInvalidFieldName</Code.Inline> to focus the relevant input (see below).</P>
+          <H3><Code.Inline>focusField(fieldName)</Code.Inline></H3>
+          <P>Calls focuses the input by executing the <Code.Inline>focusFn(node)</Code.Inline> method according to it's definition on the <Code.Inline>WrapInput</Code.Inline> component.</P>
+        </Section>
       </Scaffold>
     )
   }
