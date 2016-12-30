@@ -1,2 +1,7 @@
+.gitignore
+.eslintrc
+.babelrc
 src/
-examples/
+samples/
+docs/
+doc-engine/

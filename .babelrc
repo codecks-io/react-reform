@@ -1,5 +1,8 @@
 {
-  "stage": 0,
-  "loose": ["all"],
-  "plugins": ["babel-plugin-object-assign"]
+  "presets": [
+    "react-app"
+  ],
+  "plugins": [
+    "babel-plugin-dev-expression"
+  ]
 }

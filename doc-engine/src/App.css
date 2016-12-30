@@ -1,0 +1,34 @@
+html {
+  box-sizing: border-box;
+  transition-duration: .15s;
+  transition-timing-function: ease-out;
+}
+
+*, *:before, *:after {
+  box-sizing: inherit;
+  transition-duration: inherit;
+  transition-timing-function: inherit;
+  transition-property: none;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont,
+    "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans",
+    "Droid Sans", "Helvetica Neue", sans-serif;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+h1, h2, h3, h4, h5, h6, p, ul, ol, pre {
+  margin: 0; padding: 0;
+}
+
+/* fixing bootstrap dependency of react-bootstrap-daterangepicker */
+
+.dropdown-menu {
+  display: none;
+}
