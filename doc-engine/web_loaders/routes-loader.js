@@ -76,7 +76,8 @@ const getRoutes = (homePath, cb) => {
     const data = {
       location: f,
       path: fileToUrl(f),
-      extension
+      extension,
+      isAsync: true
     }
     if (extension === '.md') {
       fs.readFile(path.join(baseDir, f), 'utf8', (err, content) => {
@@ -84,7 +85,6 @@ const getRoutes = (homePath, cb) => {
         const fm = frontMatter(content)
         data.info = fm.attributes
         data.info.excerpt = data.info.excerpt || extractExcerpt(fm.body)
-        data.isAsync = true
         res(data)
       })
     } else {
