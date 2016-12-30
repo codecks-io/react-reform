@@ -2,7 +2,7 @@ import React from 'react'
 
 import {Form, createTheme, ReformContext} from 'react-reform'
 import {Text, Password} from 'react-reform/opt/inputs'
-import defaultValidators from 'react-reform/opt/validators'
+import defaultValidations from 'react-reform/opt/validations'
 
 import {B, col} from 'comps/styles'
 import {Input, BigButton} from 'comps/layouts'
@@ -57,7 +57,7 @@ const defaultTheme = createTheme({
 })
 
 const validations = {
-  ...defaultValidators
+  ...defaultValidations
 }
 
 export {

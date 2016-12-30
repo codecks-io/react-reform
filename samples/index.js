@@ -2,7 +2,7 @@ import React from 'react'
 import {render} from 'react-dom'
 import {Form, ReformContext, createTheme} from 'react-reform'
 import {Text, Checkbox, Select} from 'react-reform/opt/inputs'
-import defaultValidators from 'react-reform/opt/validators'
+import defaultValidations from 'react-reform/opt/validations'
 
 const themes = {
   'default': createTheme({
@@ -66,7 +66,7 @@ class App extends React.Component {
 
   render() {
     return (
-      <ReformContext themes={themes} validations={{...defaultValidators, ...validations}}>
+      <ReformContext themes={themes} validations={{...defaultValidations, ...validations}}>
         <div>
           <h1>Uncontrolled</h1>
           <Form onSubmit={this.handleSubmit} style={{color: 'yellow'}} initialModel={{name: null}} buttonLabel="Yo!">

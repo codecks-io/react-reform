@@ -1,7 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import {Form, ReformContext, WrapInput} from 'react-reform'
-import defaultValidators from 'react-reform/opt/validators'
+import defaultValidations from 'react-reform/opt/validations'
 import defaultTheme from '../default-theme'
 import {DatePicker as RawDatePicker} from 'belle'
 import 'react-date-picker/index.css'
@@ -22,7 +22,7 @@ export default class ExampleForm extends React.Component {
 
   render() {
     return (
-      <ReformContext themes={{default: defaultTheme}} validations={defaultValidators}>
+      <ReformContext themes={{default: defaultTheme}} validations={defaultValidations}>
         <div>
           <h4>Form</h4>
           <Form onSubmit={this.handleSubmit}>

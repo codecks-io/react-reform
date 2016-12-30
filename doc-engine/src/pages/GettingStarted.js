@@ -52,13 +52,13 @@ export default class GettingStarted extends React.Component {
           `}</Code>
         </Section>
         <Section>
-          <H2 mb3>Create custom validators</H2>
+          <H2 mb3>Create custom validations</H2>
           <P>Let's add a <Code.Inline>validTag</Code.Inline> validation to the default validations like e.g. <Code.Inline>required</Code.Inline> or <Code.Inline>maxlenght</Code.Inline>.</P>
           <Code>{`
-            import defaultValidators from 'react-reform/opt/validators'
+            import defaultValidations from 'react-reform/opt/validations'
 
             const validations = {
-              ...defaultValidators,
+              ...defaultValidations,
 
               validTag: {
                 isValid: val => /#\\W+/.test(val),
@@ -69,8 +69,8 @@ export default class GettingStarted extends React.Component {
           `}</Code>
         </Section>
         <Section>
-          <H2 mb3>Make your app aware of your themes and validators</H2>
-          <P>React Reform uses react's context to propagate what themes and validators you have enabled for your app.</P>
+          <H2 mb3>Make your app aware of your themes and validations</H2>
+          <P>React Reform uses react's context to propagate what themes and validations you have enabled for your app.</P>
           <P>Therefore you need to wrap your root component with the <Code.Inline>{'<ReformContext>'}</Code.Inline> Component like so.</P>
           <Code>{`
             import React, {Component} from 'react'

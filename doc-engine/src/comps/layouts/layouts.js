@@ -83,7 +83,7 @@ export const Nav = (props, {router}) => (
           <NavSubLink to="/docs/validations/">Validations</NavSubLink>
           <NavSubLink to="/docs/wrap-input/">WrapInput</NavSubLink>
           <NavSubLink to="/docs/form/">Form</NavSubLink>
-          <NavSubLink to="/docs/optional/">Optional default validations and inputs</NavSubLink>
+          <NavSubLink to="/docs/optional/">Optional validations and inputs</NavSubLink>
         </B.Col>
       )}
     </B.Col>

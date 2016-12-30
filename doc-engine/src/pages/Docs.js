@@ -30,8 +30,8 @@ export default class Docs extends React.Component {
           <P>Let's apply all the techniques above to see how forms are written.</P>
         </Section>
         <Section>
-          <Link to="/docs/optional/"><H2 color="inherit">Optional default validations and inputs</H2></Link>
-          <P>To get you off the ground, see which validators and inputs come with React Reform</P>
+          <Link to="/docs/optional/"><H2 color="inherit">Optional validations and inputs</H2></Link>
+          <P>To get you off the ground, see which validations and inputs come with React Reform</P>
         </Section>
       </Scaffold>
     )

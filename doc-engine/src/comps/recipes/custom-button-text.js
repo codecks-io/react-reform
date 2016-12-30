@@ -1,6 +1,6 @@
 import React from 'react'
 import {Form, ReformContext, createTheme} from 'react-reform'
-import defaultValidators from 'react-reform/opt/validators'
+import defaultValidations from 'react-reform/opt/validations'
 import {Text} from 'react-reform/opt/inputs'
 
 const defaultTheme = createTheme({
@@ -31,7 +31,7 @@ export default class ExampleForm extends React.Component {
   }
   render() {
     return (
-      <ReformContext themes={{default: defaultTheme}} validations={defaultValidators}>
+      <ReformContext themes={{default: defaultTheme}} validations={defaultValidations}>
         <div>
           <h4>Form</h4>
           <Form onSubmit={this.handleSubmit} buttonLabel="Custom button text">

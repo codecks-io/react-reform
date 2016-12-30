@@ -21,6 +21,6 @@ export const Password = simpleInputWrapper('Password', 'input', {defaultProps: {
 export const Select = simpleInputWrapper('Select', 'select', {extractValueFromOnChange: e => e.target.value})
 export const Checkbox = props => (
   <WrapInput type="Checkbox" directProps={props}>{({value, themeProps: {onChange, ...restThemeProps}}) => (
-    <input type="checkbox" value={value || false} onChange={e => onChange(e.target.checked)} {...restThemeProps}/>
+    <input type="checkbox" checked={value || false} onChange={e => onChange(e.target.checked)} {...restThemeProps}/>
   )}</WrapInput>
 )

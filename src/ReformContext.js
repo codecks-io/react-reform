@@ -40,9 +40,9 @@ export default class ReformContext extends React.Component {
 
   getVariants(validations) {
     return Object.keys(validations).reduce((memo, name) => {
-      const validator = {name, rule: validations[name]}
-      memo[`is-${name}`] = validator
-      memo[`has-${name}`] = validator
+      const validation = {name, rule: validations[name]}
+      memo[`is-${name}`] = validation
+      memo[`has-${name}`] = validation
       return memo
     }, {})
   }

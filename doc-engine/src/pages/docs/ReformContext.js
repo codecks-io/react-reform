@@ -15,7 +15,7 @@ export default class ReformContext extends React.Component {
             import React, {Component} from 'react'
             import {render} from 'react-dom'
             import {ReformContext, createTheme} from 'react-reform'
-            import defaultValidators from 'react-reform/opt/validators'
+            import defaultValidations from 'react-reform/opt/validations'
 
             const defaultTheme = createTheme(...)
             const darkTheme = createTheme(...)
@@ -28,7 +28,7 @@ export default class ReformContext extends React.Component {
             };
 
             const validations = {
-              ...defaultValidators,
+              ...defaultValidations,
               validTag: {...}
             }
 
@@ -61,7 +61,7 @@ export default class ReformContext extends React.Component {
         </Section>
         <Section>
           <H2><Code.Inline>validations</Code.Inline> prop</H2>
-          <P>To setup <Link to="/docs/validations/">validations</Link>, use the <Code.Inline>validations</Code.Inline> prop. Pass an object that maps validation names to an validator object.</P>
+          <P>To setup <Link to="/docs/validations/">validations</Link>, use the <Code.Inline>validations</Code.Inline> prop. Pass an object that maps validation names to an validation object.</P>
           <P>This validation names can then be used by inputs by prefixing <Code.Inline>is-</Code.Inline> or <Code.Inline>has-</Code.Inline>:</P>
           <Code>{`
             <Form onSubmit={this.handleSubmit}>
