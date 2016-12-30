@@ -4,7 +4,7 @@ Helps you create powerful themes for pleasant to use forms
 
 ## Getting Started/Docs
 
-**[https://codecks-io.github.com/react-reform](https://codecks-io.github.com/react-reform)**
+**[http://react-reform.codecks.io](http://react-reform.codecks.io)**
 
 ### What's the status of this project?
 
