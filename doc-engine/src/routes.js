@@ -5,7 +5,7 @@ import P404 from 'pages/404'
 import {useScroll} from 'react-router-scroll'
 
 export default function(isServerRender, routeList) {
-  const AppWithRoutes = (props) => <App allRoutes={routeList} {...props}/>
+  const AppWithRoutes = (props) => <App allRoutes={routeList} isServerRender={isServerRender} {...props}/>
   return (
     <Router history={browserHistory} render={
       applyRouterMiddleware(useScroll((prevRouterProps, {location}) => (

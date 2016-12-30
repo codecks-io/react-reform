@@ -6,14 +6,17 @@ const routeLoader = require('./web_loaders/routes-loader')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const purify = require('purify-css')
 const DirectoryNameAsMain = require('webpack-directory-name-as-main')
+const AssetsPlugin = require('assets-webpack-plugin')
 
 const REACT_REFORM_SRC = path.join(__dirname, '..', 'src')
 
 module.exports = function(env) {
   const isDev = env === 'dev'
-  const isProd = env === 'prod'
+  const isProdServer = env === 'prod-server'
+  const isProdClient = env === 'prod-client'
+  const isProd = isProdClient || isProdServer
 
-  process.env.NODE_ENV = isProd ? 'production' : 'development'
+  process.env.NODE_ENV = isProdServer ? 'production' : 'development'
 
   const envVars = Object.assign({
     'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV)
@@ -24,15 +27,14 @@ module.exports = function(env) {
 
     contentBase: path.join(__dirname, 'src'),
 
-    entry: Object.assign({
+    entry: Object.assign(isProdServer ? {
+      'generate-html': './src/generate-html.js'
+    } : {
       'main': [
         ...(isDev ? [require.resolve('react-dev-utils/webpackHotDevClient')] : []),
         './src/client.js'
       ]
-    }, isProd ? {
-      'generate-html': './src/generate-html.js'
-    } : {}
-    ),
+    }),
 
     output: Object.assign({
       filename: `[name]-[${isDev ? 'hash' : 'chunkhash'}].js`,
@@ -45,11 +47,11 @@ module.exports = function(env) {
       pathinfo: true
     } : {}),
 
-    devtool: isProd ? 'source-map' : 'eval',
+    devtool: isProdServer ? false : isProdClient ? 'source-map' : 'eval',
 
     module: {
       loaders: [
-        ...(isProd ? [
+        ...(isProdServer ? [
           {
             test: /\.html$/,
             loader: 'html',
@@ -105,17 +107,30 @@ module.exports = function(env) {
       new webpack.ResolverPlugin([
         new DirectoryNameAsMain()
       ]),
-      new webpack.DefinePlugin(Object.assign(envVars, {__DEV__: isDev})),
+      new webpack.ContextReplacementPlugin(/moment[\\\/]lang$/, /^\.\/(en-gb)$/),
+      new webpack.DefinePlugin(Object.assign(envVars, {
+        __DEV__: isDev,
+        __SERVERRENDER__: isProdServer,
+        'define.amd': 'false' // because of bootstrap-daterangepicker
+      })),
       ...(isProd ? [
-        new ExtractTextPlugin('[name]-[contenthash].css'),
+        new ExtractTextPlugin('[name]-[contenthash].css')
+      ] : []),
+      ...(isProdServer ? [
         new StaticSiteGeneratorPlugin(
           'generate-html',
           routeLoader.getRoutes('src/pages/Home.js'),
-          {purify: purify},
+          {
+            purify: purify, assets: require('../docs/webpack-assets.json'),
+            pathLib: path, fs: require('fs'), pathToDocs: path.join(__dirname, '..', 'docs')
+          },
           {}
         ),
+      ] : []),
+      ...(isProdClient ? [
         new webpack.optimize.OccurrenceOrderPlugin(),
         new webpack.optimize.DedupePlugin(),
+        new AssetsPlugin({path: path.join(__dirname, '..', 'docs')}),
         new webpack.optimize.UglifyJsPlugin({
           compress: {screw_ie8: true, warnings: false},
           mangle: {screw_ie8: true},

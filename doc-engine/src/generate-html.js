@@ -17,13 +17,12 @@ export default function render(locals, cb) {
       if (renderProps.components.some(c => c === P404)) throw new Error('No route for ' + locals.path)
       const {html: markup, css} = renderStaticOptimized(() => renderToStaticMarkup(<RouterContext {...renderProps} />))
 
-      const {assets} = locals.webpackStats.compilation
-      const cssFile = Object.keys(assets).filter(name => /main.*\.css$/.test(name))[0]
-      const inlineStyles = [css, assets[cssFile].source()]
+      const cssFile = locals.assets.main.css
+      const inlineStyles = [css, locals.fs.readFileSync(locals.pathLib.join(locals.pathToDocs, cssFile), 'utf-8')]
 
-      const loadAsyncCss = `<script type="text/javascript">(function(){var a=document.createElement("link");a.rel="stylesheet";a.href="/${cssFile}";(document.getElementsByTagName("head")[0]).appendChild(a)})();</script>`
+      const loadAsyncCss = `<script type="text/javascript">(function(){var a=document.createElement("link");a.rel="stylesheet";a.href="${cssFile}";(document.getElementsByTagName("head")[0]).appendChild(a)})();</script>`
       const htmlWithBody = html
-        .replace('></div>', `>${markup}</div><script async src=${locals.assets.main} type="text/javascript"></script>${loadAsyncCss}`)
+        .replace('></div>', `>${markup}</div><script async src=${locals.assets.main.js} type="text/javascript"></script>${loadAsyncCss}`)
 
       cb(null, htmlWithBody.replace('</head>', `<style>${locals.purify(htmlWithBody, inlineStyles.join('\n'), {minify: true})}</style></head>`))
     } else {
