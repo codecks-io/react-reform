@@ -1,5 +1,6 @@
 // <Text is-required/>
 
+// taken from here: http://stackoverflow.com/a/1373724/616974
 const emailRegex = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/
 
 export default {
@@ -8,8 +9,6 @@ export default {
     errorMessage: () => 'is required',
     hintMessage: () => 'is required'
   },
-
-  // taken from here: http://stackoverflow.com/a/1373724/616974
 
   // <Text is-email/>
   email: {

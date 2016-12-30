@@ -15,7 +15,8 @@ export default class App extends React.Component {
   getChildContext() {
     return {
       appInfo: {
-        routes: this.props.allRoutes
+        routes: this.props.allRoutes,
+        isServerRender: this.props.isServerRender
       }
     }
   }

@@ -151,9 +151,41 @@ const stripLines = (text) => {
     .join('\n').trim()
 }
 
-export const Code = ({children: rawChildren, ...rest}) => {
-  const children = typeof rawChildren === 'string' ? stripLines(rawChildren) : rawChildren
-  return <B component="pre" mb4 ph3 pv2 marginLeft="-1rem" marginRight="-1rem" bgBlack05 black70 f6 maxWidth="100%" overflowX="auto" {...rest}>{children}</B>
+let isPrismCssRequired = false
+
+export class Code extends React.Component {
+
+  state = {
+    prismd: null
+  }
+
+  componentDidMount() {
+    if (typeof this.props.children !== 'string') return
+    if (!__SERVERRENDER__) {
+      require.ensure(['prismjs', 'prismjs/themes/prism.css', 'prismjs/components/prism-jsx.js'], () => {
+        const Prism = require('prismjs')
+        if (!isPrismCssRequired) {
+          require('prismjs/themes/prism.css')
+          require('prismjs/components/prism-jsx.js')
+          isPrismCssRequired = true
+        }
+        this.setState({prismd: Prism.highlight(stripLines(this.props.children), Prism.languages.jsx)})
+      }, 'prismjs')
+    }
+  }
+
+  render() {
+    const {children: rawChildren, ...rest} = this.props
+    const {prismd} = this.state
+    const children = prismd
+      ? <code dangerouslySetInnerHTML={{__html: prismd}}/>
+      : <code>{typeof rawChildren === 'string' ? stripLines(rawChildren) : rawChildren}</code>
+    return (
+      <B component="pre" mb4 ph3 pv2 marginLeft="-1rem" marginRight="-1rem" bgBlack05 black70 f6 maxWidth="100%" overflowX="auto" {...rest}>
+        {children}
+      </B>
+    )
+  }
 }
 
 Code.Inline = (props) => <B.I component="code" display="inline" ph1 bgBlack05 {...props}/>

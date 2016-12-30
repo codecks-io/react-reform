@@ -33,6 +33,7 @@
     "belle": "^3.0.0",
     "glamor": "^2.17.10",
     "normalize.css": "^5.0.0",
+    "prismjs": "^1.6.0",
     "react": "^15.3.2",
     "react-bootstrap-daterangepicker": "^3.2.2",
     "react-date-picker": "^5.3.28",
