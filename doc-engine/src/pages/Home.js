@@ -8,7 +8,7 @@ export default class Home extends React.Component {
     return (
       <Scaffold>
         <H1 mb1>React Reform</H1>
-        <SubH1>Setup Form Primitives for <i>your</i> Use Case</SubH1>
+        <SubH1>Helps you create powerful themes for pleasant to use forms</SubH1>
         <Section>
           <H2 mb3>tl;dr</H2>
           <List>
