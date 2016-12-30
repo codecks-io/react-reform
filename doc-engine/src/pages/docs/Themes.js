@@ -42,7 +42,7 @@ export default class Themes extends React.Component {
         </Section>
         <Section>
           <H2>Full Example</H2>
-          <P>Now let's take a look at a more complete Example. While the lines below certainly are nothing production ready, they certainly should hint at most of what React Reform is capable of and how it's supposed to work.</P>
+          <P>Now let's take a look at a more complete Example. While the lines below certainly offer nothing production ready, they certainly should hint at most of what React Reform is capable of and how it's supposed to work.</P>
           <Code>{`
             createTheme({
 

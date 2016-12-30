@@ -8,14 +8,14 @@ export default createTheme({
       <button>Submit</button>
     </FormContainer>
   ),
-  renderField: (Field, {directProps, name, validations, id}) => {
+  renderField: (Field, {directProps: {label, ...remainingDirectProps}, name, validations, id}) => {
     const errors = validations
       .filter(({isValid}) => isValid === false)
       .map(({errorMessage, name}) => <span key={name}>{errorMessage} </span>)
     return (
       <div>
-        <label htmlFor={id}>{name}</label>
-        <Field id={id} {...directProps}/>
+        <label htmlFor={id}>{label || name}</label>
+        <Field id={id} {...remainingDirectProps}/>
         {errors.length > 0 && <span>{errors}</span>}
       </div>
     )

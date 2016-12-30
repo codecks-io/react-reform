@@ -48,9 +48,9 @@ const NavLink = ({to, onlyActiveOnIndex = false, ...rest}, {router}) => (
 NavLink.contextTypes = {router: React.PropTypes.object}
 
 const NavSubLink = (props, {router}) => (
-  <PlainLink white80 mb3 tr f6 pr3 br bw2 b--white30 transitionProperty="border-color, color"
-    {...(router.isActive(props.to) ? {'b--white': true, white: true} : {})}
-    hover={{color: col.white, borderColor: col.white}} {...props}
+  <PlainLink white80 pv2 tr f6 pr3 br bw2 b--white30 transitionProperty="border-color, color"
+    {...(router.location.pathname.startsWith(props.to) ? {'b--white': true, white: true} : {})}
+    hover={{color: col.white, borderColor: col.white90}} {...props}
   />
 )
 
@@ -61,9 +61,11 @@ export const Nav = (props, {router}) => (
     <B.Col pt5>
       <NavLink to="/" onlyActiveOnIndex>Home</NavLink>
       <NavLink to="/getting-started/">Getting Started</NavLink>
-      <NavLink to="/recipes/">Recipes</NavLink>
+      <NavLink to="/recipes/"
+        {...(router.isActive('/recipes/') ? {mb0: true, pb3: true} : {})}
+      >Recipes</NavLink>
       {router.isActive('/recipes/') && (
-        <B.Col marginTop="-1rem" mb2>
+        <B.Col mb2>
           <NavSubLink to="/recipes/#required-with-stars">Add a <Code.Inline>*</Code.Inline> to all required fields</NavSubLink>
           <NavSubLink to="/recipes/#custom-button-text">Custom button text</NavSubLink>
           <NavSubLink to="/recipes/#multiple-submit">Multiple submit buttons</NavSubLink>
@@ -71,9 +73,11 @@ export const Nav = (props, {router}) => (
           <NavSubLink to="/recipes/#dynamic-fields">Dynamic fields</NavSubLink>
         </B.Col>
       )}
-      <NavLink to="/docs/">Api Docs</NavLink>
+      <NavLink to="/docs/"
+        {...(router.location.pathname.startsWith('/docs/') ? {mb0: true, pb3: true} : {})}
+      >Api Docs</NavLink>
       {router.location.pathname.startsWith('/docs/') && (
-        <B.Col marginTop="-1rem" mb2>
+        <B.Col mb2>
           <NavSubLink to="/docs/reform-context/">ReformContext</NavSubLink>
           <NavSubLink to="/docs/themes/">Themes</NavSubLink>
           <NavSubLink to="/docs/validations/">Validations</NavSubLink>
