@@ -16,7 +16,7 @@ module.exports = function(env) {
   const isProdClient = env === 'prod-client'
   const isProd = isProdClient || isProdServer
 
-  process.env.NODE_ENV = isProdServer ? 'production' : 'development'
+  process.env.NODE_ENV = isProd ? 'production' : 'development'
 
   const envVars = Object.assign({
     'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV)
