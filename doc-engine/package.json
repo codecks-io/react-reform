@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "node scripts/start.js",
-    "build": "rm -rf ../docs && webpack --config webpack.config.prod-client.js && webpack --config webpack.config.prod-server.js && rm ../docs/generate-html-* ../docs/webpack-assets.json && echo react-reform.codecks.io > ../docs/CNAME"
+    "build": "rm -rf ../docs && webpack --config webpack.config.prod-client.js && webpack --config webpack.config.prod-server.js && rm ../docs/generate-html-* ../docs/webpack-assets.json && echo \"react-reform.codecks.io\\n\" > ../docs/CNAME"
   },
   "devDependencies": {
     "assets-webpack-plugin": "^3.5.0",
