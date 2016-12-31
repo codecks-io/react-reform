@@ -5,6 +5,8 @@ import {Link as RRLink} from 'react-router'
 import StickyBox from 'react-sticky-box'
 import {scrollTo} from 'lib/scroll'
 
+export const md = (num) => `(max-width: ${num}px)`;
+
 export const RawButton = ({onClick, to, href, disabled, type = to || href ? undefined : 'button', props, ...rest}) => (
   <B component={to ? RRLink : href ? 'a' : 'button'} props={{onClick, type, to, href, disabled, ...props}} {...rest} cursor="pointer"/>
 )
@@ -24,11 +26,15 @@ export const Input = (props) => (
 )
 
 export const Scaffold = ({children}) => (
-  <B.Row minHeight="100vh">
-    <B.Col ph4 pv4 flex="200px 1 0" bgBrand paddingTop="11.7rem" alignItems="flex-end">
+  <B.Row minHeight="100vh" media={[md(750), {flexDirection: 'column'}]}>
+    <B.Col ph4 pv4 flex="200px 1 0" bgBrand paddingTop="11.7rem" alignItems="flex-end"
+      media={[md(750), {padding: '1rem', flex: 'initial', alignItems: 'center'}]}
+    >
       <Nav/>
     </B.Col>
-    <B.Row pb4 ph5 flex="800px 4 1" pt6 minWidth="1px">
+    <B.Row pb4 ph5 flex="800px 4 1" pt6 minWidth="1px"
+      media={[md(750), {padding: '2rem 1rem', flex: 'initial'}]}
+    >
       <B.Col width="100%" maxWidth="800px" mha>
         {children}
         <Footer/>
@@ -41,6 +47,7 @@ const NavLink = ({to, onlyActiveOnIndex = false, ...rest}, {router}) => (
   <PlainLink white80 b mb4 tr f5 pr3 br bw2 lh-title
     hover={{color: col.white}}
     {...(to && (onlyActiveOnIndex ? router.isActive(to, true) : router.location.pathname.startsWith(to)) ? {to, white: true, 'b--white': true} : {to, 'b--transparent': true})}
+    media={[md(750), {flexDirection: 'row', padding: '0.5rem 1rem', margin: 0, borderRightStyle: 'none', borderBottomStyle: 'solid', textAlign: 'center'}]}
     {...rest}
   />
 )
@@ -57,15 +64,15 @@ const NavSubLink = (props, {router}) => (
 NavSubLink.contextTypes = {router: React.PropTypes.object}
 
 export const Nav = (props, {router}) => (
-  <StickyBox width={180}>
-    <B.Col pt5>
+  <StickyBox width="measure">
+    <B.Col pt5 media={[md(750), {flexDirection: 'row', padding: 0, flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-around'}]}>
       <NavLink to="/" onlyActiveOnIndex>Home</NavLink>
       <NavLink to="/getting-started/">Getting Started</NavLink>
       <NavLink to="/recipes/"
         {...(router.isActive('/recipes/') ? {mb0: true, pb3: true} : {})}
       >Recipes</NavLink>
       {router.isActive('/recipes/') && (
-        <B.Col mb2>
+        <B.Col mb2 media={[md(750), {display: 'none'}]}>
           <NavSubLink to="/recipes/#required-with-stars">Add a <Code.Inline>*</Code.Inline> to all required fields</NavSubLink>
           <NavSubLink to="/recipes/#custom-button-text">Custom button text</NavSubLink>
           <NavSubLink to="/recipes/#multiple-submit">Multiple submit buttons</NavSubLink>
@@ -77,7 +84,7 @@ export const Nav = (props, {router}) => (
         {...(router.location.pathname.startsWith('/docs/') ? {mb0: true, pb3: true} : {})}
       >Api Docs</NavLink>
       {router.location.pathname.startsWith('/docs/') && (
-        <B.Col mb2>
+        <B.Col mb2 media={[md(750), {display: 'none'}]}>
           <NavSubLink to="/docs/reform-context/">ReformContext</NavSubLink>
           <NavSubLink to="/docs/themes/">Themes</NavSubLink>
           <NavSubLink to="/docs/validations/">Validations</NavSubLink>
@@ -95,7 +102,7 @@ Nav.contextTypes = {router: React.PropTypes.object}
 export const Footer = () => (
   <B black40 mta pt5 f6>
     React Reform is brought to you by <Link black60 href="https://www.codecks.io">Codecks</Link>.
-    Suggest edits for these pages on <Link black60 href="https://github.com/codecks-io/react-reform/tree/master/doc-engine/pages">GitHub</Link>
+    Suggest edits for these pages on <Link black60 href="https://github.com/codecks-io/react-reform/tree/master/doc-engine/src/pages">GitHub</Link>
   </B>
 )
 
@@ -138,7 +145,7 @@ export const H3 = (props) => <B component="h3" f5 b black80 lh-title mb3 {...pro
 export const Section = (props) => <B component="section" mb6 {...props}/>
 export const P = (props) => <B component="p" mb3 f5 black80 lh-copy {...props}/>
 
-export const List = (props) => <B component="ul" mb4 {...props}/>
+export const List = (props) => <B component="ul" mb4 media={[md(750), {paddingLeft: '1rem'}]} {...props}/>
 List.Item = (props) => <B component="li" display="list-item" mb2 lh-copy black80 {...props}/>
 
 const stripLines = (text) => {
@@ -181,7 +188,9 @@ export class Code extends React.Component {
       ? <code dangerouslySetInnerHTML={{__html: prismd}}/>
       : <code>{typeof rawChildren === 'string' ? stripLines(rawChildren) : rawChildren}</code>
     return (
-      <B component="pre" mb4 ph3 pv2 marginLeft="-1rem" marginRight="-1rem" bgBlack05 black70 f6 maxWidth="100%" overflowX="auto" {...rest}>
+      <B component="pre" mb4 ph3 pv2 marginLeft="-1rem" marginRight="-1rem" bgBlack05 black70 f6 lh-copy overflowX="auto"
+        media={[md(750), {fontSize: '0.7rem', lineHeight: 1.75}]}
+       {...rest}>
         {children}
       </B>
     )
