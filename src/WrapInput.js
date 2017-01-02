@@ -1,8 +1,8 @@
 import React from 'react'
 
 // const MyInput = props => (
-//   <WrapInput {...props}>{({value, listeners: {onChange, ...restListeners}}) => (
-//     <input type="text" value={value || ""} onChange={e => onChange(e.target.value)} {...restListeners}/>
+//   <WrapInput directProps={props} type="myInput">{({value, themeProps: {onChange, ...remainingThemeProps}}) => (
+//     <input type="text" value={value || ""} onChange={e => onChange(e.target.value)} {...remainingThemeProps}/>
 //   )}</WrapInput>
 // )
 
@@ -10,10 +10,11 @@ import React from 'react'
 //   <MyInput name="name" label="hi"/>
 // </Form>
 
-
-// it would be much easier to understand if we created this component within the render method,
+// The component we create here gets passed as the first argument of a themes's renderField() function.
+// It would be easier to understand if we created this component within the render method of WrapInput,
 // but this would mean creating a *new* component type every time we call render, leading to new
-// dom nodes being created constantly.
+// dom nodes being created constantly. This is why we create this component in the constructor of WrapInput
+// with a reference to the WrapInput instance to be able to interface with it
 const createFieldComponent = (instance) => {
   return class extends React.Component {
 
