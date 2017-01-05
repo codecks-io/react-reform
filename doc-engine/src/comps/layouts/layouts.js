@@ -5,7 +5,7 @@ import {Link as RRLink} from 'react-router'
 import StickyBox from 'react-sticky-box'
 import {scrollTo} from 'lib/scroll'
 
-export const md = (num) => `(max-width: ${num}px)`;
+export const md = (num) => `(max-width: ${num}px)`
 
 export const RawButton = ({onClick, to, href, disabled, type = to || href ? undefined : 'button', props, ...rest}) => (
   <B component={to ? RRLink : href ? 'a' : 'button'} props={{onClick, type, to, href, disabled, ...props}} {...rest} cursor="pointer"/>
@@ -94,7 +94,7 @@ export const Nav = (props, {router}) => (
         </B.Col>
       )}
       <NavLink href="https://github.com/codecks-io/react-reform" f6 mt4>
-        <B.I select={[' svg', {width: 18, height: 18, fill: "currentColor", position: "relative", top: 3}]} props={{dangerouslySetInnerHTML: {__html: require("./github.svg?inline")}}}/> GitHub Repo
+        <B.I select={[' svg', {width: 18, height: 18, fill: 'currentColor', position: 'relative', top: 3}]} props={{dangerouslySetInnerHTML: {__html: require('./github.svg?inline')}}}/> GitHub Repo
       </NavLink>
     </B.Col>
   </StickyBox>
