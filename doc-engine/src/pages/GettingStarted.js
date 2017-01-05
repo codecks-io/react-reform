@@ -48,7 +48,7 @@ export default class GettingStarted extends React.Component {
                   </div>
                 )
 
-              },
+            })
           `}</Code>
         </Section>
         <Section>
