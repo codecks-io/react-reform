@@ -93,6 +93,9 @@ export const Nav = (props, {router}) => (
           <NavSubLink to="/docs/optional/">Optional validations and inputs</NavSubLink>
         </B.Col>
       )}
+      <NavLink href="https://github.com/codecks-io/react-reform" f6 mt4>
+        <B.I select={[' svg', {width: 18, height: 18, fill: "currentColor", position: "relative", top: 3}]} props={{dangerouslySetInnerHTML: {__html: require("./github.svg?inline")}}}/> GitHub Repo
+      </NavLink>
     </B.Col>
   </StickyBox>
 )
