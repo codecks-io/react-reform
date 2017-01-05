@@ -53,7 +53,7 @@ export default class GettingStarted extends React.Component {
         </Section>
         <Section>
           <H2 mb3>Create custom validations</H2>
-          <P>Let's add a <Code.Inline>validTag</Code.Inline> validation to the default validations like e.g. <Code.Inline>required</Code.Inline> or <Code.Inline>maxlenght</Code.Inline>.</P>
+          <P>Let's add a <Code.Inline>validTag</Code.Inline> validation to the default validations like e.g. <Code.Inline>required</Code.Inline> or <Code.Inline>maxlength</Code.Inline>.</P>
           <Code>{`
             import defaultValidations from 'react-reform/opt/validations'
 
@@ -98,7 +98,7 @@ export default class GettingStarted extends React.Component {
 
         <Section>
           <H2 mb3>Let's write our first form</H2>
-          <P>Now that the basics are set up. Enjoy writing your forms with very little boilerplate!</P>
+          <P>Now that the basics are set up, enjoy writing your forms with very little boilerplate!</P>
           <Code>{`
             import React, {Component} from 'react'
             import {Form} from 'react-reform'
