@@ -2,6 +2,10 @@
 
 Helps you create powerful themes for pleasant to use forms
 
+## Why?
+
+Read [this post](https://www.codecks.io/blog/2017/introducing-react-reform/) to get behind some of the reasoning.
+
 ## Getting Started/Docs
 
 **[http://react-reform.codecks.io](http://react-reform.codecks.io)**
