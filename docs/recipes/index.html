@@ -45,7 +45,7 @@ export default class ExampleForm extends React.Component {
         &lt;div&gt;
           &lt;h4&gt;Form&lt;/h4&gt;
           &lt;Form onSubmit={this.handleSubmit}&gt;
-            &lt;Text name=&quot;required-name&quot; is-required/&gt;
+            &lt;Text name=&quot;required-name&quot; isRequired/&gt;
             &lt;Text name=&quot;optional-name&quot;/&gt;
           &lt;/Form&gt;
         &lt;/div&gt;
@@ -89,7 +89,7 @@ export default class ExampleForm extends React.Component {
         &lt;div&gt;
           &lt;h4&gt;Form&lt;/h4&gt;
           &lt;Form onSubmit={this.handleSubmit} buttonLabel=&quot;Custom button text&quot;&gt;
-            &lt;Text name=&quot;field1&quot; is-required/&gt;
+            &lt;Text name=&quot;field1&quot; isRequired/&gt;
           &lt;/Form&gt;
         &lt;/div&gt;
       &lt;/ReformContext&gt;
@@ -140,7 +140,7 @@ export default class ExampleForm extends React.Component {
             button1={{label: &#x27;Send&#x27;, type: &#x27;button&#x27;, data: {close: false}}}
             button2={{label: &#x27;Send &amp; Close&#x27;, type: &#x27;submit&#x27;, data: {close: true}}}
           &gt;
-            &lt;Text name=&quot;comment&quot; is-required/&gt;
+            &lt;Text name=&quot;comment&quot; isRequired/&gt;
           &lt;/Form&gt;
         &lt;/div&gt;
       &lt;/ReformContext&gt;
@@ -187,7 +187,7 @@ export default class ExampleForm extends React.Component {
         &lt;div&gt;
           &lt;h4&gt;Form&lt;/h4&gt;
           &lt;Form onSubmit={this.handleSubmit} noButton ref={node =&gt; this.formNode = node}&gt;
-            &lt;Text name=&quot;comment&quot; is-required/&gt;
+            &lt;Text name=&quot;comment&quot; isRequired/&gt;
             &lt;div&gt;
               &lt;button type=&quot;button&quot; onClick={this.handleSendClick}&gt;Send&lt;/button&gt;
               &lt;button type=&quot;submit&quot;&gt;Send &amp; Close&lt;/button&gt;
@@ -231,7 +231,7 @@ export default class ExampleForm extends React.Component {
         &lt;div&gt;
           &lt;h4&gt;Form&lt;/h4&gt;
           &lt;Form onSubmit={this.handleSubmit}&gt;
-            &lt;Text name=&quot;field1&quot; has-minlength={5}/&gt;
+            &lt;Text name=&quot;field1&quot; hasMinlength={5}/&gt;
           &lt;/Form&gt;
         &lt;/div&gt;
       &lt;/ReformContext&gt;
@@ -293,17 +293,17 @@ export default class ExampleForm extends React.Component {
               &lt;option value=&quot;one&quot;&gt;Variant one&lt;/option&gt;
               &lt;option value=&quot;two&quot;&gt;Variant two&lt;/option&gt;
             &lt;/Select&gt;
-            &lt;Text name=&quot;changingMinlength&quot; has-minlength={model.formVariant === &#x27;one&#x27; ? 10 : 20}/&gt;
+            &lt;Text name=&quot;changingMinlength&quot; hasMinlength={model.formVariant === &#x27;one&#x27; ? 10 : 20}/&gt;
             {model.formVariant === &#x27;one&#x27; ? (
-              &lt;Textarea rows={5} name=&quot;withinInFormVariant1&quot; is-required/&gt;
+              &lt;Textarea rows={5} name=&quot;withinInFormVariant1&quot; isRequired/&gt;
             ) : (
-              &lt;Text name=&quot;withinInFormVariant2&quot; is-email/&gt;
+              &lt;Text name=&quot;withinInFormVariant2&quot; isEmail/&gt;
             )}
           &lt;/Form&gt;
         &lt;/div&gt;
       &lt;/ReformContext&gt;
     )
   }
-}</code></pre><div data-css-1k009wt=""><h3 data-css-1at2h7r="">See it in action</h3><div data-css-1kvf1d4=""><div><h4>Form</h4><form><div><div style="margin-bottom:15px;"><label for="form13-formVariant">formVariant</label><select id="form13-formVariant" style="display:block;" name="formVariant"><option selected="" value="one">Variant one</option><option value="two">Variant two</option></select></div><div style="margin-bottom:15px;"><label for="form13-changingMinlength">changingMinlength</label><input type="text" value="inital" id="form13-changingMinlength" style="display:block;" name="changingMinlength"/><span><span>minimal length: 6/10 </span></span></div><div style="margin-bottom:15px;"><label for="form13-withinInFormVariant1">withinInFormVariant1</label><textarea id="form13-withinInFormVariant1" style="display:block;" rows="5" name="withinInFormVariant1"></textarea><span><span>is required </span></span></div></div><button>Submit</button></form></div></div><div data-css-qpctve="">Check your console to see the submitted value</div></div></section><div data-css-1psjutm="">React Reform is brought to you by <a data-css-17m7gag="" href="https://www.codecks.io">Codecks</a>. Suggest edits for these pages on <a data-css-17m7gag="" href="https://github.com/codecks-io/react-reform/tree/master/doc-engine/src/pages">GitHub</a></div></div></div></div></div><script async src=/main-ba0cc.js type="text/javascript"></script><script type="text/javascript">(function(){var a=document.createElement("link");a.rel="stylesheet";a.href="/main-5c0074321fc801cf42c1f4447d96bc6e.css";(document.getElementsByTagName("head")[0]).appendChild(a)})();</script>
+}</code></pre><div data-css-1k009wt=""><h3 data-css-1at2h7r="">See it in action</h3><div data-css-1kvf1d4=""><div><h4>Form</h4><form><div><div style="margin-bottom:15px;"><label for="form13-formVariant">formVariant</label><select id="form13-formVariant" style="display:block;" name="formVariant"><option selected="" value="one">Variant one</option><option value="two">Variant two</option></select></div><div style="margin-bottom:15px;"><label for="form13-changingMinlength">changingMinlength</label><input type="text" value="inital" id="form13-changingMinlength" style="display:block;" name="changingMinlength"/><span><span>minimal length: 6/10 </span></span></div><div style="margin-bottom:15px;"><label for="form13-withinInFormVariant1">withinInFormVariant1</label><textarea id="form13-withinInFormVariant1" style="display:block;" rows="5" name="withinInFormVariant1"></textarea><span><span>is required </span></span></div></div><button>Submit</button></form></div></div><div data-css-qpctve="">Check your console to see the submitted value</div></div></section><div data-css-1psjutm="">React Reform is brought to you by <a data-css-17m7gag="" href="https://www.codecks.io">Codecks</a>. Suggest edits for these pages on <a data-css-17m7gag="" href="https://github.com/codecks-io/react-reform/tree/master/doc-engine/src/pages">GitHub</a></div></div></div></div></div><script async src=/main-834a3.js type="text/javascript"></script><script type="text/javascript">(function(){var a=document.createElement("link");a.rel="stylesheet";a.href="/main-5c0074321fc801cf42c1f4447d96bc6e.css";(document.getElementsByTagName("head")[0]).appendChild(a)})();</script>
   </body>
 </html>

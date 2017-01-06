@@ -37,7 +37,7 @@ const defautTheme = createTheme({
       &lt;/div&gt;
     )
 
-})</code></pre></section><section data-css-163h4rl=""><h2 data-css-1div3xm="">Create custom validations</h2><p data-css-bo9myk="">Let&#x27;s add a <code data-css-1qxqrcx="">validTag</code> validation to the default validations like e.g. <code data-css-1qxqrcx="">required</code> or <code data-css-1qxqrcx="">maxlenght</code>.</p><pre data-css-1jwdnnb=""><code>import defaultValidations from &#x27;react-reform/opt/validations&#x27;
+})</code></pre></section><section data-css-163h4rl=""><h2 data-css-1div3xm="">Create custom validations</h2><p data-css-bo9myk="">Let&#x27;s add a <code data-css-1qxqrcx="">validTag</code> validation to the default validations like e.g. <code data-css-1qxqrcx="">required</code> or <code data-css-1qxqrcx="">maxlength</code>.</p><pre data-css-1jwdnnb=""><code>import defaultValidations from &#x27;react-reform/opt/validations&#x27;
 
 const validations = {
   ...defaultValidations,
@@ -65,7 +65,7 @@ class App extends Component {
   }
 }
 
-render(&lt;App/&gt;, document.getElementById(&#x27;root&#x27;))</code></pre></section><section data-css-163h4rl=""><h2 data-css-1div3xm="">Let&#x27;s write our first form</h2><p data-css-bo9myk="">Now that the basics are set up. Enjoy writing your forms with very little boilerplate!</p><pre data-css-1jwdnnb=""><code>import React, {Component} from &#x27;react&#x27;
+render(&lt;App/&gt;, document.getElementById(&#x27;root&#x27;))</code></pre></section><section data-css-163h4rl=""><h2 data-css-1div3xm="">Let&#x27;s write our first form</h2><p data-css-bo9myk="">Now that the basics are set up, enjoy writing your forms with very little boilerplate!</p><pre data-css-1jwdnnb=""><code>import React, {Component} from &#x27;react&#x27;
 import {Form} from &#x27;react-reform&#x27;
 import {Text, Textarea} from &#x27;react-reform/opt/inputs&#x27;
 
@@ -80,12 +80,12 @@ class TagForm extends Component {
       &lt;div&gt;
         &lt;h2&gt;Enter your tag information here&lt;/h2&gt;
         &lt;Form onSubmit={this.handleSubmit}&gt;
-          &lt;Text name=&quot;tag&quot; is-required is-validTag/&gt;
+          &lt;Text name=&quot;tag&quot; isRequired isValidTag/&gt;
           &lt;Textarea name=&quot;description&quot; label=&quot;Enter description&quot;/&gt;
         &lt;/Form&gt;
       &lt;/div&gt;
     )
   }
-}</code></pre></section><div data-css-1psjutm="">React Reform is brought to you by <a data-css-17m7gag="" href="https://www.codecks.io">Codecks</a>. Suggest edits for these pages on <a data-css-17m7gag="" href="https://github.com/codecks-io/react-reform/tree/master/doc-engine/src/pages">GitHub</a></div></div></div></div></div><script async src=/main-ba0cc.js type="text/javascript"></script><script type="text/javascript">(function(){var a=document.createElement("link");a.rel="stylesheet";a.href="/main-5c0074321fc801cf42c1f4447d96bc6e.css";(document.getElementsByTagName("head")[0]).appendChild(a)})();</script>
+}</code></pre></section><div data-css-1psjutm="">React Reform is brought to you by <a data-css-17m7gag="" href="https://www.codecks.io">Codecks</a>. Suggest edits for these pages on <a data-css-17m7gag="" href="https://github.com/codecks-io/react-reform/tree/master/doc-engine/src/pages">GitHub</a></div></div></div></div></div><script async src=/main-834a3.js type="text/javascript"></script><script type="text/javascript">(function(){var a=document.createElement("link");a.rel="stylesheet";a.href="/main-5c0074321fc801cf42c1f4447d96bc6e.css";(document.getElementsByTagName("head")[0]).appendChild(a)})();</script>
   </body>
 </html>
