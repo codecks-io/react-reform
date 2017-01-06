@@ -43,7 +43,7 @@ export default class ExampleForm extends React.Component {
             button1={{label: 'Send', type: 'button', data: {close: false}}}
             button2={{label: 'Send & Close', type: 'submit', data: {close: true}}}
           >
-            <Text name="comment" is-required/>
+            <Text name="comment" isRequired/>
           </Form>
         </div>
       </ReformContext>

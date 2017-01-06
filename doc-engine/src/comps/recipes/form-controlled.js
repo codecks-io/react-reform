@@ -29,7 +29,7 @@ export default class ExampleForm extends React.Component {
             onFieldChange={this.handleFieldChange}
             onSubmit={this.handleSubmit}
           >
-            <Text name="firstName" label="First Name" is-required/>
+            <Text name="firstName" label="First Name" isRequired/>
           </Form>
         </div>
       </ReformContext>

@@ -62,10 +62,10 @@ export default class ReformContext extends React.Component {
         <Section>
           <H2><Code.Inline>validations</Code.Inline> prop</H2>
           <P>To setup <Link to="/docs/validations/">validations</Link>, use the <Code.Inline>validations</Code.Inline> prop. Pass an object that maps validation names to an validation object.</P>
-          <P>This validation names can then be used by inputs by prefixing <Code.Inline>is-</Code.Inline> or <Code.Inline>has-</Code.Inline>:</P>
+          <P>This validation names can then be used by inputs by prefixing <Code.Inline>is</Code.Inline> or <Code.Inline>has</Code.Inline>:</P>
           <Code>{`
             <Form onSubmit={this.handleSubmit}>
-              <Text name="tag" is-required is-validTag has-minlength={3}/>
+              <Text name="tag" isRequired isValidTag hasMinlength={3}/>
             </Form>
           `}</Code>
         </Section>

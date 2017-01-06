@@ -32,7 +32,7 @@ export default class ExampleForm extends React.Component {
         <div>
           <h4>Form</h4>
           <Form onSubmit={this.handleSubmit}>
-            <DateRangePicker name="range" is-required>
+            <DateRangePicker name="range" isRequired>
               <button type="button">Open picker</button>
             </DateRangePicker>
           </Form>

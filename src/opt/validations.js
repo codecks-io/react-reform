@@ -1,4 +1,4 @@
-// <Text is-required/>
+// <Text isRequired/>
 
 // taken from here: http://stackoverflow.com/a/1373724/616974
 const emailRegex = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/
@@ -10,14 +10,14 @@ export default {
     hintMessage: () => 'is required'
   },
 
-  // <Text is-email/>
+  // <Text isEmail/>
   email: {
     isValid: val => emailRegex.test(val),
     errorMessage: () => 'is not a valid email address',
     hintMessage: () => 'needs to be an email'
   },
 
-  // <Text has-minlength={5}/>
+  // <Text hasMinlength={5}/>
   minlength: {
     isValid: (val, {arg}) => (val || '').toString().length >= arg,
     errorMessage: (val, {arg}) => {
@@ -26,7 +26,7 @@ export default {
     }
   },
 
-  // <Text has-maxlength={5}/>
+  // <Text hasMaxlength={5}/>
   maxlength: {
     isValid: (val, {arg}) => (val || '').toString().length <= arg,
     errorMessage: (val, {arg}) => {
@@ -36,7 +36,7 @@ export default {
   },
 
 
-  // <Text has-pattern={/^\d+(\.\d+)?$/}/>
+  // <Text hasPattern={/^\d+(\.\d+)?$/}/>
   pattern: {
     isValid: (val, {arg}) => (typeof arg === 'string' ? new RegExp(arg) : arg).test(val),
     errorMessage: val => `'${val}' is not valid`,

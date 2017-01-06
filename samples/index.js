@@ -70,19 +70,19 @@ class App extends React.Component {
         <div>
           <h1>Uncontrolled</h1>
           <Form onSubmit={this.handleSubmit} style={{color: 'yellow'}} initialModel={{name: null}} buttonLabel="Yo!">
-            <Text name="name" label="Name" is-unique/>
-            <Text name="name2" label="Name2*" is-required/>
+            <Text name="name" label="Name" isUnique/>
+            <Text name="name2" label="Name2*" isRequired/>
           </Form>
           <h1>Controlled</h1>
           <Form onSubmit={this.handleAsyncSubmit} model={this.state.model} onFieldChange={(key, val) => this.setState({model: {...this.state.model, [key]: val}})}>
-            <Text name="name" label="Name" has-minlength={5}/>
-            <Text name="name2" label="Name2*" is-required/>
+            <Text name="name" label="Name" hasMinlength={5}/>
+            <Text name="name2" label="Name2*" isRequired/>
             <Select name="fruit" label="favourite fruit">
               <option value="orange">Orange</option>
               <option value="apple">Apple</option>
               <option value="tomato">Tomato</option>
             </Select>
-            <Checkbox name="readTos" label="I've read this" is-required/>
+            <Checkbox name="readTos" label="I've read this" isRequired/>
           </Form>
         </div>
       </ReformContext>

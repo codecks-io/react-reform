@@ -115,7 +115,7 @@ export default class GettingStarted extends React.Component {
                   <div>
                     <h2>Enter your tag information here</h2>
                     <Form onSubmit={this.handleSubmit}>
-                      <Text name="tag" is-required is-validTag/>
+                      <Text name="tag" isRequired isValidTag/>
                       <Textarea name="description" label="Enter description"/>
                     </Form>
                   </div>

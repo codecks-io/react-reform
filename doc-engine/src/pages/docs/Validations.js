@@ -52,11 +52,11 @@ export default class Validations extends React.Component {
 
             render(<App/>, document.getElementById('root'))
           `}</Code>
-          <P>The two validations <Code.Inline>validUserName</Code.Inline> and <Code.Inline>maxLength</Code.Inline> may be used within inputs when prefixing either <Code.Inline>is-</Code.Inline> or <Code.Inline>has-</Code.Inline>:</P>
+          <P>The two validations <Code.Inline>validUserName</Code.Inline> and <Code.Inline>maxLength</Code.Inline> may be used within inputs when prefixing either <Code.Inline>is</Code.Inline> or <Code.Inline>has</Code.Inline>:</P>
           <Code>{`
             <Form onSubmit={this.handleSubmit}>
-              <Text name="name" is-validUserName/>
-              <Textarea name="about" has-maxLength={140}/>
+              <Text name="name" isValidUserName/>
+              <Textarea name="about" hasMaxLength={140}/>
             </Form>
           `}</Code>
         </Section>
@@ -66,9 +66,9 @@ export default class Validations extends React.Component {
           <H3><Code.Inline>val</Code.Inline></H3>
           <P>Contains the current value of the input.</P>
           <H3><Code.Inline>data.arg</Code.Inline></H3>
-          <P>You may add options to a validation like <Code.Inline>{'<Text name="content" has-maxLength={140}/>'}</Code.Inline> or even <Code.Inline>{'<Textarea name="username" is-unique={{attribute: \'name\', label: \'this better be a unique name\'}}/>'}</Code.Inline>. You can access the passed prop value via this field.</P>
+          <P>You may add options to a validation like <Code.Inline>{'<Text name="content" hasMaxLength={140}/>'}</Code.Inline> or even <Code.Inline>{'<Textarea name="username" isUnique={{attribute: \'name\', label: \'this better be a unique name\'}}/>'}</Code.Inline>. You can access the passed prop value via this field.</P>
           <H3><Code.Inline>data.getValue(fieldName)</Code.Inline></H3>
-          <P>In case you want to access other field's values use this function. Imagine an input like <Code.Inline>{'<Text name="passwordRepeat" has-sameValueAs="password"/>'}</Code.Inline>, a useful implementation would be:</P>
+          <P>In case you want to access other field's values use this function. Imagine an input like <Code.Inline>{'<Text name="passwordRepeat" hasSameValueAs="password"/>'}</Code.Inline>, a useful implementation would be:</P>
           <Code>{`
             {
               isValid: (val, {arg, getValue}) => val === getValue(arg),

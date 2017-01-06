@@ -32,7 +32,7 @@ export default class ExampleForm extends React.Component {
         <div>
           <h4>Form</h4>
           <Form onSubmit={this.handleSubmit}>
-            <Text name="field1" has-minlength={5}/>
+            <Text name="field1" hasMinlength={5}/>
           </Form>
         </div>
       </ReformContext>

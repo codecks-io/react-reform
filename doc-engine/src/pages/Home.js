@@ -19,7 +19,7 @@ export default class Home extends React.Component {
               <B mb3>Use them to write forms like this:</B>
               <Code>{`
                 <Form onSubmit={this.handleSubmit} theme="dark">
-                  <Text name="name" label="Your Name" is-required has-minlength={3}/>
+                  <Text name="name" label="Your Name" isRequired hasMinlength={3}/>
                   <DatePicker name="birthday" label="Your Birthday"/>
                 </Form>
               `}</Code>

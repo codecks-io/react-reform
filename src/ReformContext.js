@@ -41,6 +41,11 @@ export default class ReformContext extends React.Component {
   getVariants(validations) {
     return Object.keys(validations).reduce((memo, name) => {
       const validation = {name, rule: validations[name]}
+      const pascalCaseName = name[0].toUpperCase() + name.slice(1)
+      memo[`is${pascalCaseName}`] = validation
+      memo[`has${pascalCaseName}`] = validation
+
+      // support old syntax, use with care, might get deprecated.
       memo[`is-${name}`] = validation
       memo[`has-${name}`] = validation
       return memo

@@ -42,14 +42,14 @@ export default class Form extends React.Component {
           <P>Pass your inputs here. It's perfectly fine to pass in non-inputs here as well. So a form like this will work:</P>
           <Code>{`
             <Form onSubmit={this.handleSubmit} theme="dark">
-              <Text name="name" is-required/>
+              <Text name="name" isRequired/>
               <hr/>
               <button type="button" onClick={this.toggleSpecial}>
                 toggle special
               </button>
               {this.state.showSpecial && (
                 <div className="special">
-                  <Text name="price" is-required/>
+                  <Text name="price" isRequired/>
                 </div>
               )}
             </Form>

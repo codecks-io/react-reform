@@ -36,7 +36,7 @@ export default class ExampleForm extends React.Component {
         <div>
           <h4>Form</h4>
           <Form onSubmit={this.handleSubmit}>
-            <Text name="required-name" is-required/>
+            <Text name="required-name" isRequired/>
             <Text name="optional-name"/>
           </Form>
         </div>

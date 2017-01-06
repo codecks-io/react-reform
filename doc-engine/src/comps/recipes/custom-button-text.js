@@ -35,7 +35,7 @@ export default class ExampleForm extends React.Component {
         <div>
           <h4>Form</h4>
           <Form onSubmit={this.handleSubmit} buttonLabel="Custom button text">
-            <Text name="field1" is-required/>
+            <Text name="field1" isRequired/>
           </Form>
         </div>
       </ReformContext>

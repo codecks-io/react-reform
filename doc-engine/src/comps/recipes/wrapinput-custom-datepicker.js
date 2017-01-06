@@ -42,7 +42,7 @@ export default class ExampleForm extends React.Component {
         <div>
           <h4>Form</h4>
           <Form onSubmit={this.handleSubmit}>
-            <DatePicker name="startDate" is-required/>
+            <DatePicker name="startDate" isRequired/>
           </Form>
         </div>
       </ReformContext>

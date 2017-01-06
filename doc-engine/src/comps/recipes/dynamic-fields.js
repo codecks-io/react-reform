@@ -54,11 +54,11 @@ export default class ExampleForm extends React.Component {
               <option value="one">Variant one</option>
               <option value="two">Variant two</option>
             </Select>
-            <Text name="changingMinlength" has-minlength={model.formVariant === 'one' ? 10 : 20}/>
+            <Text name="changingMinlength" hasMinlength={model.formVariant === 'one' ? 10 : 20}/>
             {model.formVariant === 'one' ? (
-              <Textarea rows={5} name="withinInFormVariant1" is-required/>
+              <Textarea rows={5} name="withinInFormVariant1" isRequired/>
             ) : (
-              <Text name="withinInFormVariant2" is-email/>
+              <Text name="withinInFormVariant2" isEmail/>
             )}
           </Form>
         </div>

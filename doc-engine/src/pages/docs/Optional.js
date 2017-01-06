@@ -21,14 +21,14 @@ export default class Optional extends React.Component {
             ...
 
             <Form onSubmit={this.handleSubmit}>
-              <Text name="name" is-required/>
-              <Textarea name="comment" has-maxlength={140}/>
-              <Password name="password" is-required/>
+              <Text name="name" isRequired/>
+              <Textarea name="comment" hasMaxlength={140}/>
+              <Password name="password" isRequired/>
               <Select name="fruit">
                 <option value="apple">Apple</option>
                 <option value="orange">Orange</option>
               </Select>
-              <Checkbox name="agreeToTos" is-required/>
+              <Checkbox name="agreeToTos" isRequired/>
             </Form>
           `}</Code>
           <P>Note: there's no default <Code.Inline>Radio</Code.Inline> input. This is because there's no unopionated way of handling those in react. It's recommended <Link to="/docs/wrap-input/">wrapping</Link> a package like <Link href="https://github.com/chenglou/react-radio-group">react-radio-group</Link>.</P>
@@ -38,23 +38,23 @@ export default class Optional extends React.Component {
           <P>React Reform also offers some typical validations. Here's a list of them</P>
           <H3><Code.Inline>required</Code.Inline></H3>
           <Code>{`
-            <Text name="..." is-required/>
+            <Text name="..." isRequired/>
           `}</Code>
           <H3><Code.Inline>email</Code.Inline></H3>
           <Code>{`
-            <Text name="..." is-email/>
+            <Text name="..." isEmail/>
           `}</Code>
           <H3><Code.Inline>minlength</Code.Inline></H3>
           <Code>{`
-            <Text name="..." has-minlength={6}/>
+            <Text name="..." hasMinlength={6}/>
           `}</Code>
           <H3><Code.Inline>maxlength</Code.Inline></H3>
           <Code>{`
-            <Text name="..." has-maxlength={140}/>
+            <Text name="..." hasMaxlength={140}/>
           `}</Code>
           <H3><Code.Inline>pattern</Code.Inline></H3>
           <Code>{`
-            <Text name="..." has-pattern={/^\\d+(\\.\\d+)?$/}/>
+            <Text name="..." hasPattern={/^\\d+(\\.\\d+)?$/}/>
           `}</Code>
         </Section>
       </Scaffold>

@@ -39,7 +39,7 @@ export default class ExampleForm extends React.Component {
         <div>
           <h4>Form</h4>
           <Form onSubmit={this.handleSubmit} noButton ref={node => this.formNode = node}>
-            <Text name="comment" is-required/>
+            <Text name="comment" isRequired/>
             <div>
               <button type="button" onClick={this.handleSendClick}>Send</button>
               <button type="submit">Send & Close</button>
