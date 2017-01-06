@@ -1,7 +1,7 @@
 {
   "name": "react-reform",
   "version": "1.0.0",
-  "description": "A React Form Framework",
+  "description": "A React Form Toolkit",
   "scripts": {
     "start": "echo 'Make sure to `cd samples && npm install`' && cd samples && npm run dev",
     "lint": "eslint --max-warnings 1 src/*.js src/**/*.js",
@@ -19,8 +19,9 @@
     "themes"
   ],
   "author": "Daniel Berndt",
+  "homepage": "http://react-reform.codecks.io/",
   "license": "ISC",
-  "repository": "danielberndt/react-reform",
+  "repository": "codecks-io/react-reform",
   "files": [
     "*.js",
     "*.md",
