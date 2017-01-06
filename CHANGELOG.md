@@ -2,7 +2,7 @@
 
 ## 1.1.0
 
-Validations within wrapped inputs now support camelCase. This is also the recommended way of doing things and the docs have been changed accordingly. See #3.
+Validations within wrapped inputs now support camelCase. This is also the recommended way of doing things and the docs have been changed accordingly. See [#13](https://github.com/codecks-io/react-reform/issues/13).
 
 **old**
 ```
