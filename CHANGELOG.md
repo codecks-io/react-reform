@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.1.1
+
+- adding test suite
+- fix [#17](https://github.com/codecks-io/react-reform/issues/13): SSR now works without throwing errors.
+- ensure unmounted fields properly de-register from their form
+
 ## 1.1.0
 
 Validations within wrapped inputs now support camelCase. This is also the recommended way of doing things and the docs have been changed accordingly. See [#13](https://github.com/codecks-io/react-reform/issues/13).
