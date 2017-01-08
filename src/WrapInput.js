@@ -102,7 +102,7 @@ export default class WrapInput extends React.Component {
   }
 
   componentWillUnmount() {
-    this.context.reformForm.unregisterFocusHook(this.props.directProps.name)
+    this.context.reformForm.unregister(this.props.directProps.name)
   }
 
   revalidateHook = () => {
