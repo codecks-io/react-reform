@@ -15,6 +15,7 @@ This library is being used and actively developed alongside [www.codecks.io](htt
 - clone the repo
 - `npm install && cd samples && npm install`
 - for running the sample project: `cd samples && npm run dev` and open `http://localhost:8080/`
+- run `npm test` or `npm run test-watch` for test
 
 The docs are generated via the [doc-engine](./doc-engine). So please look here if you would like to update the docs.
 
