@@ -54,7 +54,7 @@ export default class Form extends React.Component {
         isTouched: (name) => (this.state.fields[name] && this.state.fields[name].touched) || false,
         isFocused: (name) => (this.state.fields[name] && this.state.fields[name].focused) || false,
         registerFocusHook: (name, hook) => this.focusHooks[name] = hook,
-        unregisterFocusHook: (name) => {delete this.focusHooks[name]},
+        unregister: this.handleUnregisterField,
         serverErrors: this.state.serverErrors,
         formId: this.formId,
         status: this.state.status,
@@ -157,7 +157,11 @@ export default class Form extends React.Component {
   }
 
   focusField(name) {
-    this.focusHooks[name]()
+    if (!this.focusHooks[name]) {
+      console.warn(`no mounted field with name "${name}"`)
+    } else {
+      this.focusHooks[name]()
+    }
   }
 
   notifyOfValidationResults = (name, validations) => {
@@ -174,6 +178,14 @@ export default class Form extends React.Component {
     }
     const cb = () => this.ensureFieldWith(name, {validations})
     if (this.isFormMounted) {setTimeout(cb)} else {cb()}
+  }
+
+  handleUnregisterField = (name) => {
+    delete this.focusHooks[name]
+    this.setState(({fields}) => {
+      delete fields[name]
+      return fields
+    })
   }
 
   handleFocusField = (name) => {
