@@ -57,7 +57,8 @@ export default class Form extends React.Component {
         unregisterFocusHook: (name) => {delete this.focusHooks[name]},
         serverErrors: this.state.serverErrors,
         formId: this.formId,
-        status: this.state.status
+        status: this.state.status,
+        setState: a => this.setState(a)
       }
     }
   }
@@ -68,16 +69,21 @@ export default class Form extends React.Component {
     status: 'unsubmitted'
   }
 
-  isUnmounted = false
+  isFormUnmounted = false
+  isFormMounted = false
   focusHooks = {}
   formId = nextFormId++
 
+  componentDidMount() {
+    this.isFormMounted = true
+  }
+
   componentWillUnmount() {
-    this.isUnmounted = true
+    this.isFormUnmounted = true
   }
 
   ensureFieldWith(name, props) {
-    if (this.isUnmounted) return
+    if (this.isFormUnmounted) return
     const {fields} = this.state
     const {initialModel} = this.props
     const existing = fields[name]
@@ -166,8 +172,8 @@ export default class Form extends React.Component {
         if (areIdentical) return
       }
     }
-    // postpone updating state, since we're within the constructor/cwr part of the child here
-    setTimeout(() => this.ensureFieldWith(name, {validations}))
+    const cb = () => this.ensureFieldWith(name, {validations})
+    if (this.isFormMounted) {setTimeout(cb)} else {cb()}
   }
 
   handleFocusField = (name) => {
@@ -179,7 +185,7 @@ export default class Form extends React.Component {
   }
 
   handleAsyncSuccess = () => {
-    if (this.isUnmounted) return
+    if (this.isFormUnmounted) return
     this.reset()
     this.setState({
       serverErrors: {$global: []},
@@ -189,14 +195,14 @@ export default class Form extends React.Component {
 
   // shape of error: {fieldName: error} or 'global error message as string or react object'
   handleAsyncError = (errors) => {
-    if (this.isUnmounted) return
+    if (this.isFormUnmounted) return
     const {fields} = this.state
     // if it's a real Error, throw it!
     if (errors instanceof Error) {
       setTimeout(() => {console.error('onSubmit threw:', errors)})
       throw errors
     }
-    if (this.isUnmounted) return
+    if (this.isFormUnmounted) return
     const errorMessages = {$global: []}
     if (typeof errors === 'string' || React.isValidElement(errors)) {
       errorMessages.$global.push(errors)

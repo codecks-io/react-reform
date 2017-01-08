@@ -79,9 +79,17 @@ export default class WrapInput extends React.Component {
     super(props, context)
     this.registeredNode = null
     this.scopedValidators = {}
+    this.postponedNotification = null
     const value = this.context.reformForm.getValue(props.directProps.name)
-    this.state = this.prepareState(value, props, context)
+    this.state = this.prepareState(value, props, context, {postponeNotifying: true})
     this.fieldComponent = createFieldComponent(this)
+  }
+
+  componentWillMount() {
+    if (this.postponedNotification) {
+      this.context.reformForm.notifyOfValidationResults(this.postponedNotification.name, this.postponedNotification.validations)
+      this.postponedNotification = null
+    }
   }
 
   componentDidMount() {
@@ -111,7 +119,7 @@ export default class WrapInput extends React.Component {
     }
   }
 
-  prepareState(newVal, props, context) {
+  prepareState(newVal, props, context, {postponeNotifying = false} = {}) {
     const {reformRoot, reformForm} = context
     const validators = []
     const nonValidationRestProps = {}
@@ -131,7 +139,11 @@ export default class WrapInput extends React.Component {
       isValid: rule.isValid(newVal, {arg, getValue: reformForm.getValue}, this.revalidateHook),
       ...this.getMessages(context, name, rule, newVal, props.directProps.name, arg)
     }))
-    reformForm.notifyOfValidationResults(props.directProps.name, validations)
+    if (postponeNotifying) {
+      this.postponedNotification = {name: props.directProps.name, validations}
+    } else {
+      reformForm.notifyOfValidationResults(props.directProps.name, validations)
+    }
     return {nonValidationRestProps, validations, value: newVal}
   }
 
