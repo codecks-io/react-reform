@@ -1,0 +1,32 @@
+exports[`test It doesn't explode when rendering a basic form 1`] = `
+<div>
+  <form
+    onSubmit={[Function]}>
+    <div>
+      <div>
+        <label
+          htmlFor="form1-field1">
+          field1
+        </label>
+        <input
+          id="form1-field1"
+          name="field1"
+          onBlur={[Function]}
+          onChange={[Function]}
+          onFocus={[Function]}
+          type="text"
+          value="" />
+        <span>
+          <span>
+            is required
+             
+          </span>
+        </span>
+      </div>
+    </div>
+    <button>
+      Custom button text
+    </button>
+  </form>
+</div>
+`;
