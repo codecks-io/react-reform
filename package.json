@@ -9,7 +9,7 @@
     "clean": "rm -rf opt/ && rm *.js",
     "test": "NODE_ENV=test jest",
     "test-watch": "NODE_ENV=test jest --watch",
-    "prepublish": "npm run lint && npm run build-lib",
+    "prepublish": "npm run lint && npm run test && npm run build-lib",
     "postpublish": "npm run clean"
   },
   "keywords": [
