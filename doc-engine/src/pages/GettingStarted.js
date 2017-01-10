@@ -1,5 +1,4 @@
 import React from 'react'
-// import {B} from 'comps/styles'
 import {Scaffold, H1, H2, SubH1, Code, P, Section} from 'comps/layouts'
 
 export default class GettingStarted extends React.Component {

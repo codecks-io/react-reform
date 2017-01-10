@@ -1,5 +1,5 @@
 import React from 'react'
-import {B} from 'comps/styles'
+import B from 'comps/styles'
 import {Scaffold, H1, H2, H3, SubH1, List, Code, P, Section, Link} from 'comps/layouts'
 
 export default class Home extends React.Component {

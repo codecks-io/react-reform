@@ -1,7 +1,7 @@
 import React from 'react'
 import {renderToStaticMarkup} from 'react-dom/server'
 import html from './index.html'
-import {renderStaticOptimized} from 'glamor/server'
+import {renderStaticOptimized} from 'retachyons/glamor-server'
 import {match, RouterContext} from 'react-router'
 import getRoutes from './routes'
 import P404 from 'pages/404'

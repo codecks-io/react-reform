@@ -1,5 +1,4 @@
 import React from 'react'
-// import {B} from 'comps/styles'
 import {Scaffold, H1, H2, SubH1, P, Code, Section, Link} from 'comps/layouts'
 
 export default class Docs extends React.Component {
