@@ -105,7 +105,7 @@ export default class GettingStarted extends React.Component {
 
             class TagForm extends Component {
 
-              handleSubmit = ({tag, description}) => {
+              handleSubmit = ({tag, description}, e) => {
                 ...
               }
 
