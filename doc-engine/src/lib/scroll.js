@@ -1,24 +1,54 @@
-export function scrollTo(targetY, cb) {
-  let lastTime = performance.now()
-  let currentY = window.scrollY
-  let acc = 0.01
+function getScrollParent(node) {
+  let offsetParent = node
+  while ((offsetParent = offsetParent.offsetParent)) {
+    const overflowYVal = window.getComputedStyle(offsetParent, null).getPropertyValue('overflow-y')
+    if (overflowYVal === 'auto' || overflowYVal === 'scroll') return offsetParent
+  }
+  return window
+}
 
-  const performScroll = (time) => {
-    const dtInS = (time - lastTime) / 1000
-    lastTime = time
-    if (dtInS > 0) {
-      const maxVel = 10000 * dtInS * acc
-      const diff = Math.max(-maxVel, Math.min(targetY - currentY, maxVel))
-      acc += dtInS * 2
-      currentY += diff
-      window.scrollBy(0, diff)
+let lastScrollTime = null
+let currentSpeed = null
+let currentScrollRafID = null
+let currentScrollY = null
+
+const smoothScroll = (node, scrollParent, targetY) => {
+  if (currentScrollRafID) window.cancelAnimationFrame(currentScrollRafID)
+  lastScrollTime = new Date().getTime()
+  currentSpeed = currentSpeed || 0
+
+  currentScrollY = scrollParent === window ? window.scrollY : scrollParent.scrollTop
+  const fn = () => {
+    const currTime = new Date().getTime()
+    const dt = (currTime - lastScrollTime) / 1000
+    const dir = currentScrollY > targetY ? -1 : 1
+    currentSpeed = Math.max(-200, Math.min(200, currentSpeed + (dir * 200 * dt)))
+    currentScrollY += currentSpeed * dt
+    if (dir > 0) {
+      if (currentScrollY >= targetY) currentScrollY = targetY
+    } else {
+      // eslint-disable-next-line no-lonely-if
+      if (currentScrollY <= targetY) currentScrollY = targetY
     }
-    if (currentY !== targetY) {
-      requestAnimationFrame(performScroll)
-    } else if (cb) {
-      cb()
+    if (scrollParent === window) {
+      window.scrollTo(0, currentScrollY)
+    } else {
+      scrollParent.scrollTop = currentScrollY
+    }
+    if (currentScrollY !== targetY) {
+      currentScrollRafID = window.requestAnimationFrame(fn)
+    } else {
+      currentSpeed = null
+      currentScrollRafID = null
+      currentScrollY = null
     }
   }
+  currentScrollRafID = window.requestAnimationFrame(fn)
+}
 
-  requestAnimationFrame(performScroll)
+export function scrollToNode(node) {
+  debugger
+  const sp = getScrollParent(node)
+  const targetY = ((sp === window ? 0 : sp.scrollTop) + node.getBoundingClientRect().top) - 50
+  smoothScroll(node, sp, targetY)
 }

@@ -12,8 +12,8 @@ const REACT_REFORM_SRC = path.join(__dirname, '..', 'src')
 
 module.exports = function(env) {
   const isDev = env === 'dev'
-  const isProdServer = env === 'prod-server'
-  const isProdClient = env === 'prod-client'
+  const isProdServer = env === 'prod-server' // render html
+  const isProdClient = env === 'prod-client' // bundle js and css
   const isProd = isProdClient || isProdServer
 
   process.env.NODE_ENV = isProd ? 'production' : 'development'
@@ -121,7 +121,7 @@ module.exports = function(env) {
           'generate-html',
           routeLoader.getRoutes('src/pages/Home.js'),
           {
-            purify: purify, assets: require('../docs/webpack-assets.json'),
+            purify: purify, clientAssets: require('../docs/webpack-assets.json'),
             pathLib: path, fs: require('fs'), pathToDocs: path.join(__dirname, '..', 'docs')
           },
           {}

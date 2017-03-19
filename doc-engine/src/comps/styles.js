@@ -1,17 +1,16 @@
-import defaultOpts from 'retachyons/defaults'
-import builder from 'retachyons/builder'
+import React from 'react'
+import rulesBuilder from 'reta/rules-builder'
+import componentBuilder from 'reta/component-builder'
+import styleRules from './style-rules'
 
-const opts = {
-  ...defaultOpts,
-  borderWidthScale: [0, '.125rem', '.25rem'],
-  colors: {
-    ...defaultOpts.colors,
-    brand: '#30A783',
-    'dark-brand': '#006C71',
-  },
-  mediaQueries: {
-    max750: 'screen and (max-width: 750px)',
-  },
-}
+export const buildRules = rulesBuilder(styleRules)
 
-export default builder(opts)
+const Comp = componentBuilder(buildRules);
+
+const B = p => <Comp db {...p}/>
+B.Col = p => <Comp flex flexColumn {...p}/>
+B.Row = p => <Comp flex {...p}/>
+B.I = p => <Comp di {...p}/>
+B.Base = Comp
+
+export default B

@@ -9,7 +9,7 @@ export default class WrapInput extends React.Component {
         <H1 mb5>WrapInput</H1>
         <Section>
           <P>To make your inputs ready for React Reform you need to wrap them first. The <Code.Inline>WrapInput</Code.Inline> component should provide all functionality to interface with all kinds of components.</P>
-          <P>Let's see a simple to get an idea of what it looks like</P>
+          <P>Let's see a simple example to get an idea of what it looks like</P>
           <Code>{`
             import {WrapInput} from 'react-reform'
 

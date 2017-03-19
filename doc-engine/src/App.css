@@ -27,6 +27,14 @@ h1, h2, h3, h4, h5, h6, p, ul, ol, pre {
   margin: 0; padding: 0;
 }
 
+.github-icon svg {
+  width: 18px;
+  height: 18px;
+  fill: currentColor;
+  position: relative;
+  top: 3px;
+}
+
 /* fixing bootstrap dependency of react-bootstrap-daterangepicker */
 
 .dropdown-menu {

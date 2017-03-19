@@ -7,7 +7,7 @@ export default class Docs extends React.Component {
     return (
       <Scaffold>
         <H1 mb1>Api Docs</H1>
-        <SubH1>A detailed looks at all the moving parts of React Reform</SubH1>
+        <SubH1>A detailed look at all the moving parts of React Reform</SubH1>
         <Section>
           <Link to="/docs/reform-context/"><H2 color="inherit">ReformContext</H2></Link>
           <P>Add this component to the root of your app to inform all forms within which themes and validations are available.</P>

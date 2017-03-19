@@ -1,5 +1,6 @@
 import ReactDOM from 'react-dom'
 import getRoutes from './routes'
+import 'reta.css'
 
 const appEl = window.document.getElementById('app')
 
