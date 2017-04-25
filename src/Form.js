@@ -89,7 +89,7 @@ export default class Form extends React.Component {
     const existing = fields[name]
     if (!existing || this.resetInProgress) {
       fields[name] = {
-        value: initialModel[name] || null,
+        value: name in initialModel ? initialModel[name] : null,
         validations: [],
         dirty: false,
         touched: false,
