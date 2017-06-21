@@ -209,6 +209,7 @@ export default class Form extends React.Component {
   handleAsyncError = (errors) => {
     if (this.isFormUnmounted) return
     const {fields} = this.state
+    let afterSetStateCb = null
     // if it's a real Error, throw it!
     if (errors instanceof Error) {
       setTimeout(() => {console.error('onSubmit threw:', errors)})
@@ -229,7 +230,7 @@ export default class Form extends React.Component {
             name: 'server'
           }
           if (!focussedInvalidField) {
-            this.focusField(errorField)
+            afterSetStateCb = () => this.focusField(errorField)
             focussedInvalidField = true // to ensure only the *first* field get focused
           }
         } else {
@@ -240,7 +241,7 @@ export default class Form extends React.Component {
     this.setState({
       serverErrors: errorMessages,
       status: 'postSubmitFail'
-    })
+    }, afterSetStateCb)
   }
 
   checkForErrors() {
@@ -261,8 +262,7 @@ export default class Form extends React.Component {
     if (e && typeof e.preventDefault === 'function') e.preventDefault()
     const {hasErrors, firstInvalidFieldName} = this.checkForErrors()
     if (hasErrors) {
-      this.setState({status: 'preSubmitFail'})
-      this.focusField(firstInvalidFieldName)
+      this.setState({status: 'preSubmitFail'}, () => this.focusField(firstInvalidFieldName))
     } else {
       this.setState({serverErrors: {$global: []}})
       const result = this.props.onSubmit(this.getAllValues(), e, ...args)
