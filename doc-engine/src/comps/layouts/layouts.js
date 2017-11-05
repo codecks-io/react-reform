@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom'
 import B from 'comps/styles'
 import {Link as RRLink} from 'react-router'
 import {scrollToNode} from 'lib/scroll'
+import PropTypes from 'prop-types'
 
 export const md = (num) => `(max-width: ${num}px)`
 
@@ -55,7 +56,7 @@ const NavLink = ({to, onlyActiveOnIndex = false, ...rest}, {router}) => (
   />
 )
 
-NavLink.contextTypes = {router: React.PropTypes.object}
+NavLink.contextTypes = {router: PropTypes.object}
 
 const NavSubLink = (props, {router}) => (
   <PlainLink white80 pv2 tr f6 pr3 br bw2 bWhite30 css={{transitionProperty: 'border-color, color'}}
@@ -64,7 +65,7 @@ const NavSubLink = (props, {router}) => (
   />
 )
 
-NavSubLink.contextTypes = {router: React.PropTypes.object}
+NavSubLink.contextTypes = {router: PropTypes.object}
 
 export const Nav = (props, {router}) => (
     <B.Col flexRowMax750 pa0Max750 flexWrapMax750 itemsCenterMax750 justifyAroundMax750 css={{paddingTop: '103px'}}>
@@ -101,7 +102,7 @@ export const Nav = (props, {router}) => (
     </B.Col>
 )
 
-Nav.contextTypes = {router: React.PropTypes.object}
+Nav.contextTypes = {router: PropTypes.object}
 
 export const Footer = () => (
   <B black40 mta pv5 f6>
@@ -115,7 +116,7 @@ export const SubH1 = (props) => <B f5 lhTitle black60 mb5 {...props}/>
 
 export const H2 = class extends React.Component {
 
-  static contextTypes = {router: React.PropTypes.object}
+  static contextTypes = {router: PropTypes.object}
 
   constructor(props, context) {
     super(props)

@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 
 // const MyInput = props => (
 //   <WrapInput directProps={props} type="myInput">{({value, themeProps: {onChange, ...remainingThemeProps}}) => (
@@ -59,16 +60,16 @@ const createFieldComponent = (instance) => {
 export default class WrapInput extends React.Component {
 
   static contextTypes = {
-    reformForm: React.PropTypes.object,
-    reformRoot: React.PropTypes.object
+    reformForm: PropTypes.object,
+    reformRoot: PropTypes.object
   }
 
   static propTypes = {
-    children: React.PropTypes.func.isRequired,
-    directProps: React.PropTypes.shape({
-      name: React.PropTypes.string.isRequired
+    children: PropTypes.func.isRequired,
+    directProps: PropTypes.shape({
+      name: PropTypes.string.isRequired
     }).isRequired,
-    focusFn: React.PropTypes.func.isRequired,
+    focusFn: PropTypes.func.isRequired,
   }
 
   static defaultProps = {

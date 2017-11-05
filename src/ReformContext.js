@@ -1,15 +1,16 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 
 export default class ReformContext extends React.Component {
 
   static childContextTypes = {
-    reformRoot: React.PropTypes.object.isRequired
+    reformRoot: PropTypes.object.isRequired
   }
 
   static propTypes = {
-    children: React.PropTypes.element.isRequired,
-    themes: React.PropTypes.object.isRequired,
-    validations: React.PropTypes.object.isRequired
+    children: PropTypes.element.isRequired,
+    themes: PropTypes.object.isRequired,
+    validations: PropTypes.object.isRequired
   }
 
   getChildContext() {

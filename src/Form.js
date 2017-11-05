@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 
 let nextFormId = 1 // used for id-generation
 
@@ -8,28 +9,28 @@ const FormContainer = ({children, ...rest}, {reformForm}) => (
   <form {...rest} onSubmit={reformForm.onSubmit}>{children}</form>
 )
 
-FormContainer.contextTypes = {reformForm: React.PropTypes.object}
+FormContainer.contextTypes = {reformForm: PropTypes.object}
 
 export default class Form extends React.Component {
 
   static contextTypes = {
-    reformRoot: React.PropTypes.object
+    reformRoot: PropTypes.object
   }
 
   static childContextTypes = {
-    reformForm: React.PropTypes.object.isRequired
+    reformForm: PropTypes.object.isRequired
   }
 
   static propTypes = {
-    children: React.PropTypes.node.isRequired,
-    theme: React.PropTypes.oneOfType([
-      React.PropTypes.string,
-      React.PropTypes.object
+    children: PropTypes.node.isRequired,
+    theme: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.object
     ]).isRequired,
-    onSubmit: React.PropTypes.func.isRequired,
-    model: React.PropTypes.object,
-    initialModel: React.PropTypes.object,
-    onFieldChange: React.PropTypes.func
+    onSubmit: PropTypes.func.isRequired,
+    model: PropTypes.object,
+    initialModel: PropTypes.object,
+    onFieldChange: PropTypes.func
   }
 
   static defaultProps = {
