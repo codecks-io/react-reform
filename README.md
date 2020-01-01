@@ -1,3 +1,7 @@
+>>> **Deprecated**
+>>>
+>>> This library is no longer maintained and used within Codecks. We recommend taking a look at [formik](https://github.com/jaredpalmer/formik) as a very capable alternative.
+
 # React Reform
 
 Helps you create powerful themes for pleasant to use forms
